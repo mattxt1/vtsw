@@ -17,6 +17,13 @@ export interface ProductCategory {
   title: string;
   description: string;
   media: MediaAsset;
+  groups: ProductGroup[];
+  note?: string;
+}
+
+export interface ProductGroup {
+  name: string;
+  models: string[];
 }
 
 export interface CinematicChapter {

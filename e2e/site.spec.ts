@@ -33,9 +33,9 @@ test("reduced motion retains products and software content", async ({ page }) =>
   await page.goto("/");
 
   await expect(
-    page.getByRole("heading", { name: "Everything finds its place." }),
+    page.getByRole("heading", { name: "One system, across every screen." }),
   ).toBeVisible();
   await expect(
-    page.getByRole("heading", { name: "One language, on every screen." }),
+    page.getByRole("heading", { name: "Built to stay current." }),
   ).toBeVisible();
 });

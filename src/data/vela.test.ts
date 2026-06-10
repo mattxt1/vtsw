@@ -6,7 +6,14 @@ describe("vela content", () => {
     expect(vela.name).toBe("vela");
     expect(vela.parent).toBe("veritas");
     expect(vela.products.map((product) => product.id)).toEqual(
-      expect.arrayContaining(["phone", "laptop", "tablet", "watch", "home"]),
+      expect.arrayContaining([
+        "mobile",
+        "computing",
+        "wearables",
+        "display",
+        "home",
+        "platform",
+      ]),
     );
   });
 
@@ -16,6 +23,29 @@ describe("vela content", () => {
     );
     expect(new Set(vela.chapters.map((chapter) => chapter.id)).size).toBe(
       vela.chapters.length,
+    );
+  });
+
+  it("includes the current flagship, foldable, display, and silicon families", () => {
+    const models = vela.products.flatMap((product) =>
+      product.groups.flatMap((group) => group.models),
+    );
+
+    expect(models).toEqual(
+      expect.arrayContaining([
+        "x26 Ultra",
+        "Trifold Ultra",
+        "tab t26 Ultra",
+        "notebook ultra",
+        "watch ultra",
+        "tv ultra",
+        "projector ultra",
+        "home speaker pro",
+        "d8 ultra",
+        "m8 max",
+        "vOS 26",
+        "vela protect",
+      ]),
     );
   });
 });

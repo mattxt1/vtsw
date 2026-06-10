@@ -4,7 +4,6 @@ import { CinematicChapter } from "../components/CinematicChapter";
 import { Footer } from "../components/Footer";
 import { PageTransition } from "../components/PageTransition";
 import { Reveal } from "../components/Reveal";
-import { SceneStage } from "../components/SceneStage";
 import { TactileCard } from "../components/TactileCard";
 import { vela } from "../data/vela";
 import { usePointerSurface } from "../hooks/usePointerSurface";
@@ -86,19 +85,27 @@ export function HomePage() {
                     <span>{String(index + 1).padStart(2, "0")}</span>
                   </div>
                   <div className="product-card__media">
-                    {product.media.kind === "scene" ? (
-                      <SceneStage
-                        accent={vela.theme.accent}
-                        label={product.media.alt}
-                      />
-                    ) : (
-                      <AbstractMedia media={product.media} variant={index} />
-                    )}
+                    <AbstractMedia media={product.media} variant={index} />
                   </div>
                   <div className="product-card__copy">
                     <p className="product-card__name">{product.name}</p>
                     <h3>{product.title}</h3>
                     <p>{product.description}</p>
+                    <div className="product-card__lineup">
+                      {product.groups.map((group) => (
+                        <div key={group.name} className="product-group">
+                          <p>{group.name}</p>
+                          <ul aria-label={`${group.name} models`}>
+                            {group.models.map((model) => (
+                              <li key={model}>{model}</li>
+                            ))}
+                          </ul>
+                        </div>
+                      ))}
+                    </div>
+                    {product.note ? (
+                      <p className="product-card__note">{product.note}</p>
+                    ) : null}
                   </div>
                 </TactileCard>
               </Reveal>
@@ -113,9 +120,9 @@ export function HomePage() {
             <p className="eyebrow">continuity</p>
             <h2>Start here. Continue there.</h2>
             <p>
-              Calls, files, sound, rooms, and routines move with you. Every vela
-              device is aware of the others without turning that intelligence
-              into another setting to manage.
+              Calls, files, sound, rooms, and routines move with you through
+              vOS 26. Every vela device is aware of the others without turning
+              that intelligence into another setting to manage.
             </p>
           </Reveal>
           <Reveal className="continuity__surface" delay={0.1}>
@@ -143,13 +150,20 @@ export function HomePage() {
             </Reveal>
             <Reveal delay={0.08}>
               <p className="principle-grid__number">02</p>
-              <h3>Premium in use.</h3>
-              <p>Quality you notice in the hand, on the screen, and over time.</p>
+              <h3>Supported for longer.</h3>
+              <p>
+                Eight years for flagship and organizational devices, six for
+                midrange, rugged, TV, and display, and four for entry-level.
+                Trifold Ultra receives twelve.
+              </p>
             </Reveal>
             <Reveal delay={0.16}>
               <p className="principle-grid__number">03</p>
-              <h3>Connected naturally.</h3>
-              <p>One ecosystem that works together without getting in the way.</p>
+              <h3>Protected when needed.</h3>
+              <p>
+                vela protect adds reduced-cost repairs, accidental damage
+                coverage, and express replacements.
+              </p>
             </Reveal>
           </div>
         </section>

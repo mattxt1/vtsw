@@ -23,9 +23,10 @@ describe("vela experience", () => {
     expect(
       screen.getByRole("heading", { name: "Everything you use. Designed together." }),
     ).toBeInTheDocument();
-    expect(screen.getAllByText("phone").length).toBeGreaterThan(0);
-    expect(screen.getAllByText("laptop").length).toBeGreaterThan(0);
-    expect(screen.getByText("accessories")).toBeInTheDocument();
+    expect(screen.getByText("x26 Ultra")).toBeInTheDocument();
+    expect(screen.getByText("notebook ultra")).toBeInTheDocument();
+    expect(screen.getByText("tv ultra")).toBeInTheDocument();
+    expect(screen.getByText("vOS 26")).toBeInTheDocument();
   });
 
   it("exposes the primary ecosystem sections through navigation", () => {

@@ -18,6 +18,8 @@ npm run test:e2e
 
 Brand copy, product categories, themes, and cinematic chapters live in
 `src/data/vela.ts` and follow the contracts in `src/types/content.ts`.
+The catalog is grouped by ecosystem division and product family so yearly model
+refreshes can be made in data without changing presentation components.
 
 The current visuals are procedural placeholders. `CinematicChapter` supports
 production image sequences and video, while `SceneStage` provides an isolated
@@ -27,10 +29,10 @@ React Three Fiber layer for selected device moments.
 
 - Hero: vela positioning and the relationship to veritas.
 - Ecosystem: scroll-scrubbed connected-device story.
-- Products: phones, laptops, tablets, watches, home devices, and accessories.
+- Products: mobile, computing, wearables, display, home, and platform families.
 - Continuity: a shared interaction model across devices.
-- Software: the common vela interface language.
-- Principles: calm, premium, and naturally connected.
+- Software: vOS 26, pulse integration, and long-term support.
+- Principles: calm interaction, support commitments, and vela protect.
 
 ## Motion Responsibilities
 
