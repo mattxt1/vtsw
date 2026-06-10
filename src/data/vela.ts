@@ -214,13 +214,13 @@ export const vela: VelaContent = {
         "vela televisions are premium ecosystem products distinct from the separately marketed legacy vTV range.",
     },
     {
-      id: "home",
-      eyebrow: "home",
-      name: "sound + home",
-      title: "A home that understands the room.",
+      id: "audio",
+      eyebrow: "audio",
+      name: "speakers + soundbars",
+      title: "Sound that understands the room.",
       description:
-        "Connected sound and thoughtfully integrated appliances, controlled through one familiar home experience.",
-      media: { kind: "image", alt: "A vela home speaker and connected appliance" },
+        "Connected speakers and home theater audio, tuned to work naturally with vela devices and displays.",
+      media: { kind: "image", alt: "A vela home speaker and soundbar" },
       groups: [
         {
           name: "home audio",
@@ -234,21 +234,9 @@ export const vela: VelaContent = {
           name: "soundbar",
           models: ["soundbar ultra", "soundbar pro", "soundbar SE"],
         },
-        {
-          name: "appliances",
-          models: [
-            "home refrigerator",
-            "home dishwasher",
-            "home washer",
-            "home dryer",
-            "home oven",
-            "home cooktop",
-            "home range / microwave",
-          ],
-        },
       ],
       note:
-        "vela home appliances are ecosystem-integrated products produced with licensed manufacturing partners.",
+        "Select vela soundbars are also supplied as vTV ClearSound 9, 7, and 5 bundles and are not sold separately under those names.",
     },
     {
       id: "platform",

@@ -11,7 +11,7 @@ describe("vela content", () => {
         "computing",
         "wearables",
         "display",
-        "home",
+        "audio",
         "platform",
       ]),
     );
