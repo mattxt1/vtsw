@@ -1,7 +1,8 @@
-# Fieldwork Company Foundation
+# vela
 
-A tactile, multi-brand company experience built with React, TypeScript, Vite,
-Motion, GSAP ScrollTrigger, and progressively enhanced React Three Fiber.
+The consumer technology brand of `veritas`. This site presents vela as one
+calm, premium ecosystem spanning personal devices, home technology,
+accessories, and the software connecting them.
 
 ## Commands
 
@@ -15,37 +16,42 @@ npm run test:e2e
 
 ## Content
 
-Brand content lives in `src/data/brands.ts` and follows the types in
-`src/types/content.ts`. Replace the sample brands and abstract media with final
-content without changing route or presentation components.
+Brand copy, product categories, themes, and cinematic chapters live in
+`src/data/vela.ts` and follow the contracts in `src/types/content.ts`.
 
-`CinematicChapter` supports image-style compositions and procedural sequence
-scrubbing today. Its `MediaAsset` contract reserves `src`, `poster`,
-`frameCount`, and `framePath` for production video and image sequence loaders.
+The current visuals are procedural placeholders. `CinematicChapter` supports
+production image sequences and video, while `SceneStage` provides an isolated
+React Three Fiber layer for selected device moments.
+
+## Experience Structure
+
+- Hero: vela positioning and the relationship to veritas.
+- Ecosystem: scroll-scrubbed connected-device story.
+- Products: phones, laptops, tablets, watches, home devices, and accessories.
+- Continuity: a shared interaction model across devices.
+- Software: the common vela interface language.
+- Principles: calm, premium, and naturally connected.
 
 ## Motion Responsibilities
 
-- CSS handles material depth, simple states, and decorative transitions.
-- Motion handles component entry, page transitions, and UI choreography.
-- GSAP ScrollTrigger is loaded only by cinematic chapters for pinning and scrub.
-- Three.js is loaded only when a capable browser reaches a `SceneStage`.
+- CSS handles material depth, lighting, simple states, and tactile interaction.
+- Motion handles component entry and page transitions.
+- GSAP ScrollTrigger is loaded only for pinned cinematic chapters.
+- Three.js is loaded only for capable browsers reaching a `SceneStage`.
 
-Native page scrolling remains intact. Reduced-motion users receive the complete
-content as static compositions.
+Native scrolling remains intact. Touch, reduced-motion, reduced-transparency,
+and non-WebGL users receive complete static alternatives.
 
 ## Performance Budgets
 
 - Initial application JavaScript target: under 180 kB compressed.
 - Three.js remains outside the initial route bundle.
 - Hero media target: under 500 kB before user interaction.
-- Production image sequences should preload the first frame and nearest 6 frames,
-  remain under 12 MB total per chapter, and use AVIF or WebP.
+- Production image sequences should load the first and nearby frames first,
+  remain under 12 MB per chapter, and use AVIF or WebP.
 - Canvas pixel density is capped at 2; WebGL pixel density is capped at 1.75.
-- Animate transforms and opacity wherever possible; avoid layout animation inside
-  pinned chapters.
 
 ## Deployment
 
-`vercel.json` rewrites all routes to `index.html` so brand URLs work when loaded
-directly. The production command is `npm run build` and output directory is
-`dist`.
+`vercel.json` rewrites all routes to `index.html`. The production command is
+`npm run build` and the output directory is `dist`.

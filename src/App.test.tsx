@@ -7,8 +7,8 @@ vi.mock("./components/SceneStage", () => ({
   SceneStage: ({ label }: { label: string }) => <div>{label}</div>,
 }));
 
-describe("application routes", () => {
-  it("renders the company hub and its brands", () => {
+describe("vela experience", () => {
+  it("renders the consumer technology story and product ecosystem", () => {
     render(
       <MemoryRouter initialEntries={["/"]}>
         <App />
@@ -16,25 +16,32 @@ describe("application routes", () => {
     );
 
     expect(
-      screen.getByRole("heading", { name: /we make the everyday/i }),
+      screen.getByRole("heading", {
+        name: /technology,.*naturally connected/i,
+      }),
     ).toBeInTheDocument();
-    expect(screen.getByRole("link", { name: "Explore Ora" })).toBeInTheDocument();
     expect(
-      screen.getByRole("link", { name: "Explore Morrow" }),
+      screen.getByRole("heading", { name: "Everything you use. Designed together." }),
     ).toBeInTheDocument();
+    expect(screen.getAllByText("phone").length).toBeGreaterThan(0);
+    expect(screen.getAllByText("laptop").length).toBeGreaterThan(0);
+    expect(screen.getByText("accessories")).toBeInTheDocument();
   });
 
-  it("renders a direct brand route with adjacent navigation", () => {
+  it("exposes the primary ecosystem sections through navigation", () => {
     render(
-      <MemoryRouter initialEntries={["/brands/morrow"]}>
+      <MemoryRouter initialEntries={["/"]}>
         <App />
       </MemoryRouter>,
     );
 
-    expect(
-      screen.getByRole("heading", { name: "Good food for the days ahead." }),
-    ).toBeInTheDocument();
-    expect(screen.getByRole("navigation", { name: "More brands" })).toBeInTheDocument();
+    const navigation = screen.getByRole("navigation", {
+      name: "Primary navigation",
+    });
+    expect(navigation).toHaveTextContent("products");
+    expect(navigation).toHaveTextContent("ecosystem");
+    expect(navigation).toHaveTextContent("software");
+    expect(screen.getByText("by veritas")).toBeInTheDocument();
   });
 
   it("renders the not-found experience", () => {
@@ -45,7 +52,7 @@ describe("application routes", () => {
     );
 
     expect(
-      screen.getByRole("heading", { name: "This field is still empty." }),
+      screen.getByRole("heading", { name: "This device is out of range." }),
     ).toBeInTheDocument();
   });
 });

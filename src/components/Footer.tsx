@@ -1,24 +1,21 @@
 import { Link } from "react-router-dom";
-import { brands } from "../data/brands";
 
 export function Footer() {
   return (
-    <footer className="footer">
+    <footer id="about" className="footer">
       <p className="footer__statement">
-        Building useful things with an unreasonable amount of care.
+        Technology should feel like less to manage, not more.
       </p>
       <div className="footer__row">
         <Link className="wordmark" to="/">
-          Fieldwork
+          vela
         </Link>
         <nav aria-label="Footer navigation">
-          {brands.map((brand) => (
-            <Link key={brand.slug} to={`/brands/${brand.slug}`}>
-              {brand.name}
-            </Link>
-          ))}
+          <a href="#products">products</a>
+          <a href="#ecosystem">ecosystem</a>
+          <a href="#software">software</a>
         </nav>
-        <p>Independent · 2026</p>
+        <p>a veritas brand · 2026</p>
       </div>
     </footer>
   );

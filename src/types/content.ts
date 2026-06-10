@@ -10,8 +10,10 @@ export interface MediaAsset {
   framePath?: string;
 }
 
-export interface BrandHighlight {
+export interface ProductCategory {
+  id: string;
   eyebrow: string;
+  name: string;
   title: string;
   description: string;
   media: MediaAsset;
@@ -26,7 +28,7 @@ export interface CinematicChapter {
   tone: "light" | "brand" | "dark";
 }
 
-export interface BrandTheme {
+export interface VelaTheme {
   accent: string;
   accentSoft: string;
   ink: string;
@@ -34,16 +36,14 @@ export interface BrandTheme {
   glow: string;
 }
 
-export interface Brand {
-  slug: string;
+export interface VelaContent {
   name: string;
-  monogram: string;
+  parent: string;
   category: string;
   statement: string;
   description: string;
-  externalUrl: string;
-  theme: BrandTheme;
+  theme: VelaTheme;
   hero: MediaAsset;
-  highlights: BrandHighlight[];
+  products: ProductCategory[];
   chapters: CinematicChapter[];
 }

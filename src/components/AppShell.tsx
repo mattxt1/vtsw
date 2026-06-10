@@ -1,6 +1,5 @@
 import type { ReactNode } from "react";
-import { Link, NavLink } from "react-router-dom";
-import { brands } from "../data/brands";
+import { Link } from "react-router-dom";
 
 export function AppShell({ children }: { children: ReactNode }) {
   return (
@@ -9,21 +8,17 @@ export function AppShell({ children }: { children: ReactNode }) {
         Skip to content
       </a>
       <header className="site-header">
-        <Link className="wordmark tactile-label" to="/" aria-label="Fieldwork home">
-          Fieldwork
-        </Link>
+        <div className="brand-lockup">
+          <Link className="wordmark tactile-label" to="/" aria-label="vela home">
+            vela
+          </Link>
+          <span>by veritas</span>
+        </div>
         <nav className="site-nav" aria-label="Primary navigation">
-          {brands.map((brand) => (
-            <NavLink
-              key={brand.slug}
-              to={`/brands/${brand.slug}`}
-              className={({ isActive }) =>
-                `nav-link ${isActive ? "is-active" : ""}`
-              }
-            >
-              {brand.name}
-            </NavLink>
-          ))}
+          <a className="nav-link" href="/#products">products</a>
+          <a className="nav-link" href="/#ecosystem">ecosystem</a>
+          <a className="nav-link" href="/#software">software</a>
+          <a className="nav-link" href="/#about">about</a>
         </nav>
       </header>
       {children}

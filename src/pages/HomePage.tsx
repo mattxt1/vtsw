@@ -1,137 +1,159 @@
 import { useEffect } from "react";
-import { Link } from "react-router-dom";
 import { AbstractMedia } from "../components/AbstractMedia";
-import { BrandMark } from "../components/BrandMark";
 import { CinematicChapter } from "../components/CinematicChapter";
 import { Footer } from "../components/Footer";
 import { PageTransition } from "../components/PageTransition";
 import { Reveal } from "../components/Reveal";
+import { SceneStage } from "../components/SceneStage";
 import { TactileCard } from "../components/TactileCard";
-import { brands } from "../data/brands";
+import { vela } from "../data/vela";
 import { usePointerSurface } from "../hooks/usePointerSurface";
 
-const featuredChapter = brands[0].chapters[0];
+const [ecosystemChapter, powerChapter, softwareChapter] = vela.chapters;
 
 export function HomePage() {
   const heroPointer = usePointerSurface<HTMLElement>();
+  const themeStyle = {
+    "--brand-accent": vela.theme.accent,
+    "--brand-soft": vela.theme.accentSoft,
+    "--brand-ink": vela.theme.ink,
+    "--brand-surface": vela.theme.surface,
+    "--brand-glow": vela.theme.glow,
+  } as React.CSSProperties;
 
   useEffect(() => {
-    document.title = "Fieldwork — A family of curious brands";
+    document.title = "vela — technology, naturally connected";
   }, []);
 
   return (
     <PageTransition>
-      <main id="main-content">
-        <section className="home-hero" {...heroPointer}>
-          <div className="home-hero__halo" aria-hidden="true" />
-          <p className="eyebrow">Independent company · Three growing brands</p>
+      <main id="main-content" className="vela-page" style={themeStyle}>
+        <section className="home-hero vela-hero" {...heroPointer}>
+          <div className="home-hero__halo vela-hero__device" aria-hidden="true">
+            <span className="vela-hero__lens" />
+            <span className="vela-hero__edge" />
+          </div>
+          <p className="eyebrow">vela · consumer technology by veritas</p>
           <h1>
-            We make the everyday
-            <span> feel considered.</span>
+            Technology,
+            <span> naturally connected.</span>
           </h1>
-          <p className="home-hero__intro">
-            Fieldwork creates thoughtful objects, foods, and places with distinct
-            points of view and one shared belief: usefulness can be beautiful.
-          </p>
-          <a className="embossed-button" href="#brands">
-            Explore the family
+          <p className="home-hero__intro">{vela.description}</p>
+          <a className="embossed-button" href="#products">
+            Explore vela
             <span aria-hidden="true">↓</span>
           </a>
-          <div className="home-hero__imprint" aria-hidden="true">
-            FW
+          <div className="home-hero__imprint vela-hero__imprint" aria-hidden="true">
+            vela
           </div>
         </section>
 
         <section className="manifesto section-shell">
           <Reveal>
-            <p className="eyebrow">Our field of work</p>
+            <p className="eyebrow">one connected experience</p>
             <p className="manifesto__statement">
-              Different categories. Different characters. The same appetite for
-              making things people choose to keep close.
+              Your technology should understand the whole picture, not ask you
+              to connect the pieces.
             </p>
           </Reveal>
         </section>
 
         <CinematicChapter
-          chapter={featuredChapter}
-          accent={brands[0].theme.accent}
+          chapter={ecosystemChapter}
+          accent={vela.theme.accent}
         />
 
-        <section id="brands" className="brand-index section-shell">
-          <Reveal className="section-heading">
-            <p className="eyebrow">The brand family</p>
-            <h2>Three ideas, fully inhabited.</h2>
+        <section id="products" className="product-family section-shell">
+          <Reveal className="section-heading section-heading--split">
+            <p className="eyebrow">the vela family</p>
+            <h2>Everything you use. Designed together.</h2>
+            <p>
+              Personal devices, home technology, and accessories shaped by one
+              clear material and software language.
+            </p>
           </Reveal>
-          <div className="brand-grid">
-            {brands.map((brand, index) => (
-              <Reveal key={brand.slug} delay={index * 0.08}>
-                <Link
-                  to={`/brands/${brand.slug}`}
-                  className="brand-card-link"
-                  aria-label={`Explore ${brand.name}`}
-                >
-                  <TactileCard className="brand-card">
-                    <div
-                      className="brand-card__wash"
-                      style={
-                        {
-                          "--brand-accent": brand.theme.accent,
-                          "--brand-soft": brand.theme.accentSoft,
-                        } as React.CSSProperties
-                      }
-                    />
-                    <div className="brand-card__topline">
-                      <p>{brand.category}</p>
-                      <span>0{index + 1}</span>
-                    </div>
-                    <BrandMark brand={brand} />
-                    <div className="brand-card__footer">
-                      <div>
-                        <h3>{brand.name}</h3>
-                        <p>{brand.statement}</p>
-                      </div>
-                      <span className="round-arrow" aria-hidden="true">
-                        ↗
-                      </span>
-                    </div>
-                  </TactileCard>
-                </Link>
+
+          <div className="product-grid">
+            {vela.products.map((product, index) => (
+              <Reveal
+                key={product.id}
+                className={`product-grid__item product-grid__item--${index + 1}`}
+                delay={(index % 3) * 0.06}
+              >
+                <TactileCard className="product-card">
+                  <div className="product-card__topline">
+                    <p>{product.eyebrow}</p>
+                    <span>{String(index + 1).padStart(2, "0")}</span>
+                  </div>
+                  <div className="product-card__media">
+                    {product.media.kind === "scene" ? (
+                      <SceneStage
+                        accent={vela.theme.accent}
+                        label={product.media.alt}
+                      />
+                    ) : (
+                      <AbstractMedia media={product.media} variant={index} />
+                    )}
+                  </div>
+                  <div className="product-card__copy">
+                    <p className="product-card__name">{product.name}</p>
+                    <h3>{product.title}</h3>
+                    <p>{product.description}</p>
+                  </div>
+                </TactileCard>
               </Reveal>
             ))}
           </div>
         </section>
 
-        <section className="highlights section-shell">
-          <Reveal className="section-heading section-heading--split">
-            <p className="eyebrow">From across the studio</p>
-            <h2>Recently, in detail.</h2>
+        <CinematicChapter chapter={powerChapter} accent={vela.theme.accent} />
+
+        <section className="continuity section-shell">
+          <Reveal className="continuity__copy">
+            <p className="eyebrow">continuity</p>
+            <h2>Start here. Continue there.</h2>
             <p>
-              Selected materials, spaces, and objects from the worlds we are
-              building.
+              Calls, files, sound, rooms, and routines move with you. Every vela
+              device is aware of the others without turning that intelligence
+              into another setting to manage.
             </p>
           </Reveal>
-          <div className="editorial-grid">
-            {brands.map((brand, index) => (
-              <Reveal key={brand.slug} delay={index * 0.08}>
-                <Link
-                  className="editorial-card"
-                  to={`/brands/${brand.slug}`}
-                  style={{ "--brand-accent": brand.theme.accent } as React.CSSProperties}
-                >
-                  <AbstractMedia
-                    media={brand.highlights[0].media}
-                    variant={index}
-                  />
-                  <p className="eyebrow">
-                    {brand.name} · {brand.highlights[0].eyebrow}
-                  </p>
-                  <h3>{brand.highlights[0].title}</h3>
-                  <p>{brand.highlights[0].description}</p>
-                </Link>
-              </Reveal>
-            ))}
+          <Reveal className="continuity__surface" delay={0.1}>
+            <div className="continuity__orbit" aria-hidden="true">
+              <span>phone</span>
+              <span>laptop</span>
+              <span>home</span>
+              <strong>vela</strong>
+            </div>
+          </Reveal>
+        </section>
+
+        <CinematicChapter chapter={softwareChapter} accent={vela.theme.accent} />
+
+        <section className="principles section-shell">
+          <Reveal className="section-heading">
+            <p className="eyebrow">made the vela way</p>
+            <h2>Less friction. More feeling.</h2>
+          </Reveal>
+          <div className="principle-grid">
+            <Reveal>
+              <p className="principle-grid__number">01</p>
+              <h3>Calm by default.</h3>
+              <p>Clear choices, gentle feedback, and no noise for its own sake.</p>
+            </Reveal>
+            <Reveal delay={0.08}>
+              <p className="principle-grid__number">02</p>
+              <h3>Premium in use.</h3>
+              <p>Quality you notice in the hand, on the screen, and over time.</p>
+            </Reveal>
+            <Reveal delay={0.16}>
+              <p className="principle-grid__number">03</p>
+              <h3>Connected naturally.</h3>
+              <p>One ecosystem that works together without getting in the way.</p>
+            </Reveal>
           </div>
         </section>
+
         <Footer />
       </main>
     </PageTransition>

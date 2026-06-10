@@ -70,6 +70,7 @@ export function CinematicChapter({
   return (
     <section
       ref={sectionRef}
+      id={chapter.id}
       className={`chapter chapter--${chapter.tone}`}
       style={{ "--chapter-accent": accent } as React.CSSProperties}
       aria-labelledby={`${chapter.id}-title`}

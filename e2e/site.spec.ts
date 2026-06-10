@@ -1,21 +1,19 @@
 import { expect, test } from "@playwright/test";
 
-test("visitors can explore a brand and use adjacent navigation", async ({
-  page,
-}) => {
+test("visitors can move through the vela ecosystem", async ({ page }) => {
   await page.goto("/");
   await expect(
-    page.getByRole("heading", { name: /we make the everyday/i }),
+    page.getByRole("heading", { name: /technology, naturally connected/i }),
   ).toBeVisible();
 
-  await page.getByRole("link", { name: "Explore Ora" }).click();
-  await expect(page).toHaveURL(/\/brands\/ora$/);
+  await page
+    .getByRole("navigation", { name: "Primary navigation" })
+    .getByRole("link", { name: "products" })
+    .click();
+  await expect(page).toHaveURL(/#products$/);
   await expect(
-    page.getByRole("heading", { name: "Small rituals, made remarkable." }),
+    page.getByRole("heading", { name: "Everything you use. Designed together." }),
   ).toBeVisible();
-
-  await page.getByRole("navigation", { name: "More brands" }).getByText("Morrow").click();
-  await expect(page).toHaveURL(/\/brands\/morrow$/);
 });
 
 test("the mobile layout does not overflow horizontally", async ({ page }) => {
@@ -30,12 +28,14 @@ test("the mobile layout does not overflow horizontally", async ({ page }) => {
   expect(dimensions.content).toBeLessThanOrEqual(dimensions.viewport);
 });
 
-test("reduced motion retains the complete experience", async ({ page }) => {
+test("reduced motion retains products and software content", async ({ page }) => {
   await page.emulateMedia({ reducedMotion: "reduce" });
-  await page.goto("/brands/ora");
+  await page.goto("/");
 
   await expect(
-    page.getByRole("heading", { name: "Small rituals, made remarkable." }),
+    page.getByRole("heading", { name: "Everything finds its place." }),
   ).toBeVisible();
-  await expect(page.getByText("Shaped by the hand.")).toBeVisible();
+  await expect(
+    page.getByRole("heading", { name: "One language, on every screen." }),
+  ).toBeVisible();
 });
