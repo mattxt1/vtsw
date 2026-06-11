@@ -10,6 +10,7 @@ import {
   getSegment,
   segments,
 } from "../data/catalog";
+import { getProductKey } from "../data/compare";
 import { vela } from "../data/vela";
 
 export function SegmentPage() {
@@ -41,10 +42,20 @@ export function SegmentPage() {
             <p className="eyebrow">vela / {segment.eyebrow}</p>
             <h1>{segment.title}</h1>
             <p>{segment.description}</p>
-            <a className="embossed-button" href="#lineup">
-              View the lineup
-              <span aria-hidden="true">↓</span>
-            </a>
+            <div className="segment-hero__actions">
+              <a className="embossed-button" href="#lineup">
+                View the lineup
+                <span aria-hidden="true">↓</span>
+              </a>
+              <Link
+                to={`/compare?products=${products
+                  .slice(0, 3)
+                  .map(getProductKey)
+                  .join(",")}`}
+              >
+                Compare models
+              </Link>
+            </div>
           </div>
           <div className="segment-hero__media">
             <AbstractMedia media={segment.media} variant={segmentIndex} />

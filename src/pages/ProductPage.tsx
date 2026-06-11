@@ -54,6 +54,11 @@ export function ProductPage() {
             <a href="#overview">Overview</a>
             <a href="#specifications">Specs</a>
             <Link
+              to={`/compare?products=${product.segmentId}:${product.id}`}
+            >
+              Compare
+            </Link>
+            <Link
               className="product-local-nav__buy"
               to={`/buy/${segment.id}/${product.id}`}
             >

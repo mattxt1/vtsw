@@ -1,4 +1,4 @@
-import { render, screen } from "@testing-library/react";
+import { fireEvent, render, screen } from "@testing-library/react";
 import { MemoryRouter } from "react-router-dom";
 import { describe, expect, it, vi } from "vitest";
 import { App } from "./App";
@@ -109,5 +109,60 @@ describe("vela experience", () => {
       }),
     ).toBeInTheDocument();
     expect(screen.getByText(/vela x26 Ultra/)).toBeInTheDocument();
+  });
+
+  it("renders an intelligent three-device comparison", () => {
+    render(
+      <MemoryRouter initialEntries={["/compare"]}>
+        <App />
+      </MemoryRouter>,
+    );
+
+    expect(
+      screen.getByRole("heading", { name: "See what fits." }),
+    ).toBeInTheDocument();
+    expect(screen.getAllByRole("combobox")).toHaveLength(3);
+    expect(
+      screen.getByRole("heading", { name: "vela x26 Ultra" }),
+    ).toBeInTheDocument();
+    expect(
+      screen.getByRole("heading", { name: "vela x26 Pro" }),
+    ).toBeInTheDocument();
+    expect(
+      screen.getByRole("region", {
+        name: "Device specification comparison",
+      }),
+    ).toBeInTheDocument();
+
+    const differences = screen.getByRole("checkbox", {
+      name: "Show differences only",
+    });
+    fireEvent.click(differences);
+
+    expect(differences).toBeChecked();
+    expect(
+      screen.queryByRole("rowheader", { name: /Platform/ }),
+    ).not.toBeInTheDocument();
+    expect(
+      screen.getByRole("rowheader", { name: /Peak brightness/ }),
+    ).toBeInTheDocument();
+  });
+
+  it("starts a comparison from a single product URL", () => {
+    render(
+      <MemoryRouter
+        initialEntries={["/compare?products=computing:notebook-ultra"]}
+      >
+        <App />
+      </MemoryRouter>,
+    );
+
+    expect(
+      screen.getByRole("heading", { name: "vela notebook ultra" }),
+    ).toBeInTheDocument();
+    expect(screen.getAllByRole("combobox")).toHaveLength(2);
+    expect(
+      screen.getByText(/Add another device to compare/i),
+    ).toBeInTheDocument();
   });
 });

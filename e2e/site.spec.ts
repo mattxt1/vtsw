@@ -63,3 +63,48 @@ test("segment, product, and temporary buy routes form a complete journey", async
     page.getByRole("heading", { name: "The store is not connected yet." }),
   ).toBeVisible();
 });
+
+test("visitors can build and refine a shareable comparison", async ({ page }) => {
+  await page.goto("/compare?products=mobile:x26-ultra");
+
+  await expect(
+    page.getByRole("heading", { name: "See what fits." }),
+  ).toBeVisible();
+  await page
+    .getByRole("combobox", { name: "Add a device" })
+    .selectOption("mobile:x26-pro");
+
+  await expect(page).toHaveURL(
+    /products=mobile%3Ax26-ultra%2Cmobile%3Ax26-pro/,
+  );
+  await expect(
+    page.getByRole("heading", { name: "vela x26 Pro" }),
+  ).toBeVisible();
+
+  await page
+    .getByRole("checkbox", { name: "Show differences only" })
+    .check();
+  await expect(
+    page.getByRole("rowheader", { name: /Peak brightness/ }),
+  ).toBeVisible();
+  await expect(
+    page.getByRole("rowheader", { name: /Platform/ }),
+  ).toHaveCount(0);
+});
+
+test("the compare surface contains horizontal scrolling on small screens", async ({
+  page,
+}) => {
+  await page.setViewportSize({ width: 320, height: 740 });
+  await page.goto("/compare");
+
+  const dimensions = await page.evaluate(() => ({
+    viewport: document.documentElement.clientWidth,
+    content: document.documentElement.scrollWidth,
+    tableViewport: document.querySelector(".compare-table-scroll")?.clientWidth,
+    tableContent: document.querySelector(".compare-table-scroll")?.scrollWidth,
+  }));
+
+  expect(dimensions.content).toBeLessThanOrEqual(dimensions.viewport);
+  expect(dimensions.tableContent).toBeGreaterThan(dimensions.tableViewport ?? 0);
+});

@@ -16,6 +16,7 @@ export function AppShell({ children }: { children: ReactNode }) {
         </div>
         <nav className="site-nav" aria-label="Primary navigation">
           <a className="nav-link" href="/#products">products</a>
+          <Link className="nav-link" to="/compare">compare</Link>
           <a className="nav-link" href="/#ecosystem">ecosystem</a>
           <a className="nav-link" href="/#software">software</a>
           <a className="nav-link" href="/#about">about</a>
