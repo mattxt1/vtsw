@@ -90,6 +90,10 @@ export function BuyPage() {
   const subtotal =
     configuration.basePrice +
     selectedOptions.reduce((total, option) => total + option.priceDelta, 0);
+  const listSubtotal = configuration.listPrice
+    ? configuration.listPrice +
+      selectedOptions.reduce((total, option) => total + option.priceDelta, 0)
+    : undefined;
   const selectedFinish = selectedOptions.find(
     (selection) => selection.groupId === "finish",
   );
@@ -152,12 +156,26 @@ export function BuyPage() {
 
           <div className="buy-configurator">
             <div className="buy-intro">
-              <p className="eyebrow">buy {product.displayName}</p>
-              <h1>Make it yours.</h1>
-              <p>
-                From {formatPrice(configuration.basePrice)}. Choose each detail
-                and see your subtotal update as you go.
+              <p className="eyebrow">
+                {configuration.promotionLabel
+                  ? `${configuration.promotionLabel} / buy ${product.displayName}`
+                  : `buy ${product.displayName}`}
               </p>
+              <h1>Make it yours.</h1>
+              {configuration.listPrice ? (
+                <p className="buy-intro__sale">
+                  Now from <strong>{formatPrice(configuration.basePrice)}</strong>
+                  <s>{formatPrice(configuration.listPrice)}</s>
+                  <span>
+                    Choose each detail and see your subtotal update as you go.
+                  </span>
+                </p>
+              ) : (
+                <p>
+                  From {formatPrice(configuration.basePrice)}. Choose each detail
+                  and see your subtotal update as you go.
+                </p>
+              )}
             </div>
 
             {family.length > 1 && (
@@ -188,6 +206,9 @@ export function BuyPage() {
                         <strong>{candidate.displayName}</strong>
                         <span>{candidate.tagline}</span>
                         <small>
+                          {candidateStore.listPrice && (
+                            <s>From {formatPrice(candidateStore.listPrice)}</s>
+                          )}
                           From {formatPrice(candidateStore.basePrice)}
                         </small>
                       </Link>
@@ -321,8 +342,19 @@ export function BuyPage() {
 
             <section className="buy-summary" aria-label="Configuration subtotal">
               <div>
-                <p className="eyebrow">configured subtotal</p>
+                <p className="eyebrow">
+                  {configuration.promotionLabel
+                    ? `${configuration.promotionLabel} subtotal`
+                    : "configured subtotal"}
+                </p>
                 <h2>{formatPrice(subtotal)}</h2>
+                {listSubtotal && (
+                  <p className="buy-summary__saving">
+                    <s>{formatPrice(listSubtotal)}</s>
+                    You save{" "}
+                    {formatPrice(listSubtotal - subtotal)}
+                  </p>
+                )}
                 <p>Taxes are calculated at checkout. Delivery is included.</p>
               </div>
               {configuration.purchasable ? (

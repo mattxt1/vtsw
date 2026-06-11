@@ -22,6 +22,12 @@ describe("vela experience", () => {
     ).toBeInTheDocument();
     expect(
       screen.getByRole("heading", {
+        name: "More of the ecosystem, for less.",
+      }),
+    ).toBeInTheDocument();
+    expect(screen.getByText("From $949")).toBeInTheDocument();
+    expect(
+      screen.getByRole("heading", {
         name: "Built to work beautifully together.",
       }),
     ).toBeInTheDocument();
@@ -162,6 +168,23 @@ describe("vela experience", () => {
       await screen.findByRole("heading", { name: "Your bag." }),
     ).toBeInTheDocument();
     expect(screen.getByText("1TB")).toBeInTheDocument();
+  });
+
+  it("applies premium event pricing through configuration", () => {
+    render(
+      <MemoryRouter initialEntries={["/buy/mobile/x26-pro"]}>
+        <App />
+      </MemoryRouter>,
+    );
+
+    expect(screen.getByText("Now from")).toBeInTheDocument();
+    expect(screen.getAllByText("$949").length).toBeGreaterThan(0);
+    expect(screen.getAllByText("$1,099").length).toBeGreaterThan(0);
+
+    fireEvent.click(screen.getByRole("radio", { name: /1TB/i }));
+
+    expect(screen.getByRole("heading", { name: "$1,399" })).toBeInTheDocument();
+    expect(screen.getByText(/You save \$150/i)).toBeInTheDocument();
   });
 
   it("renders lattice as a vela foundation framework without store actions", () => {

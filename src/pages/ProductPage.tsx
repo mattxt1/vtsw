@@ -10,6 +10,8 @@ import {
   getProductsForSegment,
   getSegment,
 } from "../data/catalog";
+import { getProductKey } from "../data/productKey";
+import { getProductPromotion } from "../data/promotions";
 import { vela } from "../data/vela";
 import type { CinematicChapter as Chapter } from "../types/content";
 
@@ -28,6 +30,7 @@ export function ProductPage() {
   const productIndex = siblings.findIndex((item) => item.id === product.id);
   const previous = siblings[(productIndex - 1 + siblings.length) % siblings.length];
   const next = siblings[(productIndex + 1) % siblings.length];
+  const promotion = getProductPromotion(getProductKey(product));
   const isFoundationProduct = segment.id === "platform";
   const chapter: Chapter = {
     id: `${product.id}-story`,
@@ -80,6 +83,11 @@ export function ProductPage() {
         <section id="overview" className="product-hero">
           <div className="product-hero__copy">
             <p className="eyebrow">{product.eyebrow}</p>
+            {promotion && (
+              <p className="product-sale-kicker">
+                {promotion.label} · limited-time offer available
+              </p>
+            )}
             <h1>{product.displayName}</h1>
             <p className="product-hero__tagline">{product.tagline}</p>
             <p>{product.description}</p>

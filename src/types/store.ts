@@ -17,6 +17,8 @@ export interface StoreOptionGroup {
 export interface StoreProductConfiguration {
   productKey: string;
   basePrice: number;
+  listPrice?: number;
+  promotionLabel?: string;
   purchasable: boolean;
   purchaseNote?: string;
   optionGroups: StoreOptionGroup[];

@@ -26,6 +26,24 @@ describe("vela store configurations", () => {
     );
   });
 
+  it("applies the premium event to the selected phone, tablet, and watch", () => {
+    expect(configuration("mobile", "x26-pro")).toMatchObject({
+      basePrice: 949,
+      listPrice: 1099,
+      promotionLabel: "premium event",
+    });
+    expect(configuration("computing", "tab-t26-ultra")).toMatchObject({
+      basePrice: 1099,
+      listPrice: 1299,
+      promotionLabel: "premium event",
+    });
+    expect(configuration("wearables", "watch-ultra")).toMatchObject({
+      basePrice: 749,
+      listPrice: 849,
+      promotionLabel: "premium event",
+    });
+  });
+
   it("maps exact television size pricing", () => {
     const store = configuration("display", "tv-ultra");
     const sizes = store.optionGroups.find((group) => group.id === "size");

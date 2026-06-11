@@ -231,3 +231,25 @@ test("accessories move from compatibility-led discovery into configuration", asy
     page.getByRole("heading", { name: "$399", level: 2 }),
   ).toBeVisible();
 });
+
+test("the premium event carries sale pricing from home into configuration", async ({
+  page,
+}) => {
+  await page.goto("/");
+
+  await expect(
+    page.getByRole("heading", {
+      name: "More of the ecosystem, for less.",
+    }),
+  ).toBeVisible();
+  await expect(page.getByText("From $949")).toBeVisible();
+
+  await page.goto("/buy/mobile/x26-pro");
+  await expect(page.getByText("Now from")).toBeVisible();
+  await expect(page.getByText("$1,099").first()).toBeVisible();
+  await page.getByRole("radio", { name: /1TB/i }).check();
+  await expect(
+    page.getByRole("heading", { name: "$1,399", level: 2 }),
+  ).toBeVisible();
+  await expect(page.getByText("You save $150")).toBeVisible();
+});

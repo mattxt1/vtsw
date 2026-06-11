@@ -10,6 +10,7 @@ import {
 } from "./accessories";
 import { catalogProducts } from "./catalog";
 import { getProductKey } from "./productKey";
+import { getProductPromotion } from "./promotions";
 
 const basePrices: Record<string, number> = {
   "x26 Ultra": 1399,
@@ -752,10 +753,15 @@ export function getStoreConfiguration(
     .toLowerCase()
     .includes("organization");
   const foundation = product.segmentId === "platform";
+  const productKey = getProductKey(product);
+  const listPrice = basePrices[product.model] ?? 499;
+  const promotion = getProductPromotion(productKey);
 
   return {
-    productKey: getProductKey(product),
-    basePrice: basePrices[product.model] ?? 499,
+    productKey,
+    basePrice: Math.max(0, listPrice - (promotion?.savings ?? 0)),
+    listPrice: promotion ? listPrice : undefined,
+    promotionLabel: promotion?.label,
     purchasable: !organizationOnly && !foundation,
     purchaseNote: organizationOnly
       ? "This configuration is purchased through vela organization sales."
