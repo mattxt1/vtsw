@@ -26,6 +26,30 @@ export interface ProductGroup {
   models: string[];
 }
 
+export interface CatalogProduct {
+  id: string;
+  segmentId: string;
+  groupName: string;
+  model: string;
+  displayName: string;
+  eyebrow: string;
+  tagline: string;
+  description: string;
+  year?: number;
+  platform: string;
+  support: string;
+  availability: string;
+  tier: string;
+  media: MediaAsset;
+  features: ProductFeature[];
+}
+
+export interface ProductFeature {
+  eyebrow: string;
+  title: string;
+  body: string;
+}
+
 export interface CinematicChapter {
   id: string;
   eyebrow: string;

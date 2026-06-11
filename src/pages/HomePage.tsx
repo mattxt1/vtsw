@@ -1,10 +1,12 @@
 import { useEffect } from "react";
+import { Link } from "react-router-dom";
 import { AbstractMedia } from "../components/AbstractMedia";
 import { CinematicChapter } from "../components/CinematicChapter";
 import { Footer } from "../components/Footer";
 import { PageTransition } from "../components/PageTransition";
 import { Reveal } from "../components/Reveal";
 import { TactileCard } from "../components/TactileCard";
+import { slugifyProduct } from "../data/catalog";
 import { vela } from "../data/vela";
 import { usePointerSurface } from "../hooks/usePointerSurface";
 
@@ -91,13 +93,26 @@ export function HomePage() {
                     <p className="product-card__name">{product.name}</p>
                     <h3>{product.title}</h3>
                     <p>{product.description}</p>
+                    <Link
+                      className="product-card__discover"
+                      to={`/products/${product.id}`}
+                    >
+                      Explore {product.name}
+                      <span aria-hidden="true">→</span>
+                    </Link>
                     <div className="product-card__lineup">
                       {product.groups.map((group) => (
                         <div key={group.name} className="product-group">
                           <p>{group.name}</p>
                           <ul aria-label={`${group.name} models`}>
                             {group.models.map((model) => (
-                              <li key={model}>{model}</li>
+                              <li key={model}>
+                                <Link
+                                  to={`/products/${product.id}/${slugifyProduct(model)}`}
+                                >
+                                  {model}
+                                </Link>
+                              </li>
                             ))}
                           </ul>
                         </div>

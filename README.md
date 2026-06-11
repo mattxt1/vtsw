@@ -30,6 +30,11 @@ React Three Fiber layer for selected device moments.
 - Hero: vela positioning and the relationship to veritas.
 - Ecosystem: scroll-scrubbed connected-device story.
 - Products: mobile, computing, wearables, display, audio, and platform families.
+- Segment pages: `/products/:segment` showcases each product family.
+- Product pages: `/products/:segment/:product` provides cinematic discovery for
+  every current model.
+- Buy placeholders: `/buy/:segment/:product` intentionally returns the branded
+  store 404 until commerce is implemented.
 - Continuity: a shared interaction model across devices.
 - Software: vOS 26, pulse integration, and long-term support.
 - Principles: calm interaction, support commitments, and vela protect.

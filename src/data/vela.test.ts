@@ -1,4 +1,5 @@
 import { describe, expect, it } from "vitest";
+import { catalogProducts, getProduct, segments } from "./catalog";
 import { vela } from "./vela";
 
 describe("vela content", () => {
@@ -46,6 +47,27 @@ describe("vela content", () => {
         "vOS 26",
         "vela protect",
       ]),
+    );
+  });
+
+  it("creates a unique discover route for every model in the lineup", () => {
+    const expectedCount = segments.reduce(
+      (total, segment) =>
+        total +
+        segment.groups.reduce(
+          (segmentTotal, group) => segmentTotal + group.models.length,
+          0,
+        ),
+      0,
+    );
+    const routes = catalogProducts.map(
+      (product) => `${product.segmentId}/${product.id}`,
+    );
+
+    expect(catalogProducts).toHaveLength(expectedCount);
+    expect(new Set(routes).size).toBe(expectedCount);
+    expect(getProduct("mobile", "x26-ultra")?.displayName).toBe(
+      "vela x26 Ultra",
     );
   });
 });

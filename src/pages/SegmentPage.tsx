@@ -1,0 +1,129 @@
+import { useEffect } from "react";
+import { Link, Navigate, useParams } from "react-router-dom";
+import { AbstractMedia } from "../components/AbstractMedia";
+import { Footer } from "../components/Footer";
+import { PageTransition } from "../components/PageTransition";
+import { Reveal } from "../components/Reveal";
+import { TactileCard } from "../components/TactileCard";
+import {
+  getProductsForSegment,
+  getSegment,
+  segments,
+} from "../data/catalog";
+import { vela } from "../data/vela";
+
+export function SegmentPage() {
+  const { segmentId } = useParams();
+  const segment = getSegment(segmentId);
+
+  useEffect(() => {
+    if (segment) document.title = `${segment.name} — vela`;
+  }, [segment]);
+
+  if (!segment) return <Navigate to="/not-found" replace />;
+
+  const products = getProductsForSegment(segment.id);
+  const segmentIndex = segments.findIndex((item) => item.id === segment.id);
+  const nextSegment = segments[(segmentIndex + 1) % segments.length];
+  const themeStyle = {
+    "--brand-accent": vela.theme.accent,
+    "--brand-soft": vela.theme.accentSoft,
+    "--brand-ink": vela.theme.ink,
+    "--brand-surface": vela.theme.surface,
+    "--brand-glow": vela.theme.glow,
+  } as React.CSSProperties;
+
+  return (
+    <PageTransition>
+      <main id="main-content" className="segment-page" style={themeStyle}>
+        <section className="segment-hero">
+          <div className="segment-hero__copy">
+            <p className="eyebrow">vela / {segment.eyebrow}</p>
+            <h1>{segment.title}</h1>
+            <p>{segment.description}</p>
+            <a className="embossed-button" href="#lineup">
+              View the lineup
+              <span aria-hidden="true">↓</span>
+            </a>
+          </div>
+          <div className="segment-hero__media">
+            <AbstractMedia media={segment.media} variant={segmentIndex} />
+            <span className="segment-hero__count">
+              {String(products.length).padStart(2, "0")} products
+            </span>
+          </div>
+        </section>
+
+        <section className="segment-manifesto section-shell">
+          <Reveal>
+            <p className="eyebrow">one family</p>
+            <p>
+              {segment.description} Every model shares the same calm material
+              language and a natural connection to the wider vela ecosystem.
+            </p>
+          </Reveal>
+        </section>
+
+        <section id="lineup" className="segment-lineup section-shell">
+          <Reveal className="section-heading section-heading--split">
+            <p className="eyebrow">2026 lineup</p>
+            <h2>Find your place in the family.</h2>
+            <p>{segment.note}</p>
+          </Reveal>
+
+          {segment.groups.map((group, groupIndex) => {
+            const groupProducts = products.filter(
+              (product) => product.groupName === group.name,
+            );
+
+            return (
+              <section className="model-group" key={group.name}>
+                <Reveal className="model-group__heading">
+                  <p className="eyebrow">
+                    {String(groupIndex + 1).padStart(2, "0")} / {group.name}
+                  </p>
+                  <h3>{group.name}</h3>
+                </Reveal>
+                <div className="model-grid">
+                  {groupProducts.map((product, productIndex) => (
+                    <Reveal key={product.id} delay={(productIndex % 4) * 0.04}>
+                      <Link
+                        className="model-card-link"
+                        to={`/products/${segment.id}/${product.id}`}
+                      >
+                        <TactileCard className="model-card">
+                          <div className="model-card__media">
+                            <AbstractMedia
+                              media={product.media}
+                              variant={productIndex + groupIndex}
+                            />
+                          </div>
+                          <div className="model-card__copy">
+                            <p className="eyebrow">{product.tier}</p>
+                            <h4>{product.displayName}</h4>
+                            <p>{product.tagline}</p>
+                            <span>Discover →</span>
+                          </div>
+                        </TactileCard>
+                      </Link>
+                    </Reveal>
+                  ))}
+                </div>
+              </section>
+            );
+          })}
+        </section>
+
+        <section className="segment-next section-shell">
+          <p className="eyebrow">continue exploring</p>
+          <Link to={`/products/${nextSegment.id}`}>
+            <span>{nextSegment.name}</span>
+            <strong>{nextSegment.title}</strong>
+            <span aria-hidden="true">→</span>
+          </Link>
+        </section>
+        <Footer />
+      </main>
+    </PageTransition>
+  );
+}

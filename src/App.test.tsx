@@ -56,4 +56,50 @@ describe("vela experience", () => {
       screen.getByRole("heading", { name: "This device is out of range." }),
     ).toBeInTheDocument();
   });
+
+  it("renders a segment showcase directly", () => {
+    render(
+      <MemoryRouter initialEntries={["/products/mobile"]}>
+        <App />
+      </MemoryRouter>,
+    );
+
+    expect(
+      screen.getByRole("heading", { name: "A phone for every way forward." }),
+    ).toBeInTheDocument();
+    expect(
+      screen.getByRole("link", { name: /vela x26 ultra/i }),
+    ).toBeInTheDocument();
+  });
+
+  it("renders an individual product discovery page", () => {
+    render(
+      <MemoryRouter initialEntries={["/products/mobile/x26-ultra"]}>
+        <App />
+      </MemoryRouter>,
+    );
+
+    expect(
+      screen.getByRole("heading", { name: "vela x26 Ultra", level: 1 }),
+    ).toBeInTheDocument();
+    expect(
+      screen.getByRole("navigation", { name: "Product navigation" }),
+    ).toBeInTheDocument();
+    expect(screen.getAllByRole("link", { name: "Buy" })).toHaveLength(3);
+  });
+
+  it("renders the temporary store 404 for a valid product", () => {
+    render(
+      <MemoryRouter initialEntries={["/buy/mobile/x26-ultra"]}>
+        <App />
+      </MemoryRouter>,
+    );
+
+    expect(
+      screen.getByRole("heading", {
+        name: "The store is not connected yet.",
+      }),
+    ).toBeInTheDocument();
+    expect(screen.getByText(/vela x26 Ultra/)).toBeInTheDocument();
+  });
 });

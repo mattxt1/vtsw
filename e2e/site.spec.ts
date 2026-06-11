@@ -39,3 +39,27 @@ test("reduced motion retains products and software content", async ({ page }) =>
     page.getByRole("heading", { name: "Built to stay current." }),
   ).toBeVisible();
 });
+
+test("segment, product, and temporary buy routes form a complete journey", async ({
+  page,
+}) => {
+  await page.goto("/products/mobile");
+  await expect(
+    page.getByRole("heading", { name: "A phone for every way forward." }),
+  ).toBeVisible();
+
+  await page.getByRole("link", { name: /vela x26 ultra/i }).click();
+  await expect(page).toHaveURL(/\/products\/mobile\/x26-ultra$/);
+  await expect(
+    page.getByRole("heading", { name: "vela x26 Ultra", level: 1 }),
+  ).toBeVisible();
+
+  await page
+    .getByRole("navigation", { name: "Product navigation" })
+    .getByRole("link", { name: "Buy" })
+    .click();
+  await expect(page).toHaveURL(/\/buy\/mobile\/x26-ultra$/);
+  await expect(
+    page.getByRole("heading", { name: "The store is not connected yet." }),
+  ).toBeVisible();
+});
