@@ -179,7 +179,7 @@ describe("vela experience", () => {
     ).toBeGreaterThan(0);
   });
 
-  it("renders an intelligent three-device comparison", () => {
+  it("renders an intelligent three-device comparison", async () => {
     render(
       <MemoryRouter initialEntries={["/compare"]}>
         <App />
@@ -187,7 +187,7 @@ describe("vela experience", () => {
     );
 
     expect(
-      screen.getByRole("heading", { name: "See what fits." }),
+      await screen.findByRole("heading", { name: "See what fits." }),
     ).toBeInTheDocument();
     expect(screen.getAllByRole("combobox")).toHaveLength(3);
     expect(
@@ -216,7 +216,7 @@ describe("vela experience", () => {
     ).toBeInTheDocument();
   });
 
-  it("starts a comparison from a single product URL", () => {
+  it("starts a comparison from a single product URL", async () => {
     render(
       <MemoryRouter
         initialEntries={["/compare?products=computing:notebook-ultra"]}
@@ -226,11 +226,33 @@ describe("vela experience", () => {
     );
 
     expect(
-      screen.getByRole("heading", { name: "vela notebook ultra" }),
+      await screen.findByRole("heading", { name: "vela notebook ultra" }),
     ).toBeInTheDocument();
     expect(screen.getAllByRole("combobox")).toHaveLength(2);
     expect(
       screen.getByText(/Add another device to compare/i),
     ).toBeInTheDocument();
+  });
+
+  it("compares a current device with an archived generation", async () => {
+    render(
+      <MemoryRouter
+        initialEntries={[
+          "/compare?products=mobile:x26-ultra,mobile:archive-x23-ultra-2023",
+        ]}
+      >
+        <App />
+      </MemoryRouter>,
+    );
+
+    expect(
+      await screen.findByRole("heading", { name: "vela x23 Ultra (2023)" }),
+    ).toBeInTheDocument();
+    expect(screen.getByText("archive 2023")).toBeInTheDocument();
+    expect(screen.getByText("Followed by vela x24 Ultra")).toBeInTheDocument();
+    expect(
+      screen.queryByRole("link", { name: /Discover x23 Ultra/i }),
+    ).not.toBeInTheDocument();
+    expect(screen.getByText(/generational view/i)).toBeInTheDocument();
   });
 });

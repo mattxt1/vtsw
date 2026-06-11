@@ -1,4 +1,5 @@
 import { AnimatePresence, MotionConfig } from "motion/react";
+import { lazy, Suspense } from "react";
 import { Route, Routes, useLocation } from "react-router-dom";
 import { AppShell } from "./components/AppShell";
 import { ScrollToTop } from "./components/ScrollToTop";
@@ -6,11 +7,31 @@ import { CartProvider } from "./context/CartContext";
 import { BuyPage } from "./pages/BuyPage";
 import { CartPage } from "./pages/CartPage";
 import { CheckoutPage } from "./pages/CheckoutPage";
-import { ComparePage } from "./pages/ComparePage";
 import { HomePage } from "./pages/HomePage";
 import { NotFoundPage } from "./pages/NotFoundPage";
 import { ProductPage } from "./pages/ProductPage";
 import { SegmentPage } from "./pages/SegmentPage";
+
+const ComparePage = lazy(() =>
+  import("./pages/ComparePage").then((module) => ({
+    default: module.ComparePage,
+  })),
+);
+
+function CompareRoute() {
+  return (
+    <Suspense
+      fallback={
+        <main id="main-content" className="compare-loading section-shell">
+          <p className="eyebrow">vela compare</p>
+          <p>Preparing current and archived devices...</p>
+        </main>
+      }
+    >
+      <ComparePage />
+    </Suspense>
+  );
+}
 
 export function App() {
   const location = useLocation();
@@ -23,7 +44,7 @@ export function App() {
           <AnimatePresence mode="wait" initial={false}>
             <Routes location={location} key={location.pathname}>
               <Route path="/" element={<HomePage />} />
-              <Route path="/compare" element={<ComparePage />} />
+              <Route path="/compare" element={<CompareRoute />} />
               <Route path="/products/:segmentId" element={<SegmentPage />} />
               <Route
                 path="/products/:segmentId/:productId"

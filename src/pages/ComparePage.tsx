@@ -6,15 +6,41 @@ import { PageTransition } from "../components/PageTransition";
 import { Reveal } from "../components/Reveal";
 import {
   buildComparisonSections,
+  comparisonProducts,
   getComparisonSummary,
   getProductKey,
   MAX_COMPARE_PRODUCTS,
   parseComparisonProducts,
 } from "../data/compare";
-import { catalogProducts, segments } from "../data/catalog";
+import { segments } from "../data/catalog";
 import { vela } from "../data/vela";
 
 const defaultProducts = ["mobile:x26-ultra", "mobile:x26-pro", "mobile:x26"];
+const archiveYears = [2025, 2024, 2023] as const;
+
+const pickerGroups = segments.flatMap((segment) => {
+  const current = comparisonProducts.filter(
+    (product) => product.segmentId === segment.id && !product.archive,
+  );
+  const archive = archiveYears.flatMap((year) => {
+    const products = comparisonProducts.filter(
+      (product) =>
+        product.segmentId === segment.id &&
+        product.archive &&
+        product.year === year,
+    );
+    return products.length > 0
+      ? [{ label: `${segment.name} · ${year} archive`, products }]
+      : [];
+  });
+
+  return [
+    ...(current.length > 0
+      ? [{ label: `${segment.name} · current`, products: current }]
+      : []),
+    ...archive,
+  ];
+});
 
 export function ComparePage() {
   const [searchParams, setSearchParams] = useSearchParams();
@@ -80,8 +106,9 @@ export function ComparePage() {
             <h1>See what fits.</h1>
             <p>
               Compare up to three devices across design, performance, software,
-              and category-specific capabilities. Exact prices and available
-              configurations are shown on each device's buy page.
+              and category-specific capabilities, including distinct vela
+              generations from 2023 onward. Current-device pricing and
+              configurations remain on each device's buy page.
             </p>
           </Reveal>
         </section>
@@ -109,11 +136,9 @@ export function ComparePage() {
                   <option value="">
                     {product ? "Remove this device" : "Choose a vela device"}
                   </option>
-                  {segments.map((segment) => (
-                    <optgroup key={segment.id} label={segment.name}>
-                      {catalogProducts
-                        .filter((item) => item.segmentId === segment.id)
-                        .map((item) => {
+                  {pickerGroups.map((group) => (
+                    <optgroup key={group.label} label={group.label}>
+                      {group.products.map((item) => {
                           const key = getProductKey(item);
                           return (
                             <option
@@ -138,7 +163,14 @@ export function ComparePage() {
                       <AbstractMedia media={product.media} variant={slotIndex} />
                     </div>
                     <div className="compare-selection-card__copy">
-                      <p className="eyebrow">{product.groupName}</p>
+                      <div className="compare-selection-card__identity">
+                        <p className="eyebrow">{product.groupName}</p>
+                        {product.archive && (
+                          <span className="compare-archive-badge">
+                            archive {product.year}
+                          </span>
+                        )}
+                      </div>
                       <h2>{product.displayName}</h2>
                       <p>{product.tagline}</p>
                       <ul>
@@ -149,19 +181,37 @@ export function ComparePage() {
                           </li>
                         ))}
                       </ul>
-                      <Link
-                        to={`/products/${product.segmentId}/${product.id}`}
-                      >
-                        Discover {product.model}
-                      </Link>
+                      {product.archive ? (
+                        <div className="compare-archive-context">
+                          <strong>
+                            {product.archive.status === "concept"
+                              ? "Limited concept release"
+                              : product.archive.status === "discontinued"
+                                ? "Discontinued"
+                                : "Superseded generation"}
+                          </strong>
+                          {product.archive.successor && (
+                            <span>Followed by {product.archive.successor}</span>
+                          )}
+                          {product.archive.note && (
+                            <span>{product.archive.note}</span>
+                          )}
+                        </div>
+                      ) : (
+                        <Link
+                          to={`/products/${product.segmentId}/${product.id}`}
+                        >
+                          Discover {product.model}
+                        </Link>
+                      )}
                     </div>
                   </>
                 ) : (
                   <div className="compare-selection-card__empty">
                     <span aria-hidden="true">+</span>
                     <p>
-                      Choose any current vela device. Related products usually
-                      provide the clearest comparison.
+                      Choose a current or archived vela device. Related
+                      generations usually provide the clearest comparison.
                     </p>
                   </div>
                 )}

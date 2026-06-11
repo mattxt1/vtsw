@@ -171,6 +171,11 @@ test("the compare surface contains horizontal scrolling on small screens", async
 }) => {
   await page.setViewportSize({ width: 320, height: 740 });
   await page.goto("/compare");
+  await expect(
+    page.getByRole("region", {
+      name: "Device specification comparison",
+    }),
+  ).toBeVisible();
 
   const dimensions = await page.evaluate(() => ({
     viewport: document.documentElement.clientWidth,
@@ -181,4 +186,26 @@ test("the compare surface contains horizontal scrolling on small screens", async
 
   expect(dimensions.content).toBeLessThanOrEqual(dimensions.viewport);
   expect(dimensions.tableContent).toBeGreaterThan(dimensions.tableViewport ?? 0);
+});
+
+test("the archive supports cross-generation comparison", async ({ page }) => {
+  await page.goto(
+    "/compare?products=mobile:x26-ultra,mobile:archive-x23-ultra-2023",
+  );
+
+  await expect(
+    page.getByRole("heading", { name: "vela x23 Ultra (2023)" }),
+  ).toBeVisible();
+  await expect(page.getByText("archive 2023")).toBeVisible();
+  await expect(page.getByText("Followed by vela x24 Ultra")).toBeVisible();
+  await expect(page.getByText(/generational view/i)).toBeVisible();
+  await expect(
+    page.getByRole("link", { name: /Discover x23 Ultra/i }),
+  ).toHaveCount(0);
+
+  const dimensions = await page.evaluate(() => ({
+    viewport: document.documentElement.clientWidth,
+    content: document.documentElement.scrollWidth,
+  }));
+  expect(dimensions.content).toBeLessThanOrEqual(dimensions.viewport);
 });

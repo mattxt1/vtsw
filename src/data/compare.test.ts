@@ -2,6 +2,7 @@ import { describe, expect, it } from "vitest";
 import { getProduct } from "./catalog";
 import {
   buildComparisonSections,
+  comparisonProducts,
   getComparisonSummary,
   parseComparisonProducts,
 } from "./compare";
@@ -57,5 +58,36 @@ describe("vela comparison data", () => {
     expect(rows.some((row) => row.label === "Platform")).toBe(false);
     expect(rows.some((row) => row.label === "Peak brightness")).toBe(true);
     expect(getComparisonSummary(products)).toMatch(/close comparison/i);
+  });
+
+  it("resolves historical devices without adding them to the live catalog", () => {
+    const products = parseComparisonProducts(
+      "mobile:x26-ultra,mobile:archive-x23-ultra-2023",
+    );
+
+    expect(products).toHaveLength(2);
+    expect(products[1]).toMatchObject({
+      displayName: "vela x23 Ultra (2023)",
+      year: 2023,
+      archive: {
+        status: "superseded",
+        successor: "vela x24 Ultra",
+      },
+    });
+    expect(getProduct("mobile", "archive-x23-ultra-2023")).toBeUndefined();
+    expect(getComparisonSummary(products)).toMatch(/generational view/i);
+  });
+
+  it("contains distinct archive generations across every historical year", () => {
+    const archive = comparisonProducts.filter((product) => product.archive);
+    const keys = archive.map(
+      (product) => `${product.segmentId}:${product.id}`,
+    );
+
+    expect(archive.length).toBeGreaterThanOrEqual(60);
+    expect(new Set(keys).size).toBe(keys.length);
+    expect(new Set(archive.map((product) => product.year))).toEqual(
+      new Set([2023, 2024, 2025]),
+    );
   });
 });

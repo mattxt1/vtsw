@@ -11,7 +11,7 @@ import {
   segments,
   slugifyProduct,
 } from "../data/catalog";
-import { getProductKey } from "../data/compare";
+import { getProductKey } from "../data/productKey";
 import { vela } from "../data/vela";
 
 export function SegmentPage() {

@@ -45,6 +45,11 @@ export interface CatalogProduct {
   highlights: ProductHighlight[];
   specifications: ProductSpecGroup[];
   finishes: ProductFinish[];
+  archive?: {
+    status: "superseded" | "discontinued" | "concept";
+    successor?: string;
+    note?: string;
+  };
 }
 
 export interface ProductFeature {

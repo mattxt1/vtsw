@@ -5,7 +5,7 @@ import type {
   StoreProductConfiguration,
 } from "../types/store";
 import { catalogProducts } from "./catalog";
-import { getProductKey } from "./compare";
+import { getProductKey } from "./productKey";
 
 const basePrices: Record<string, number> = {
   "x26 Ultra": 1399,

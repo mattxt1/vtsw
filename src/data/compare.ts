@@ -1,7 +1,10 @@
 import type { CatalogProduct } from "../types/content";
 import { catalogProducts, getSegment } from "./catalog";
+import { historicalProducts } from "./historicalProducts";
+export { getProductKey } from "./productKey";
 
 export const MAX_COMPARE_PRODUCTS = 3;
+export const comparisonProducts = [...catalogProducts, ...historicalProducts];
 
 export interface ComparisonRow {
   label: string;
@@ -14,10 +17,6 @@ export interface ComparisonSection {
   rows: ComparisonRow[];
 }
 
-export function getProductKey(product: CatalogProduct) {
-  return `${product.segmentId}:${product.id}`;
-}
-
 export function parseComparisonProducts(value: string | null) {
   if (!value) return [];
 
@@ -28,7 +27,7 @@ export function parseComparisonProducts(value: string | null) {
 
   return uniqueKeys.flatMap((key) => {
     const [segmentId, productId] = key.split(":");
-    const product = catalogProducts.find(
+    const product = comparisonProducts.find(
       (item) => item.segmentId === segmentId && item.id === productId,
     );
     return product ? [product] : [];
@@ -161,8 +160,14 @@ export function getComparisonSummary(products: CatalogProduct[]) {
   const sharedPlatform = products.every(
     (product) => product.platform === products[0].platform,
   );
+  const historicalProducts = products.filter((product) => product.archive);
+  const spansGenerations =
+    new Set(products.map((product) => product.year)).size > 1;
 
   if (sameGroup) {
+    if (spansGenerations || historicalProducts.length > 0) {
+      return `A generational view of the ${products[0].groupName}. Hardware, software, and support changes stay aligned so the evolution is easy to read.`;
+    }
     return `A close comparison within the ${products[0].groupName}. Shared foundations stay visible while capability and design differences come forward.`;
   }
 
