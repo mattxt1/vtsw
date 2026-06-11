@@ -11,12 +11,9 @@ export function AppShell({ children }: { children: ReactNode }) {
         Skip to content
       </a>
       <header className="site-header">
-        <div className="brand-lockup">
-          <Link className="wordmark tactile-label" to="/" aria-label="vela home">
-            vela
-          </Link>
-          <span>by veritas</span>
-        </div>
+        <Link className="wordmark tactile-label" to="/" aria-label="vela home">
+          vela
+        </Link>
         <nav className="site-nav" aria-label="Primary navigation">
           <Link className="nav-link" to="/products/mobile">phones</Link>
           <Link className="nav-link" to="/products/computing#notebook">

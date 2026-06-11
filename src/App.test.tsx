@@ -63,7 +63,7 @@ describe("vela experience", () => {
     expect(navigation).toHaveTextContent("software");
     expect(navigation).toHaveTextContent("compare");
     expect(navigation).toHaveTextContent("bag");
-    expect(screen.getByText("by veritas")).toBeInTheDocument();
+    expect(screen.queryByText("by veritas")).not.toBeInTheDocument();
   });
 
   it("renders the not-found experience", () => {
