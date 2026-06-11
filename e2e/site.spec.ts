@@ -58,6 +58,29 @@ test("the top menu reaches notebook and tablet lineup groups", async ({ page }) 
   await expect(page.locator("#tab-t-series")).toBeVisible();
 });
 
+test("site search finds products, software, and pages", async ({ page }) => {
+  await page.goto("/");
+  await page.getByRole("button", { name: /search/i }).click();
+
+  const dialog = page.getByRole("dialog");
+  await expect(dialog).toBeVisible();
+  await dialog.getByRole("searchbox", { name: "Search vela" }).fill("ethos ai");
+  await expect(
+    dialog.locator('a[href="/products/platform/ethos-ai"]'),
+  ).toBeVisible();
+
+  await dialog.getByRole("link", { name: /View all results/i }).click();
+  await expect(page).toHaveURL(/\/search\?q=ethos%20ai$/);
+  await expect(
+    page.getByRole("heading", { name: /matches for “ethos ai”/i }),
+  ).toBeVisible();
+  await expect(
+    page
+      .locator(".search-page__results")
+      .locator('a[href="/products/platform/ethos-ai"]'),
+  ).toBeVisible();
+});
+
 test("lattice and ethos ai are presented inside the vela foundation", async ({
   page,
 }) => {

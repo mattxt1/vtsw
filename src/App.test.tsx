@@ -69,8 +69,75 @@ describe("vela experience", () => {
     expect(navigation).toHaveTextContent("accessories");
     expect(navigation).toHaveTextContent("software");
     expect(navigation).toHaveTextContent("compare");
+    expect(
+      within(navigation).getByRole("button", { name: /search/i }),
+    ).toBeInTheDocument();
     expect(navigation).toHaveTextContent("bag");
     expect(screen.queryByText("by veritas")).not.toBeInTheDocument();
+  });
+
+  it("searches products and navigates from the global dialog", async () => {
+    render(
+      <MemoryRouter initialEntries={["/"]}>
+        <App />
+      </MemoryRouter>,
+    );
+
+    fireEvent.click(screen.getByRole("button", { name: /search/i }));
+    const searchInput = screen.getByRole("searchbox", { name: "Search vela" });
+    fireEvent.change(searchInput, { target: { value: "x26 ultra" } });
+
+    const dialog = screen.getByRole("dialog");
+    const productResult = within(dialog)
+      .getByText("vela x26 Ultra")
+      .closest("a");
+    expect(productResult).not.toBeNull();
+
+    fireEvent.click(productResult as HTMLAnchorElement);
+
+    expect(
+      await screen.findByRole("heading", {
+        name: "vela x26 Ultra",
+        level: 1,
+      }),
+    ).toBeInTheDocument();
+    expect(screen.queryByRole("dialog")).not.toBeInTheDocument();
+  });
+
+  it("opens global search with the platform keyboard shortcut", () => {
+    render(
+      <MemoryRouter initialEntries={["/"]}>
+        <App />
+      </MemoryRouter>,
+    );
+
+    fireEvent.keyDown(window, { key: "k", ctrlKey: true });
+
+    expect(screen.getByRole("dialog")).toBeInTheDocument();
+    expect(
+      screen.getByRole("searchbox", { name: "Search vela" }),
+    ).toBeInTheDocument();
+  });
+
+  it("renders a full search results page with useful filters", () => {
+    render(
+      <MemoryRouter initialEntries={["/search?q=charging"]}>
+        <App />
+      </MemoryRouter>,
+    );
+
+    expect(
+      screen.getByRole("heading", { name: /matches for “charging”/i }),
+    ).toBeInTheDocument();
+    expect(
+      screen.getByRole("button", { name: /Accessories/i }),
+    ).toBeInTheDocument();
+
+    fireEvent.click(screen.getByRole("button", { name: /Accessories/i }));
+
+    expect(
+      screen.getByRole("link", { name: /magnetic charger/i }),
+    ).toBeInTheDocument();
   });
 
   it("renders the not-found experience", () => {

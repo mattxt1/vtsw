@@ -10,6 +10,7 @@ import { CheckoutPage } from "./pages/CheckoutPage";
 import { HomePage } from "./pages/HomePage";
 import { NotFoundPage } from "./pages/NotFoundPage";
 import { ProductPage } from "./pages/ProductPage";
+import { SearchPage } from "./pages/SearchPage";
 import { SegmentPage } from "./pages/SegmentPage";
 
 const ComparePage = lazy(() =>
@@ -45,6 +46,7 @@ export function App() {
             <Routes location={location} key={location.pathname}>
               <Route path="/" element={<HomePage />} />
               <Route path="/compare" element={<CompareRoute />} />
+              <Route path="/search" element={<SearchPage />} />
               <Route path="/products/:segmentId" element={<SegmentPage />} />
               <Route
                 path="/products/:segmentId/:productId"
