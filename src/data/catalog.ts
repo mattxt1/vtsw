@@ -2,7 +2,9 @@ import type {
   CatalogProduct,
   ProductCategory,
   ProductFeature,
+  ProductSpecGroup,
 } from "../types/content";
+import { productProfiles } from "./productProfiles";
 import { vela } from "./vela";
 
 const years: Record<string, number> = {
@@ -320,6 +322,17 @@ function createProduct(
   model: string,
 ): CatalogProduct {
   const tier = getTier(model, groupName);
+  const profile = productProfiles[model];
+  const fallbackSpecifications: ProductSpecGroup[] = [
+    {
+      title: "Experience",
+      items: [
+        { label: "Platform", value: getPlatform(segment.id, groupName) },
+        { label: "Support", value: getSupport(segment.id, groupName, model) },
+        { label: "Availability", value: getAvailability(model) },
+      ],
+    },
+  ];
 
   return {
     id: slugifyProduct(model),
@@ -328,8 +341,8 @@ function createProduct(
     model,
     displayName: displayName(model),
     eyebrow: `${groupName} · ${tier}`,
-    tagline: tierTaglines[tier],
-    description: segmentDescriptions[segment.id],
+    tagline: profile?.tagline ?? tierTaglines[tier],
+    description: profile?.description ?? segmentDescriptions[segment.id],
     year: years[model],
     platform: getPlatform(segment.id, groupName),
     support: getSupport(segment.id, groupName, model),
@@ -340,6 +353,14 @@ function createProduct(
       alt: `${displayName(model)} rotating in a soft mineral space`,
     },
     features: segmentFeatures[segment.id],
+    highlights:
+      profile?.highlights ??
+      [
+        { value: getPlatform(segment.id, groupName), label: "platform" },
+        { value: getSupport(segment.id, groupName, model), label: "support" },
+      ],
+    specifications: profile?.specifications ?? fallbackSpecifications,
+    finishes: profile?.finishes ?? [],
   };
 }
 

@@ -102,6 +102,18 @@ export function SegmentPage() {
                             <p className="eyebrow">{product.tier}</p>
                             <h4>{product.displayName}</h4>
                             <p>{product.tagline}</p>
+                            <ul className="model-card__highlights">
+                              {product.highlights
+                                .slice(0, 2)
+                                .map((highlight) => (
+                                  <li
+                                    key={`${highlight.value}-${highlight.label}`}
+                                  >
+                                    <strong>{highlight.value}</strong>
+                                    <span>{highlight.label}</span>
+                                  </li>
+                                ))}
+                            </ul>
                             <span>Discover →</span>
                           </div>
                         </TactileCard>

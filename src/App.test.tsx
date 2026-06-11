@@ -85,6 +85,14 @@ describe("vela experience", () => {
     expect(
       screen.getByRole("navigation", { name: "Product navigation" }),
     ).toBeInTheDocument();
+    expect(screen.getAllByText("Up to 3,800 nits").length).toBeGreaterThan(0);
+    expect(
+      screen.getByText("50MP 1-inch sensor with variable aperture"),
+    ).toBeInTheDocument();
+    expect(
+      screen.getByRole("heading", { name: "Camera system" }),
+    ).toBeInTheDocument();
+    expect(document.body.textContent).not.toMatch(/\$\s?\d/);
     expect(screen.getAllByRole("link", { name: "Buy" })).toHaveLength(3);
   });
 

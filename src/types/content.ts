@@ -42,12 +42,35 @@ export interface CatalogProduct {
   tier: string;
   media: MediaAsset;
   features: ProductFeature[];
+  highlights: ProductHighlight[];
+  specifications: ProductSpecGroup[];
+  finishes: ProductFinish[];
 }
 
 export interface ProductFeature {
   eyebrow: string;
   title: string;
   body: string;
+}
+
+export interface ProductHighlight {
+  value: string;
+  label: string;
+}
+
+export interface ProductSpecGroup {
+  title: string;
+  items: ProductSpec[];
+}
+
+export interface ProductSpec {
+  label: string;
+  value: string;
+}
+
+export interface ProductFinish {
+  name: string;
+  color: string;
 }
 
 export interface CinematicChapter {

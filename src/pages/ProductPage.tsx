@@ -52,7 +52,7 @@ export function ProductPage() {
           <strong>{product.displayName}</strong>
           <div>
             <a href="#overview">Overview</a>
-            <a href="#details">Details</a>
+            <a href="#specifications">Specs</a>
             <Link
               className="product-local-nav__buy"
               to={`/buy/${segment.id}/${product.id}`}
@@ -99,30 +99,30 @@ export function ProductPage() {
         <section id="details" className="product-details section-shell">
           <Reveal className="section-heading section-heading--split">
             <p className="eyebrow">at a glance</p>
-            <h2>Made to belong.</h2>
+            <h2>The details that define it.</h2>
             <p>
-              A focused expression of the shared vela material, software, and
-              support philosophy.
+              Every headline figure is the maximum supported capability for
+              this product family. Purchase configurations will live in the
+              future vela store.
             </p>
           </Reveal>
           <div className="product-facts">
-            <Reveal>
-              <p>Platform</p>
-              <strong>{product.platform}</strong>
-            </Reveal>
-            <Reveal delay={0.05}>
-              <p>Support</p>
-              <strong>{product.support}</strong>
-            </Reveal>
-            <Reveal delay={0.1}>
-              <p>Availability</p>
-              <strong>{product.availability}</strong>
-            </Reveal>
-            <Reveal delay={0.15}>
-              <p>Generation</p>
-              <strong>{product.year ?? "Current"}</strong>
-            </Reveal>
+            {product.highlights.slice(0, 4).map((highlight, index) => (
+              <Reveal
+                key={`${highlight.value}-${highlight.label}`}
+                delay={index * 0.05}
+              >
+                <p>{highlight.label}</p>
+                <strong>{highlight.value}</strong>
+              </Reveal>
+            ))}
           </div>
+          <Reveal className="product-metadata">
+            <span>{product.platform}</span>
+            <span>{product.support}</span>
+            <span>{product.availability}</span>
+            <span>{product.year ?? "Current generation"}</span>
+          </Reveal>
         </section>
 
         <section className="product-features section-shell">
@@ -135,6 +135,68 @@ export function ProductPage() {
               <p>{feature.body}</p>
             </Reveal>
           ))}
+        </section>
+
+        {product.finishes.length > 0 && (
+          <section className="product-finishes section-shell">
+            <Reveal className="section-heading section-heading--split">
+              <p className="eyebrow">finishes</p>
+              <h2>Made to feel personal.</h2>
+              <p>
+                The finish palette is shown for discovery. Availability may
+                vary when the vela store opens.
+              </p>
+            </Reveal>
+            <div className="product-finish-grid">
+              {product.finishes.map((finish, index) => (
+                <Reveal key={finish.name} delay={index * 0.04}>
+                  <span
+                    className="product-finish-swatch"
+                    style={
+                      {
+                        "--finish-color": finish.color,
+                      } as React.CSSProperties
+                    }
+                    aria-hidden="true"
+                  />
+                  <strong>{finish.name}</strong>
+                </Reveal>
+              ))}
+            </div>
+          </section>
+        )}
+
+        <section
+          id="specifications"
+          className="product-specifications section-shell"
+        >
+          <Reveal className="section-heading section-heading--split">
+            <p className="eyebrow">technical details</p>
+            <h2>A closer look.</h2>
+            <p>
+              Product capabilities from the 2026 vela lineup. Variable
+              specifications are presented as maximum supported figures.
+            </p>
+          </Reveal>
+          <div className="product-spec-grid">
+            {product.specifications.map((group, groupIndex) => (
+              <Reveal
+                className="product-spec-group"
+                key={group.title}
+                delay={(groupIndex % 3) * 0.05}
+              >
+                <h3>{group.title}</h3>
+                <dl>
+                  {group.items.map((item) => (
+                    <div key={`${item.label}-${item.value}`}>
+                      <dt>{item.label}</dt>
+                      <dd>{item.value}</dd>
+                    </div>
+                  ))}
+                </dl>
+              </Reveal>
+            ))}
+          </div>
         </section>
 
         <section className="product-buy-panel section-shell">

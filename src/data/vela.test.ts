@@ -70,4 +70,18 @@ describe("vela content", () => {
       "vela x26 Ultra",
     );
   });
+
+  it("gives every discovery page detailed, price-free product content", () => {
+    for (const product of catalogProducts) {
+      expect(
+        product.highlights.length,
+        product.displayName,
+      ).toBeGreaterThanOrEqual(3);
+      expect(
+        product.specifications.length,
+        product.displayName,
+      ).toBeGreaterThanOrEqual(1);
+      expect(JSON.stringify(product)).not.toMatch(/\$\s?\d/);
+    }
+  });
 });
