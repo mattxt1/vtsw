@@ -4,6 +4,10 @@ import type {
   StoreOptionGroup,
   StoreProductConfiguration,
 } from "../types/store";
+import {
+  accessoryBasePrices,
+  accessoryByModel,
+} from "./accessories";
 import { catalogProducts } from "./catalog";
 import { getProductKey } from "./productKey";
 
@@ -81,6 +85,7 @@ const basePrices: Record<string, number> = {
   "soundbar ultra": 1499,
   "soundbar pro": 799,
   "soundbar SE": 349,
+  ...accessoryBasePrices,
 };
 
 const option = (
@@ -617,6 +622,63 @@ function protectOptions(product: CatalogProduct): StoreOption[] {
 export function getStoreConfiguration(
   product: CatalogProduct,
 ): StoreProductConfiguration {
+  const accessory = accessoryByModel.get(product.model);
+
+  if (accessory) {
+    const optionGroups: StoreOptionGroup[] = [];
+
+    if (accessory.variants && accessory.variants.length > 1) {
+      optionGroups.push(
+        group(
+          "variant",
+          "Choose your version.",
+          accessory.variants.map((item, index) =>
+            option(
+              `variant-${index + 1}`,
+              item.label,
+              item.price - accessory.price,
+              item.detail,
+            ),
+          ),
+          "Compatibility, size, and included hardware can vary by version.",
+        ),
+      );
+    }
+
+    if (product.finishes.length > 0) {
+      optionGroups.push(
+        group(
+          "finish",
+          "Choose your finish.",
+          product.finishes.map((finish) => ({
+            id: finish.name.toLowerCase().replace(/[^a-z0-9]+/g, "-"),
+            label: finish.name,
+            color: finish.color,
+            priceDelta: 0,
+          })),
+        ),
+      );
+    }
+
+    const restricted =
+      accessory.organizationOnly || accessory.serviceOnly || accessory.bespoke;
+
+    return {
+      productKey: getProductKey(product),
+      basePrice: accessory.price,
+      purchasable: !restricted,
+      purchaseNote: accessory.organizationOnly
+        ? "This accessory is purchased through vela organization sales."
+        : accessory.serviceOnly
+          ? "This accessory is supplied and installed through vela service."
+          : accessory.bespoke
+            ? "This accessory is commissioned through a vela bespoke consultation."
+            : undefined,
+      optionGroups,
+      protectOptions: [],
+    };
+  }
+
   const optionGroups: StoreOptionGroup[] = [];
   const size = sizeOptions(product);
   const storage = storageOptions(product);
@@ -706,6 +768,8 @@ export function getStoreConfiguration(
 }
 
 export function getStoreProductsForFamily(product: CatalogProduct) {
+  if (product.segmentId === "accessories") return [product];
+
   return catalogProducts.filter(
     (candidate) =>
       candidate.segmentId === product.segmentId &&

@@ -4,6 +4,7 @@ import type {
   ProductFeature,
   ProductSpecGroup,
 } from "../types/content";
+import { accessoryByModel, accessoryProfiles } from "./accessories";
 import { productProfiles } from "./productProfiles";
 import { vela } from "./vela";
 
@@ -193,6 +194,23 @@ const segmentFeatures: Record<string, ProductFeature[]> = {
       body: "Frameworks, operating systems, silicon, APIs, security, deployment, and long-term services evolve as one connected foundation.",
     },
   ],
+  accessories: [
+    {
+      eyebrow: "designed together",
+      title: "A precise fit from the start.",
+      body: "Compatibility, attachment, charging, and materials are developed around the vela products each accessory serves.",
+    },
+    {
+      eyebrow: "material system",
+      title: "Quiet materials, made for daily use.",
+      body: "Soft silicone, woven polymer, aluminum, titanium, aramid, and strengthened glass share one restrained design language.",
+    },
+    {
+      eyebrow: "ecosystem",
+      title: "Useful beyond one device.",
+      body: "Power, connectivity, travel, and workspace accessories are designed to move naturally across the wider vela ecosystem.",
+    },
+  ],
 };
 
 const segmentDescriptions: Record<string, string> = {
@@ -208,6 +226,8 @@ const segmentDescriptions: Record<string, string> = {
     "Connected sound designed around clarity, atmosphere, and simple control across the vela ecosystem.",
   platform:
     "The frameworks, intelligence, operating systems, silicon, infrastructure, and services connecting every vela experience.",
+  accessories:
+    "A considered extension of the vela ecosystem, designed for precise compatibility, quiet utility, and a coherent material experience.",
 };
 
 const tierTaglines: Record<string, string> = {
@@ -246,6 +266,13 @@ function getTier(model: string, groupName: string) {
 }
 
 function getPlatform(segmentId: string, groupName: string, model: string) {
+  if (segmentId === "accessories") {
+    return groupName === "power + charging" ||
+      groupName === "cables + connectivity" ||
+      groupName === "creator + travel"
+      ? "vOS 26 accessory integration"
+      : "No software required";
+  }
   if (segmentId === "display") {
     return groupName === "display" ? "vOS 26 basic firmware" : "vOS 26 for tv";
   }
@@ -275,6 +302,7 @@ function getSupport(segmentId: string, groupName: string, model: string) {
     return "8 years guaranteed";
   }
   if (segmentId === "display") return "6 years guaranteed";
+  if (segmentId === "accessories") return "Limited accessory warranty";
   if (segmentId === "mobile") {
     if (groupName === "a series" || groupName === "r series") {
       return "6 years guaranteed";
@@ -298,6 +326,10 @@ function getSupport(segmentId: string, groupName: string, model: string) {
 
 function getAvailability(model: string) {
   const value = model.toLowerCase();
+  const accessory = accessoryByModel.get(model);
+  if (accessory?.organizationOnly) return "Available to organizations";
+  if (accessory?.serviceOnly) return "Installed by vela service";
+  if (accessory?.bespoke) return "Bespoke · made to order";
   if (model === "Trifold Ultra") return "Bespoke · made to order";
   if (model === "Trifold") return "Limited production";
   if (
@@ -339,7 +371,7 @@ function createProduct(
   model: string,
 ): CatalogProduct {
   const tier = getTier(model, groupName);
-  const profile = productProfiles[model];
+  const profile = productProfiles[model] ?? accessoryProfiles[model];
   const fallbackSpecifications: ProductSpecGroup[] = [
     {
       title: "Experience",
@@ -360,7 +392,7 @@ function createProduct(
     eyebrow: `${groupName} · ${tier}`,
     tagline: profile?.tagline ?? tierTaglines[tier],
     description: profile?.description ?? segmentDescriptions[segment.id],
-    year: years[model],
+    year: years[model] ?? (segment.id === "accessories" ? 2026 : undefined),
     platform: getPlatform(segment.id, groupName, model),
     support: getSupport(segment.id, groupName, model),
     availability: getAvailability(model),

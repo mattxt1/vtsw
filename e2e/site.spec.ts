@@ -209,3 +209,25 @@ test("the archive supports cross-generation comparison", async ({ page }) => {
   }));
   expect(dimensions.content).toBeLessThanOrEqual(dimensions.viewport);
 });
+
+test("accessories move from compatibility-led discovery into configuration", async ({
+  page,
+}) => {
+  await page.goto("/products/accessories/tab-t26-ultra-keyboard-studio");
+
+  await expect(
+    page.getByRole("heading", {
+      name: "vela tab t26 ultra keyboard studio",
+      level: 1,
+    }),
+  ).toBeVisible();
+  await expect(page.getByText(/floating hinge/i).first()).toBeVisible();
+  await expect(page.getByText(/\$349/)).toHaveCount(0);
+
+  await page.getByRole("link", { name: "Buy" }).first().click();
+  await expect(page.getByText("From $349.")).toBeVisible();
+  await page.getByRole("radio", { name: /14.6-inch/i }).check();
+  await expect(
+    page.getByRole("heading", { name: "$399", level: 2 }),
+  ).toBeVisible();
+});

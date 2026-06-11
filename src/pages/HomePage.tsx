@@ -74,6 +74,14 @@ const categoryLinks: Array<{
     kind: "audio",
   },
   {
+    name: "Accessories",
+    eyebrow: "protect, power + connect",
+    description:
+      "Cases, chargers, bands, docks, stands, cables, and creator tools.",
+    to: "/products/accessories",
+    kind: "accessory",
+  },
+  {
     name: "Software + foundation",
     eyebrow: "lattice, ethos ai, vOS + pulse",
     description:
@@ -384,6 +392,7 @@ export function HomePage() {
               <span>tablet</span>
               <span>watch</span>
               <span>home</span>
+              <span>accessories</span>
             </div>
           </Reveal>
         </section>

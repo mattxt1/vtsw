@@ -12,6 +12,7 @@ export function Footer() {
         </Link>
         <nav aria-label="Footer navigation">
           <Link to="/#products">products</Link>
+          <Link to="/products/accessories">accessories</Link>
           <Link to="/compare">compare</Link>
           <Link to="/products/platform/lattice-1">lattice</Link>
           <Link to="/products/platform/ethos-ai">ethos ai</Link>

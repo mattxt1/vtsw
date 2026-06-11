@@ -13,6 +13,7 @@ describe("vela content", () => {
         "wearables",
         "display",
         "audio",
+        "accessories",
         "platform",
       ]),
     );
@@ -70,6 +71,28 @@ describe("vela content", () => {
     );
     expect(getProduct("platform", "lattice-1")?.displayName).toBe("lattice 1");
     expect(getProduct("platform", "ethos-ai")?.displayName).toBe("ethos ai");
+  });
+
+  it("includes the complete 2026 accessory ecosystem", () => {
+    const accessories = vela.products.find(
+      (product) => product.id === "accessories",
+    );
+    const models =
+      accessories?.groups.flatMap((group) => group.models) ?? [];
+
+    expect(models).toHaveLength(134);
+    expect(models).toEqual(
+      expect.arrayContaining([
+        "x26 silicone case",
+        "tab t26 ultra keyboard studio",
+        "dock ultra",
+        "magnetic travel charger trio",
+        "titanium link band",
+        "zero-gap wall mount",
+        "camera grip",
+        "teacher presentation kit",
+      ]),
+    );
   });
 
   it("creates a unique discover route for every model in the lineup", () => {

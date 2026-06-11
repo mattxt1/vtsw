@@ -25,6 +25,7 @@ export function SegmentPage() {
   if (!segment) return <Navigate to="/not-found" replace />;
 
   const products = getProductsForSegment(segment.id);
+  const isAccessories = segment.id === "accessories";
   const segmentIndex = segments.findIndex((item) => item.id === segment.id);
   const nextSegment = segments[(segmentIndex + 1) % segments.length];
   const themeStyle = {
@@ -75,6 +76,23 @@ export function SegmentPage() {
             </p>
           </Reveal>
         </section>
+
+        {isAccessories && (
+          <nav
+            className="accessory-family-nav section-shell"
+            aria-label="Accessory families"
+          >
+            <p className="eyebrow">browse by family</p>
+            <div>
+              {segment.groups.map((group) => (
+                <a href={`#${slugifyProduct(group.name)}`} key={group.name}>
+                  <span>{group.name}</span>
+                  <small>{group.models.length} products</small>
+                </a>
+              ))}
+            </div>
+          </nav>
+        )}
 
         <section id="lineup" className="segment-lineup section-shell">
           <Reveal className="section-heading section-heading--split">

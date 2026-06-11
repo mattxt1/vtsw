@@ -1,4 +1,5 @@
 import type { VelaContent } from "../types/content";
+import { accessoryGroups } from "./accessories";
 
 export const vela: VelaContent = {
   name: "vela",
@@ -237,6 +238,21 @@ export const vela: VelaContent = {
       ],
       note:
         "Select vela soundbars are also supplied as vTV ClearSound 9, 7, and 5 bundles and are not sold separately under those names.",
+    },
+    {
+      id: "accessories",
+      eyebrow: "made to fit",
+      name: "accessories",
+      title: "Every detail, considered together.",
+      description:
+        "Protection, power, input, connectivity, placement, and personalization designed around the vela devices you use.",
+      media: {
+        kind: "image",
+        alt: "A coordinated collection of vela cases, chargers, bands, docks, and stands",
+      },
+      groups: accessoryGroups,
+      note:
+        "Compatibility is shown on every accessory page. Organization, service-installed, and bespoke products remain visible with their appropriate purchase path.",
     },
     {
       id: "platform",

@@ -15,13 +15,15 @@ import { getProductVisualKind } from "../utils/productVisual";
 type SelectionState = Record<string, string[]>;
 
 function initialSelections(groups: StoreOptionGroup[], protectId: string) {
-  return groups.reduce<SelectionState>(
+  const selections = groups.reduce<SelectionState>(
     (selections, group) => ({
       ...selections,
       [group.id]: group.mode === "single" ? [group.options[0]?.id] : [],
     }),
-    { protect: [protectId] },
+    {},
   );
+
+  return protectId ? { ...selections, protect: [protectId] } : selections;
 }
 
 export function BuyPage() {
@@ -40,7 +42,7 @@ export function BuyPage() {
     configuration
       ? initialSelections(
           configuration.optionGroups,
-          configuration.protectOptions[0].id,
+          configuration.protectOptions[0]?.id ?? "",
         )
       : {},
   );
@@ -54,12 +56,16 @@ export function BuyPage() {
 
     const groups = [
       ...configuration.optionGroups,
-      {
-        id: "protect",
-        label: "vela protect",
-        mode: "single" as const,
-        options: configuration.protectOptions,
-      },
+      ...(configuration.protectOptions.length > 0
+        ? [
+            {
+              id: "protect",
+              label: "vela protect",
+              mode: "single" as const,
+              options: configuration.protectOptions,
+            },
+          ]
+        : []),
     ];
 
     return groups.flatMap((group) =>
@@ -254,58 +260,64 @@ export function BuyPage() {
               </section>
             ))}
 
-            <section className="store-step" aria-labelledby="protect-heading">
-              <div className="store-step__heading">
-                <span>
-                  {String(
-                    configuration.optionGroups.length +
-                      (family.length > 1 ? 2 : 1),
-                  ).padStart(2, "0")}
-                </span>
-                <div>
-                  <h2 id="protect-heading">Add vela protect.</h2>
-                  <p>
-                    Reduced-cost accidental damage service, priority support,
-                    and express replacement on eligible devices.
-                  </p>
+            {configuration.protectOptions.length > 0 && (
+              <section className="store-step" aria-labelledby="protect-heading">
+                <div className="store-step__heading">
+                  <span>
+                    {String(
+                      configuration.optionGroups.length +
+                        (family.length > 1 ? 2 : 1),
+                    ).padStart(2, "0")}
+                  </span>
+                  <div>
+                    <h2 id="protect-heading">Add vela protect.</h2>
+                    <p>
+                      Reduced-cost accidental damage service, priority support,
+                      and express replacement on eligible devices.
+                    </p>
+                  </div>
                 </div>
-              </div>
-              <div className="store-options">
-                {configuration.protectOptions.map((option) => {
-                  const checked = selections.protect?.includes(option.id);
-                  return (
-                    <label
-                      className={checked ? "store-option is-selected" : "store-option"}
-                      key={option.id}
-                    >
-                      <input
-                        type="radio"
-                        name="protect"
-                        checked={checked}
-                        onChange={() => chooseSingle("protect", option.id)}
-                      />
-                      <span>
-                        <strong>{option.label}</strong>
-                        {option.detail && <small>{option.detail}</small>}
-                      </span>
-                      <b>
-                        {option.priceDelta === 0
-                          ? "Included"
-                          : `+${formatPrice(option.priceDelta)}`}
-                      </b>
-                    </label>
-                  );
-                })}
-              </div>
-              {!configuration.protectOptions.some(
-                (option) => option.id === "included",
-              ) && (
-                <p className="store-disclosure">
-                  vela protect service pricing is preliminary pending the
-                  final service schedule.
-                </p>
-              )}
-            </section>
+                <div className="store-options">
+                  {configuration.protectOptions.map((option) => {
+                    const checked = selections.protect?.includes(option.id);
+                    return (
+                      <label
+                        className={
+                          checked
+                            ? "store-option is-selected"
+                            : "store-option"
+                        }
+                        key={option.id}
+                      >
+                        <input
+                          type="radio"
+                          name="protect"
+                          checked={checked}
+                          onChange={() => chooseSingle("protect", option.id)}
+                        />
+                        <span>
+                          <strong>{option.label}</strong>
+                          {option.detail && <small>{option.detail}</small>}
+                        </span>
+                        <b>
+                          {option.priceDelta === 0
+                            ? "Included"
+                            : `+${formatPrice(option.priceDelta)}`}
+                        </b>
+                      </label>
+                    );
+                  })}
+                </div>
+                {!configuration.protectOptions.some(
+                  (option) => option.id === "included",
+                ) && (
+                  <p className="store-disclosure">
+                    vela protect service pricing is preliminary pending the
+                    final service schedule.
+                  </p>
+                )}
+              </section>
+            )}
 
             <section className="buy-summary" aria-label="Configuration subtotal">
               <div>

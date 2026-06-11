@@ -42,4 +42,23 @@ describe("vela store configurations", () => {
     expect(store.purchasable).toBe(false);
     expect(store.purchaseNote).toMatch(/organization sales/i);
   });
+
+  it("uses documented accessory pricing and variants", () => {
+    const store = configuration(
+      "accessories",
+      "tab-t26-ultra-keyboard-studio",
+    );
+    const variants = store.optionGroups.find(
+      (group) => group.id === "variant",
+    );
+
+    expect(store.basePrice).toBe(349);
+    expect(variants?.options).toEqual(
+      expect.arrayContaining([
+        expect.objectContaining({ label: "12.9-inch", priceDelta: 0 }),
+        expect.objectContaining({ label: "14.6-inch", priceDelta: 50 }),
+      ]),
+    );
+    expect(store.protectOptions).toHaveLength(0);
+  });
 });

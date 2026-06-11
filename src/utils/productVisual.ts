@@ -7,6 +7,7 @@ export function getProductVisualKind(
   const model = product.model.toLowerCase();
 
   if (product.segmentId === "mobile") return "phone";
+  if (product.segmentId === "accessories") return "accessory";
   if (model.includes("notebook")) return "notebook";
   if (model.startsWith("tab ") || model.startsWith("pencil")) return "tablet";
   if (model.includes("watch") || model === "ring") return "watch";

@@ -24,6 +24,7 @@ export function AppShell({ children }: { children: ReactNode }) {
           </Link>
           <Link className="nav-link" to="/products/wearables">wearables</Link>
           <Link className="nav-link" to="/products/display">tv + home</Link>
+          <Link className="nav-link" to="/products/accessories">accessories</Link>
           <Link className="nav-link" to="/products/platform">software</Link>
           <Link className="nav-link" to="/compare">compare</Link>
           <Link className="nav-link nav-link--bag" to="/cart">

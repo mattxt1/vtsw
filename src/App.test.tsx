@@ -60,6 +60,7 @@ describe("vela experience", () => {
     expect(navigation).toHaveTextContent("tablets");
     expect(navigation).toHaveTextContent("wearables");
     expect(navigation).toHaveTextContent("tv + home");
+    expect(navigation).toHaveTextContent("accessories");
     expect(navigation).toHaveTextContent("software");
     expect(navigation).toHaveTextContent("compare");
     expect(navigation).toHaveTextContent("bag");
@@ -115,6 +116,28 @@ describe("vela experience", () => {
     ).toBeInTheDocument();
     expect(document.body.textContent).not.toMatch(/\$\s?\d/);
     expect(screen.getAllByRole("link", { name: "Buy" })).toHaveLength(3);
+  });
+
+  it("renders accessory discovery without store pricing", () => {
+    render(
+      <MemoryRouter
+        initialEntries={["/products/accessories/x26-silicone-case"]}
+      >
+        <App />
+      </MemoryRouter>,
+    );
+
+    expect(
+      screen.getByRole("heading", {
+        name: "vela x26 silicone case",
+        level: 1,
+      }),
+    ).toBeInTheDocument();
+    expect(screen.getAllByText(/1.5 m drop protection/i).length).toBeGreaterThan(
+      0,
+    );
+    expect(screen.getAllByText("vela x26").length).toBeGreaterThan(0);
+    expect(document.body.textContent).not.toMatch(/\$\s?\d/);
   });
 
   it("configures a product and adds it to the bag", async () => {

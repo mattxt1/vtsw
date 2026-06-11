@@ -5,6 +5,7 @@ export type ProductPlaceholderKind =
   | "watch"
   | "audio"
   | "tv"
+  | "accessory"
   | "software";
 
 export function ProductPlaceholder({
