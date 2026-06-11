@@ -3,16 +3,16 @@ import { expect, test } from "@playwright/test";
 test("visitors can move through the vela ecosystem", async ({ page }) => {
   await page.goto("/");
   await expect(
-    page.getByRole("heading", { name: /technology, naturally connected/i }),
+    page.getByRole("heading", { name: /power, made quiet/i }),
   ).toBeVisible();
 
   await page
     .getByRole("navigation", { name: "Primary navigation" })
-    .getByRole("link", { name: "products" })
+    .getByRole("link", { name: "phones" })
     .click();
-  await expect(page).toHaveURL(/#products$/);
+  await expect(page).toHaveURL(/\/products\/mobile$/);
   await expect(
-    page.getByRole("heading", { name: "Everything you use. Designed together." }),
+    page.getByRole("heading", { name: "A phone for every way forward." }),
   ).toBeVisible();
 });
 
@@ -33,11 +33,29 @@ test("reduced motion retains products and software content", async ({ page }) =>
   await page.goto("/");
 
   await expect(
-    page.getByRole("heading", { name: "One system, across every screen." }),
+    page.getByRole("heading", { name: "Everything feels closer." }),
   ).toBeVisible();
   await expect(
-    page.getByRole("heading", { name: "Built to stay current." }),
+    page.getByRole("heading", { name: "Start on one. Continue on another." }),
   ).toBeVisible();
+});
+
+test("the top menu reaches notebook and tablet lineup groups", async ({ page }) => {
+  await page.goto("/");
+
+  await page
+    .getByRole("navigation", { name: "Primary navigation" })
+    .getByRole("link", { name: "notebooks" })
+    .click();
+  await expect(page).toHaveURL(/\/products\/computing#notebook$/);
+  await expect(page.locator("#notebook")).toBeVisible();
+
+  await page
+    .getByRole("navigation", { name: "Primary navigation" })
+    .getByRole("link", { name: "tablets" })
+    .click();
+  await expect(page).toHaveURL(/\/products\/computing#tab-t-series$/);
+  await expect(page.locator("#tab-t-series")).toBeVisible();
 });
 
 test("segment, product, and temporary buy routes form a complete journey", async ({

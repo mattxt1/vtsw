@@ -9,6 +9,7 @@ import {
   getProductsForSegment,
   getSegment,
   segments,
+  slugifyProduct,
 } from "../data/catalog";
 import { getProductKey } from "../data/compare";
 import { vela } from "../data/vela";
@@ -88,7 +89,11 @@ export function SegmentPage() {
             );
 
             return (
-              <section className="model-group" key={group.name}>
+              <section
+                className="model-group"
+                id={slugifyProduct(group.name)}
+                key={group.name}
+              >
                 <Reveal className="model-group__heading">
                   <p className="eyebrow">
                     {String(groupIndex + 1).padStart(2, "0")} / {group.name}

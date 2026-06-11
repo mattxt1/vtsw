@@ -17,19 +17,29 @@ describe("vela experience", () => {
 
     expect(
       screen.getByRole("heading", {
-        name: /technology,.*naturally connected/i,
+        name: /power,.*made quiet/i,
       }),
     ).toBeInTheDocument();
     expect(
-      screen.getByRole("heading", { name: "Everything you use. Designed together." }),
+      screen.getByRole("heading", {
+        name: "Built to work beautifully together.",
+      }),
     ).toBeInTheDocument();
-    expect(screen.getByText("x26 Ultra")).toBeInTheDocument();
-    expect(screen.getByText("notebook ultra")).toBeInTheDocument();
-    expect(screen.getByText("tv ultra")).toBeInTheDocument();
-    expect(screen.getByText("vOS 26")).toBeInTheDocument();
+    expect(
+      screen.getByRole("heading", { name: "A studio you can close." }),
+    ).toBeInTheDocument();
+    expect(
+      screen.getByRole("heading", { name: "Everything feels closer." }),
+    ).toBeInTheDocument();
+    expect(
+      screen.getByRole("heading", { name: "The ecosystem, across the room." }),
+    ).toBeInTheDocument();
+    expect(
+      screen.getByRole("link", { name: "Compare devices" }),
+    ).toBeInTheDocument();
   });
 
-  it("exposes the primary ecosystem sections through navigation", () => {
+  it("exposes the primary product families through navigation", () => {
     render(
       <MemoryRouter initialEntries={["/"]}>
         <App />
@@ -39,9 +49,12 @@ describe("vela experience", () => {
     const navigation = screen.getByRole("navigation", {
       name: "Primary navigation",
     });
-    expect(navigation).toHaveTextContent("products");
-    expect(navigation).toHaveTextContent("ecosystem");
-    expect(navigation).toHaveTextContent("software");
+    expect(navigation).toHaveTextContent("phones");
+    expect(navigation).toHaveTextContent("notebooks");
+    expect(navigation).toHaveTextContent("tablets");
+    expect(navigation).toHaveTextContent("wearables");
+    expect(navigation).toHaveTextContent("tv + home");
+    expect(navigation).toHaveTextContent("compare");
     expect(screen.getByText("by veritas")).toBeInTheDocument();
   });
 

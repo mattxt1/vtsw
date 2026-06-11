@@ -15,11 +15,16 @@ export function AppShell({ children }: { children: ReactNode }) {
           <span>by veritas</span>
         </div>
         <nav className="site-nav" aria-label="Primary navigation">
-          <a className="nav-link" href="/#products">products</a>
+          <Link className="nav-link" to="/products/mobile">phones</Link>
+          <Link className="nav-link" to="/products/computing#notebook">
+            notebooks
+          </Link>
+          <Link className="nav-link" to="/products/computing#tab-t-series">
+            tablets
+          </Link>
+          <Link className="nav-link" to="/products/wearables">wearables</Link>
+          <Link className="nav-link" to="/products/display">tv + home</Link>
           <Link className="nav-link" to="/compare">compare</Link>
-          <a className="nav-link" href="/#ecosystem">ecosystem</a>
-          <a className="nav-link" href="/#software">software</a>
-          <a className="nav-link" href="/#about">about</a>
         </nav>
       </header>
       {children}
