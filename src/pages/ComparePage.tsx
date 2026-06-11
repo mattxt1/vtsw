@@ -80,8 +80,8 @@ export function ComparePage() {
             <h1>See what fits.</h1>
             <p>
               Compare up to three devices across design, performance, software,
-              and category-specific capabilities. Prices and purchase
-              configurations remain in the future vela store.
+              and category-specific capabilities. Exact prices and available
+              configurations are shown on each device's buy page.
             </p>
           </Reveal>
         </section>

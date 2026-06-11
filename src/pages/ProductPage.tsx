@@ -124,7 +124,7 @@ export function ProductPage() {
             <p>
               {isFoundationProduct
                 ? "The role, capabilities, and ecosystem relationships that define this part of the vela foundation."
-                : "Every headline figure is the maximum supported capability for this product family. Purchase configurations will live in the future vela store."}
+                : "Every headline figure is the maximum supported capability for this product family. Available configurations and exact pricing are shown in the vela store."}
             </p>
           </Reveal>
           <div className="product-facts">
@@ -164,8 +164,8 @@ export function ProductPage() {
               <p className="eyebrow">finishes</p>
               <h2>Made to feel personal.</h2>
               <p>
-                The finish palette is shown for discovery. Availability may
-                vary when the vela store opens.
+                The finish palette is shown for discovery. Availability can
+                vary by size and configuration in the vela store.
               </p>
             </Reveal>
             <div className="product-finish-grid">

@@ -62,6 +62,7 @@ describe("vela experience", () => {
     expect(navigation).toHaveTextContent("tv + home");
     expect(navigation).toHaveTextContent("software");
     expect(navigation).toHaveTextContent("compare");
+    expect(navigation).toHaveTextContent("bag");
     expect(screen.getByText("by veritas")).toBeInTheDocument();
   });
 
@@ -116,7 +117,7 @@ describe("vela experience", () => {
     expect(screen.getAllByRole("link", { name: "Buy" })).toHaveLength(3);
   });
 
-  it("renders the temporary store 404 for a valid product", () => {
+  it("configures a product and adds it to the bag", async () => {
     render(
       <MemoryRouter initialEntries={["/buy/mobile/x26-ultra"]}>
         <App />
@@ -125,10 +126,19 @@ describe("vela experience", () => {
 
     expect(
       screen.getByRole("heading", {
-        name: "The store is not connected yet.",
+        name: "Make it yours.",
       }),
     ).toBeInTheDocument();
-    expect(screen.getByText(/vela x26 Ultra/)).toBeInTheDocument();
+    expect(screen.getAllByText("$1,399").length).toBeGreaterThan(0);
+
+    fireEvent.click(screen.getByRole("radio", { name: /1TB/i }));
+    expect(screen.getAllByText("$1,799").length).toBeGreaterThan(0);
+
+    fireEvent.click(screen.getByRole("button", { name: /Add to bag/i }));
+    expect(
+      await screen.findByRole("heading", { name: "Your bag." }),
+    ).toBeInTheDocument();
+    expect(screen.getByText("1TB")).toBeInTheDocument();
   });
 
   it("renders lattice as a vela foundation framework without store actions", () => {

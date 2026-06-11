@@ -1,7 +1,10 @@
 import type { ReactNode } from "react";
 import { Link } from "react-router-dom";
+import { useCart } from "../context/CartContext";
 
 export function AppShell({ children }: { children: ReactNode }) {
+  const { itemCount } = useCart();
+
   return (
     <div className="site-shell">
       <a className="skip-link" href="#main-content">
@@ -26,6 +29,10 @@ export function AppShell({ children }: { children: ReactNode }) {
           <Link className="nav-link" to="/products/display">tv + home</Link>
           <Link className="nav-link" to="/products/platform">software</Link>
           <Link className="nav-link" to="/compare">compare</Link>
+          <Link className="nav-link nav-link--bag" to="/cart">
+            bag
+            {itemCount > 0 && <span aria-label={`${itemCount} items`}>{itemCount}</span>}
+          </Link>
         </nav>
       </header>
       {children}

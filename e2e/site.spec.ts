@@ -85,7 +85,7 @@ test("lattice and ethos ai are presented inside the vela foundation", async ({
   await expect(page.getByRole("link", { name: "Buy" })).toHaveCount(0);
 });
 
-test("segment, product, and temporary buy routes form a complete journey", async ({
+test("visitors can configure a product and carry it into the bag", async ({
   page,
 }) => {
   await page.goto("/products/mobile");
@@ -105,7 +105,36 @@ test("segment, product, and temporary buy routes form a complete journey", async
     .click();
   await expect(page).toHaveURL(/\/buy\/mobile\/x26-ultra$/);
   await expect(
-    page.getByRole("heading", { name: "The store is not connected yet." }),
+    page.getByRole("heading", { name: "Make it yours." }),
+  ).toBeVisible();
+
+  await page.getByRole("radio", { name: /1TB/i }).check();
+  await expect(
+    page.getByRole("region", { name: "Configuration subtotal" }),
+  ).toContainText("$1,799");
+  await page.getByRole("button", { name: /Add to bag/i }).click();
+
+  await expect(page).toHaveURL(/\/cart$/);
+  await expect(page.getByRole("heading", { name: "Your bag." })).toBeVisible();
+  await expect(page.getByText("1TB")).toBeVisible();
+
+  await page.getByRole("link", { name: /Check out/i }).click();
+  await expect(page).toHaveURL(/\/checkout$/);
+  await expect(
+    page.getByRole("heading", { name: "Where should it arrive?" }),
+  ).toBeVisible();
+
+  await page.getByLabel("Email address").fill("vela@example.com");
+  await page.getByLabel("Phone number").fill("555-0100");
+  await page.getByLabel("First name").fill("Vela");
+  await page.getByLabel("Last name").fill("Customer");
+  await page.getByLabel("Street address").fill("1 Connected Way");
+  await page.getByLabel("City").fill("New York");
+  await page.getByLabel("State").fill("NY");
+  await page.getByLabel("ZIP code").fill("10001");
+  await page.getByRole("button", { name: /Continue to payment/i }).click();
+  await expect(
+    page.getByText("This is the end of the prototype checkout."),
   ).toBeVisible();
 });
 
