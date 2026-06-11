@@ -33,7 +33,7 @@ test("reduced motion retains products and software content", async ({ page }) =>
   await page.goto("/");
 
   await expect(
-    page.getByRole("heading", { name: "Everything feels closer." }),
+    page.getByRole("heading", { name: "Your devices, now more adaptive." }),
   ).toBeVisible();
   await expect(
     page.getByRole("heading", { name: "Start on one. Continue on another." }),
@@ -106,6 +106,38 @@ test("lattice and ethos ai are presented inside the vela foundation", async ({
     page.getByRole("heading", { name: "lattice 1", level: 1 }),
   ).toBeVisible();
   await expect(page.getByRole("link", { name: "Buy" })).toHaveCount(0);
+});
+
+test("vOS 27 presents its developer beta in a distinct adaptive experience", async ({
+  page,
+}) => {
+  await page.goto("/products/platform/vos-27");
+
+  await expect(
+    page.getByRole("heading", { name: "vOS 27", level: 1 }),
+  ).toBeVisible();
+  await expect(
+    page.getByRole("heading", { name: "Begins June 15, 2026." }),
+  ).toBeVisible();
+  await expect(
+    page.getByRole("heading", {
+      name: "One system that understands the screen.",
+    }),
+  ).toBeVisible();
+  await expect(
+    page.getByRole("heading", { name: "Adaptive App Kit" }),
+  ).toBeVisible();
+
+  const colors = await page.locator(".vos27-page").evaluate((element) => {
+    const style = getComputedStyle(element);
+    return {
+      violet: style.getPropertyValue("--vos27-violet").trim(),
+      background: style.backgroundColor,
+    };
+  });
+
+  expect(colors.violet).toBe("#7776d7");
+  expect(colors.background).not.toBe("rgba(0, 0, 0, 0)");
 });
 
 test("visitors can configure a product and carry it into the bag", async ({

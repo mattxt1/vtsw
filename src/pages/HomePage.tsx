@@ -21,7 +21,7 @@ const featuredProducts = {
   audio: getProduct("wearables", "probuds-ultra"),
   tv: getProduct("display", "tv-ultra"),
   speaker: getProduct("audio", "home-speaker-pro"),
-  software: getProduct("platform", "vos-26"),
+  software: getProduct("platform", "vos-27"),
   lattice: getProduct("platform", "lattice-1"),
   ethos: getProduct("platform", "ethos-ai"),
 };
@@ -245,25 +245,25 @@ export function HomePage() {
 
         <section id="software" className="software-feature section-shell">
           <Reveal className="software-feature__copy">
-            <p className="eyebrow">latest software / vOS 26</p>
-            <h2>Everything feels closer.</h2>
+            <p className="eyebrow">preview / vOS 27</p>
+            <h2>Your devices, now more adaptive.</h2>
             <p>
-              One account, shared apps and media, continuity display, studio
-              camera, and ethos ai intelligence across the vela ecosystem,
-              built on lattice foundations.
+              Adaptive interfaces, glance panels, Live Handoff 2, private
+              contextual intelligence, and deeper tools across the vela
+              ecosystem. Developer beta begins June 15.
             </p>
             <div className="launch-actions">
               <Link
                 className="embossed-button"
-                to="/products/platform/vos-26"
+                to="/products/platform/vos-27"
               >
-                Explore vOS 26
+                Preview vOS 27
               </Link>
               <Link to="/products/platform">Software + foundation</Link>
             </div>
           </Reveal>
           <Reveal className="software-feature__visual" delay={0.08}>
-            <ProductPlaceholder kind="software" label="vOS 26" tone="dark" />
+            <ProductPlaceholder kind="software" label="vOS 27" tone="dark" />
             <ul>
               {software.specifications[0]?.items.slice(0, 4).map((item) => (
                 <li key={item.label}>
@@ -297,12 +297,12 @@ export function HomePage() {
               </Link>
             </Reveal>
             <Reveal delay={0.12}>
-              <Link to="/products/platform/vos-26">
+              <Link to="/products/platform/vos-27">
                 <p className="eyebrow">operating system</p>
-                <h3>vOS 26</h3>
+                <h3>vOS 27</h3>
                 <p>
-                  The shared operating system connecting identity, apps,
-                  continuity, intelligence, and every vela screen.
+                  The next adaptive system for every supported vela screen,
+                  with a developer beta beginning June 15.
                 </p>
                 <span>{software.tagline}</span>
               </Link>

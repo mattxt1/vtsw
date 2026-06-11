@@ -49,6 +49,7 @@ describe("vela content", () => {
         "lattice 1",
         "lattice 1 pro",
         "ethos ai",
+        "vOS 27",
         "vOS 26",
         "vela protect",
       ]),
@@ -71,6 +72,7 @@ describe("vela content", () => {
     );
     expect(getProduct("platform", "lattice-1")?.displayName).toBe("lattice 1");
     expect(getProduct("platform", "ethos-ai")?.displayName).toBe("ethos ai");
+    expect(getProduct("platform", "vos-27")?.displayName).toBe("vOS 27");
   });
 
   it("includes the complete 2026 accessory ecosystem", () => {

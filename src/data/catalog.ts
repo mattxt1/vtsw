@@ -88,6 +88,7 @@ const years: Record<string, number> = {
   "lattice 1": 2026,
   "lattice 1 pro": 2026,
   "ethos ai": 2026,
+  "vOS 27": 2027,
   "vOS 26": 2026,
 };
 
@@ -316,7 +317,10 @@ function getSupport(segmentId: string, groupName: string, model: string) {
   ) {
     return "8 years guaranteed";
   }
-  if (segmentId === "platform" && model === "vOS 26") {
+  if (
+    segmentId === "platform" &&
+    (model === "vOS 26" || model === "vOS 27")
+  ) {
     return "Ongoing platform updates";
   }
   if (model.startsWith("lattice")) return "Active framework releases";
@@ -350,12 +354,14 @@ function getAvailability(model: string) {
   }
   if (model.startsWith("lattice")) return "Available to vela developers";
   if (model === "ethos ai") return "Integrated across supported vela products";
+  if (model === "vOS 27") return "Developer beta begins June 15, 2026";
   return "Current lineup";
 }
 
 function displayName(model: string) {
   if (
     model === "vOS 26" ||
+    model === "vOS 27" ||
     model === "vela protect" ||
     model === "ethos ai" ||
     model.startsWith("lattice")

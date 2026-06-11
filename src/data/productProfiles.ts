@@ -2373,6 +2373,43 @@ export const productProfiles: Record<string, ProductProfile> = {
       ),
     ],
   },
+  "vOS 27": {
+    tagline: "More personal. More connected. More capable.",
+    description:
+      "The next generation of vOS makes interfaces adaptive, continuity more natural, intelligence more useful, and privacy easier to understand across supported vela devices.",
+    highlights: highlights(
+      ["June 15", "developer beta"],
+      ["Adaptive", "interface system"],
+      ["Local-first", "personal context"],
+      ["Every screen", "ecosystem continuity"],
+    ),
+    specifications: [
+      specs(
+        "Adaptive experience",
+        ["Interface", "Adaptive Layout Engine and Dynamic Surface"],
+        ["Quick actions", "Glance panels across supported screens"],
+        ["Workspaces", "Desktop Spaces 2 and persistent layouts"],
+      ),
+      specs(
+        "Continuity and intelligence",
+        ["Handoff", "Live Handoff 2 and proximity actions"],
+        ["Context", "Private Personal Context Index"],
+        ["Actions", "Permission-aware assistant actions"],
+      ),
+      specs(
+        "Privacy and performance",
+        ["Transparency", "Privacy Report 2"],
+        ["Protection", "Secure app zones and recovery keys"],
+        ["Power", "Adaptive performance profiles and Battery Health 2"],
+      ),
+      specs(
+        "Developer beta",
+        ["Beta 1", "June 15, 2026"],
+        ["Framework", "Adaptive App Kit built with lattice"],
+        ["Privacy", "Privacy Manifest 2"],
+      ),
+    ],
+  },
   "vOS 26": {
     tagline: "One calm system, across every vela device.",
     description:

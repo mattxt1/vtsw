@@ -16,6 +16,7 @@ export function Footer() {
           <Link to="/compare">compare</Link>
           <Link to="/products/platform/lattice-1">lattice</Link>
           <Link to="/products/platform/ethos-ai">ethos ai</Link>
+          <Link to="/products/platform/vos-27">vOS 27</Link>
           <Link to="/products/platform">software</Link>
         </nav>
         <p>a veritas brand · 2026</p>

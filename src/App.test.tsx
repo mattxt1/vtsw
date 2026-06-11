@@ -35,7 +35,7 @@ describe("vela experience", () => {
       screen.getByRole("heading", { name: "A studio you can close." }),
     ).toBeInTheDocument();
     expect(
-      screen.getByRole("heading", { name: "Everything feels closer." }),
+      screen.getByRole("heading", { name: "Your devices, now more adaptive." }),
     ).toBeInTheDocument();
     expect(
       screen.getByRole("heading", { name: "lattice" }),
@@ -304,6 +304,32 @@ describe("vela experience", () => {
         /combines vOS, vela silicon, and on-device intelligence/i,
       ).length,
     ).toBeGreaterThan(0);
+  });
+
+  it("renders the distinct vOS 27 developer beta preview", () => {
+    render(
+      <MemoryRouter initialEntries={["/products/platform/vos-27"]}>
+        <App />
+      </MemoryRouter>,
+    );
+
+    expect(
+      screen.getByRole("heading", { name: "vOS 27", level: 1 }),
+    ).toBeInTheDocument();
+    expect(
+      screen.getByRole("heading", { name: "Begins June 15, 2026." }),
+    ).toBeInTheDocument();
+    expect(
+      screen.getByRole("heading", {
+        name: "One system that understands the screen.",
+      }),
+    ).toBeInTheDocument();
+    expect(
+      screen.getByRole("heading", { name: "Adaptive App Kit" }),
+    ).toBeInTheDocument();
+    expect(
+      screen.getByRole("navigation", { name: "vOS 27 navigation" }),
+    ).toBeInTheDocument();
   });
 
   it("renders an intelligent three-device comparison", async () => {

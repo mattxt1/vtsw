@@ -125,8 +125,8 @@ export function SearchDialog({ isOpen, onClose }: SearchDialogProps) {
                 >
                   notebook ultra
                 </Link>
-                <Link to="/products/platform/vos-26" onClick={closeDialog}>
-                  vOS 26
+                <Link to="/products/platform/vos-27" onClick={closeDialog}>
+                  vOS 27
                 </Link>
                 <Link to="/products/accessories" onClick={closeDialog}>
                   accessories

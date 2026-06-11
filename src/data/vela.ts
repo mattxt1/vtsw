@@ -272,7 +272,7 @@ export const vela: VelaContent = {
         },
         {
           name: "intelligence + software",
-          models: ["ethos ai", "vOS 26"],
+          models: ["ethos ai", "vOS 27", "vOS 26"],
         },
         {
           name: "pulse d8",

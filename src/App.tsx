@@ -12,6 +12,7 @@ import { NotFoundPage } from "./pages/NotFoundPage";
 import { ProductPage } from "./pages/ProductPage";
 import { SearchPage } from "./pages/SearchPage";
 import { SegmentPage } from "./pages/SegmentPage";
+import { VOS27Page } from "./pages/VOS27Page";
 
 const ComparePage = lazy(() =>
   import("./pages/ComparePage").then((module) => ({
@@ -48,6 +49,7 @@ export function App() {
               <Route path="/compare" element={<CompareRoute />} />
               <Route path="/search" element={<SearchPage />} />
               <Route path="/products/:segmentId" element={<SegmentPage />} />
+              <Route path="/products/platform/vos-27" element={<VOS27Page />} />
               <Route
                 path="/products/:segmentId/:productId"
                 element={<ProductPage />}
