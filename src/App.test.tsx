@@ -32,6 +32,12 @@ describe("vela experience", () => {
       screen.getByRole("heading", { name: "Everything feels closer." }),
     ).toBeInTheDocument();
     expect(
+      screen.getByRole("heading", { name: "lattice" }),
+    ).toBeInTheDocument();
+    expect(
+      screen.getByRole("heading", { name: "ethos ai" }),
+    ).toBeInTheDocument();
+    expect(
       screen.getByRole("heading", { name: "The ecosystem, across the room." }),
     ).toBeInTheDocument();
     expect(
@@ -54,6 +60,7 @@ describe("vela experience", () => {
     expect(navigation).toHaveTextContent("tablets");
     expect(navigation).toHaveTextContent("wearables");
     expect(navigation).toHaveTextContent("tv + home");
+    expect(navigation).toHaveTextContent("software");
     expect(navigation).toHaveTextContent("compare");
     expect(screen.getByText("by veritas")).toBeInTheDocument();
   });
@@ -122,6 +129,44 @@ describe("vela experience", () => {
       }),
     ).toBeInTheDocument();
     expect(screen.getByText(/vela x26 Ultra/)).toBeInTheDocument();
+  });
+
+  it("renders lattice as a vela foundation framework without store actions", () => {
+    render(
+      <MemoryRouter initialEntries={["/products/platform/lattice-1"]}>
+        <App />
+      </MemoryRouter>,
+    );
+
+    expect(
+      screen.getByRole("heading", { name: "lattice 1", level: 1 }),
+    ).toBeInTheDocument();
+    expect(
+      screen.getAllByText(
+        "The standard production framework for vela software.",
+      ).length,
+    ).toBeGreaterThan(0);
+    expect(screen.queryByRole("link", { name: "Buy" })).not.toBeInTheDocument();
+    expect(
+      screen.getByRole("link", { name: "Explore software + foundation" }),
+    ).toBeInTheDocument();
+  });
+
+  it("renders ethos ai as the native vela intelligence layer", () => {
+    render(
+      <MemoryRouter initialEntries={["/products/platform/ethos-ai"]}>
+        <App />
+      </MemoryRouter>,
+    );
+
+    expect(
+      screen.getByRole("heading", { name: "ethos ai", level: 1 }),
+    ).toBeInTheDocument();
+    expect(
+      screen.getAllByText(
+        /combines vOS, vela silicon, and on-device intelligence/i,
+      ).length,
+    ).toBeGreaterThan(0);
   });
 
   it("renders an intelligent three-device comparison", () => {

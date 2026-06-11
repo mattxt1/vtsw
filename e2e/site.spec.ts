@@ -58,6 +58,33 @@ test("the top menu reaches notebook and tablet lineup groups", async ({ page }) 
   await expect(page.locator("#tab-t-series")).toBeVisible();
 });
 
+test("lattice and ethos ai are presented inside the vela foundation", async ({
+  page,
+}) => {
+  await page.goto("/");
+
+  await expect(page.getByRole("heading", { name: "lattice" })).toBeVisible();
+  await expect(page.getByRole("heading", { name: "ethos ai" })).toBeVisible();
+
+  await page
+    .getByRole("navigation", { name: "Primary navigation" })
+    .getByRole("link", { name: "software" })
+    .click();
+  await expect(page).toHaveURL(/\/products\/platform$/);
+  await expect(
+    page.getByRole("heading", {
+      name: "The systems behind every vela experience.",
+    }),
+  ).toBeVisible();
+
+  await page.locator('a[href="/products/platform/lattice-1"]').first().click();
+  await expect(page).toHaveURL(/\/products\/platform\/lattice-1$/);
+  await expect(
+    page.getByRole("heading", { name: "lattice 1", level: 1 }),
+  ).toBeVisible();
+  await expect(page.getByRole("link", { name: "Buy" })).toHaveCount(0);
+});
+
 test("segment, product, and temporary buy routes form a complete journey", async ({
   page,
 }) => {

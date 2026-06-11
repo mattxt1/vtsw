@@ -11,10 +11,11 @@ export function Footer() {
           vela
         </Link>
         <nav aria-label="Footer navigation">
-          <a href="#products">products</a>
+          <Link to="/#products">products</Link>
           <Link to="/compare">compare</Link>
-          <a href="#ecosystem">ecosystem</a>
-          <a href="#software">software</a>
+          <Link to="/products/platform/lattice-1">lattice</Link>
+          <Link to="/products/platform/ethos-ai">ethos ai</Link>
+          <Link to="/products/platform">software</Link>
         </nav>
         <p>a veritas brand · 2026</p>
       </div>

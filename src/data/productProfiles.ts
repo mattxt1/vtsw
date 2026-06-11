@@ -48,7 +48,7 @@ export const productProfiles: Record<string, ProductProfile> = {
       ["Up to 3,800 nits", "tandem OLED display"],
       ["8x optical", "telephoto camera"],
       ["Up to 39 hours", "mixed-use battery"],
-      ["72 TOPS", "on-device AI"],
+      ["72 TOPS", "ethos ai engine"],
     ),
     specifications: [
       specs(
@@ -95,7 +95,7 @@ export const productProfiles: Record<string, ProductProfile> = {
       ["Up to 3,500 nits", "OLED display"],
       ["5x optical", "telephoto camera"],
       ["Up to 33 hours", "mixed-use battery"],
-      ["58 TOPS", "on-device AI"],
+      ["58 TOPS", "ethos ai engine"],
     ),
     specifications: [
       specs(
@@ -137,7 +137,7 @@ export const productProfiles: Record<string, ProductProfile> = {
       ["Up to 3,200 nits", "OLED display"],
       ["Up to 8K", "video capture"],
       ["Up to 30 hours", "mixed-use battery"],
-      ["58 TOPS", "on-device AI"],
+      ["58 TOPS", "ethos ai engine"],
     ),
     specifications: [
       specs(
@@ -2103,7 +2103,7 @@ export const productProfiles: Record<string, ProductProfile> = {
   "d8 ultra": {
     tagline: "Maximum vela performance for portable workstations.",
     description:
-      "The flagship 2.5 nm desktop-class vela pulse design, built for intensive creative, engineering, and AI workflows.",
+      "The flagship 2.5 nm desktop-class vela pulse design, built for intensive creative, engineering, and ethos ai workflows.",
     highlights: highlights(
       ["28-core", "CPU"],
       ["76-core", "GPU"],
@@ -2125,7 +2125,7 @@ export const productProfiles: Record<string, ProductProfile> = {
   "d8 max": {
     tagline: "Large-scale performance with exceptional efficiency.",
     description:
-      "A high-bandwidth vela pulse chip for demanding pro notebooks, sustained graphics, and local AI.",
+      "A high-bandwidth vela pulse chip for demanding pro notebooks, sustained graphics, and local ethos ai processing.",
     highlights: highlights(
       ["18-core", "CPU"],
       ["40-core", "GPU"],
@@ -2190,7 +2190,7 @@ export const productProfiles: Record<string, ProductProfile> = {
   "m8 max": {
     tagline: "Flagship mobile performance for the largest vela canvases.",
     description:
-      "The most capable mobile vela pulse design, built for Ultra phones, foldables, tablets, advanced cameras, and local AI.",
+      "The most capable mobile vela pulse design, built for Ultra phones, foldables, tablets, advanced cameras, and local ethos ai processing.",
     highlights: highlights(
       ["12-core", "CPU"],
       ["18-core", "GPU"],
@@ -2265,13 +2265,121 @@ export const productProfiles: Record<string, ProductProfile> = {
       ),
     ],
   },
+  "lattice 1 mini": {
+    tagline: "The lightest way to build with the vela foundation.",
+    description:
+      "A compact, approachable lattice framework for smaller tools, prototypes, focused experiences, and teams that need a simple path into vela infrastructure.",
+    highlights: highlights(
+      ["Lightweight", "framework profile"],
+      ["Low complexity", "learning curve"],
+      ["Ecosystem-ready", "vela services"],
+    ),
+    specifications: [
+      specs(
+        "Framework",
+        ["Role", "Lightweight application and tool foundation"],
+        ["Best suited for", "Focused experiences, prototypes, and internal tools"],
+        ["Approach", "Simple defaults with a smaller framework surface"],
+        ["Ecosystem", "Connected to supported vela services and APIs"],
+      ),
+      specs(
+        "Foundation",
+        ["Team", "lattice, within vela"],
+        ["Capabilities", "UI foundations, APIs, deployment, and security defaults"],
+        ["Position", "Entry point to the lattice framework family"],
+      ),
+    ],
+  },
+  "lattice 1": {
+    tagline: "The standard production framework for vela software.",
+    description:
+      "The primary lattice framework for dependable production software, combining shared interface foundations, APIs, deployment systems, security layers, and ecosystem services.",
+    highlights: highlights(
+      ["Production", "framework profile"],
+      ["Full-stack", "vela integration"],
+      ["Shared", "security + deployment"],
+    ),
+    specifications: [
+      specs(
+        "Framework",
+        ["Role", "Standard production framework"],
+        ["Best suited for", "Production applications, services, and connected experiences"],
+        ["Approach", "Balanced capability, maintainability, and developer control"],
+        ["Ecosystem", "Deep integration with vOS, vela services, and internal APIs"],
+      ),
+      specs(
+        "Infrastructure",
+        ["Interface foundation", "Shared components and interaction systems"],
+        ["Delivery", "Integrated build, deployment, and observability tools"],
+        ["Security", "Common identity, permissions, and security layers"],
+        ["Team", "lattice, a mostly independent infrastructure team within vela"],
+      ),
+    ],
+  },
+  "lattice 1 pro": {
+    tagline: "Advanced infrastructure for the most demanding vela systems.",
+    description:
+      "The most powerful and security-focused lattice framework, intended for complex, sensitive, deeply integrated systems where control matters more than ease of use.",
+    highlights: highlights(
+      ["Advanced", "framework profile"],
+      ["Hardened", "security model"],
+      ["Maximum", "system control"],
+    ),
+    specifications: [
+      specs(
+        "Framework",
+        ["Role", "Advanced production and infrastructure framework"],
+        ["Best suited for", "Sensitive, complex, high-control systems"],
+        ["Approach", "Greater capability and explicit control with a steeper learning curve"],
+        ["Ecosystem", "Deep access to supported vela infrastructure and system services"],
+      ),
+      specs(
+        "Security and operations",
+        ["Security", "Hardened policy, identity, permissions, and isolation foundations"],
+        ["Delivery", "Advanced deployment, observability, and operational tooling"],
+        ["APIs", "Expanded infrastructure and service integration"],
+        ["Team", "lattice, within vela"],
+      ),
+    ],
+  },
+  "ethos ai": {
+    tagline: "The native intelligence layer of the vela ecosystem.",
+    description:
+      "ethos ai combines vOS, vela silicon, and on-device intelligence to make vela products more personal, contextual, capable, private, and fast.",
+    highlights: highlights(
+      ["On-device", "intelligence first"],
+      ["Private", "context processing"],
+      ["System-wide", "vela integration"],
+    ),
+    specifications: [
+      specs(
+        "Mission",
+        ["Purpose", "Make vela devices more personal, contextual, and capable"],
+        ["Experience", "Intelligence that feels built in rather than added on"],
+        ["Foundation", "vOS context, vela pulse silicon, and native system integration"],
+      ),
+      specs(
+        "Intelligence",
+        ["Processing", "On-device first on supported vela pulse hardware"],
+        ["Context", "Works across supported apps, devices, and system experiences"],
+        ["Privacy", "Designed to minimize unnecessary movement of personal context"],
+        ["Performance", "Hardware-aware execution tuned with vOS and vela silicon"],
+      ),
+      specs(
+        "Ecosystem",
+        ["Devices", "Integrated across supported vela product categories"],
+        ["Software", "Native intelligence services within vOS"],
+        ["Infrastructure", "Supported by lattice APIs, security, and deployment foundations"],
+      ),
+    ],
+  },
   "vOS 26": {
     tagline: "One calm system, across every vela device.",
     description:
       "The in-house operating system that unifies identity, apps, media, communication, privacy, and continuity across the full vela ecosystem.",
     highlights: highlights(
       ["One account", "across every device"],
-      ["Local AI", "on supported vela pulse chips"],
+      ["ethos ai", "native intelligence"],
       ["8-12 years", "flagship support range"],
     ),
     specifications: [
@@ -2284,8 +2392,14 @@ export const productProfiles: Record<string, ProductProfile> = {
       ),
       specs(
         "Intelligence",
-        ["Local processing", "On-device AI on supported m8 and d8 Pro, Max, and Ultra chips"],
+        ["Native layer", "ethos ai across supported system experiences"],
+        ["Local processing", "On-device intelligence on supported m8 and d8 Pro, Max, and Ultra chips"],
         ["Broader access", "Private cloud assistance for supported entry and older devices"],
+      ),
+      specs(
+        "Foundation",
+        ["Frameworks", "lattice foundations for interfaces, APIs, security, and deployment"],
+        ["Silicon", "Closely developed with vela pulse hardware"],
       ),
       specs(
         "Security and management",

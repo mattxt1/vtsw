@@ -23,7 +23,7 @@ export const vela: VelaContent = {
       id: "ecosystem",
       eyebrow: "01 / vOS 26",
       title: "One system, across every screen.",
-      body: "vOS 26 runs across the vela lineup, closely developed with vela pulse silicon and vela hardware. Move between phone, notebook, display, and home without thinking about the handoff.",
+      body: "vOS 26 runs across the vela lineup with ethos ai intelligence, lattice foundations, and vela pulse silicon. Move between phone, notebook, display, and home without thinking about the handoff.",
       media: {
         kind: "sequence",
         alt: "A vela device smoothly changing between connected forms",
@@ -241,12 +241,23 @@ export const vela: VelaContent = {
     {
       id: "platform",
       eyebrow: "foundation",
-      name: "pulse + vOS",
-      title: "Designed together, down to the silicon.",
+      name: "software + foundation",
+      title: "The systems behind every vela experience.",
       description:
-        "Custom ARM processors, shared software, long-term support, and service that make the ecosystem feel whole.",
-      media: { kind: "image", alt: "A vela pulse chip surrounded by vOS surfaces" },
+        "lattice frameworks, ethos ai, vOS, custom silicon, and services developed as one connected foundation.",
+      media: {
+        kind: "image",
+        alt: "lattice framework layers connecting vOS, ethos ai, and vela pulse",
+      },
       groups: [
+        {
+          name: "lattice frameworks",
+          models: ["lattice 1 mini", "lattice 1", "lattice 1 pro"],
+        },
+        {
+          name: "intelligence + software",
+          models: ["ethos ai", "vOS 26"],
+        },
         {
           name: "pulse d8",
           models: ["d8 ultra", "d8 max", "d8 pro", "d8"],
@@ -256,12 +267,12 @@ export const vela: VelaContent = {
           models: ["m8 max", "m8 pro", "m8"],
         },
         {
-          name: "software + care",
-          models: ["vOS 26", "vela protect"],
+          name: "care",
+          models: ["vela protect"],
         },
       ],
       note:
-        "vOS 26 is developed in-house alongside vela hardware and eighth-generation pulse silicon produced by veritas fabs.",
+        "lattice is a mostly independent infrastructure team within vela. It replaces the former veritas core framework identity and builds the foundation behind vela software.",
     },
   ],
 };

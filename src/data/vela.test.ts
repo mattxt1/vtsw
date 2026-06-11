@@ -44,10 +44,32 @@ describe("vela content", () => {
         "home speaker pro",
         "d8 ultra",
         "m8 max",
+        "lattice 1 mini",
+        "lattice 1",
+        "lattice 1 pro",
+        "ethos ai",
         "vOS 26",
         "vela protect",
       ]),
     );
+  });
+
+  it("places lattice and ethos ai inside the vela foundation", () => {
+    const foundation = vela.products.find((product) => product.id === "platform");
+    const models =
+      foundation?.groups.flatMap((group) => group.models) ?? [];
+
+    expect(foundation?.name).toBe("software + foundation");
+    expect(models).toEqual(
+      expect.arrayContaining([
+        "lattice 1 mini",
+        "lattice 1",
+        "lattice 1 pro",
+        "ethos ai",
+      ]),
+    );
+    expect(getProduct("platform", "lattice-1")?.displayName).toBe("lattice 1");
+    expect(getProduct("platform", "ethos-ai")?.displayName).toBe("ethos ai");
   });
 
   it("creates a unique discover route for every model in the lineup", () => {

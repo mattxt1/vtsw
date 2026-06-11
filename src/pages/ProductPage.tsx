@@ -28,6 +28,7 @@ export function ProductPage() {
   const productIndex = siblings.findIndex((item) => item.id === product.id);
   const previous = siblings[(productIndex - 1 + siblings.length) % siblings.length];
   const next = siblings[(productIndex + 1) % siblings.length];
+  const isFoundationProduct = segment.id === "platform";
   const chapter: Chapter = {
     id: `${product.id}-story`,
     eyebrow: `${product.groupName} / ${product.platform}`,
@@ -58,12 +59,21 @@ export function ProductPage() {
             >
               Compare
             </Link>
-            <Link
-              className="product-local-nav__buy"
-              to={`/buy/${segment.id}/${product.id}`}
-            >
-              Buy
-            </Link>
+            {isFoundationProduct ? (
+              <Link
+                className="product-local-nav__buy"
+                to="/products/platform"
+              >
+                Foundation
+              </Link>
+            ) : (
+              <Link
+                className="product-local-nav__buy"
+                to={`/buy/${segment.id}/${product.id}`}
+              >
+                Buy
+              </Link>
+            )}
           </div>
         </nav>
 
@@ -74,13 +84,19 @@ export function ProductPage() {
             <p className="product-hero__tagline">{product.tagline}</p>
             <p>{product.description}</p>
             <div className="product-hero__actions">
-              <Link
-                className="embossed-button"
-                to={`/buy/${segment.id}/${product.id}`}
-              >
-                Buy
-                <span aria-hidden="true">→</span>
-              </Link>
+              {isFoundationProduct ? (
+                <a className="embossed-button" href="#details">
+                  Explore the foundation
+                </a>
+              ) : (
+                <Link
+                  className="embossed-button"
+                  to={`/buy/${segment.id}/${product.id}`}
+                >
+                  Buy
+                  <span aria-hidden="true">→</span>
+                </Link>
+              )}
               <a href="#details">Explore the details ↓</a>
             </div>
           </div>
@@ -106,9 +122,9 @@ export function ProductPage() {
             <p className="eyebrow">at a glance</p>
             <h2>The details that define it.</h2>
             <p>
-              Every headline figure is the maximum supported capability for
-              this product family. Purchase configurations will live in the
-              future vela store.
+              {isFoundationProduct
+                ? "The role, capabilities, and ecosystem relationships that define this part of the vela foundation."
+                : "Every headline figure is the maximum supported capability for this product family. Purchase configurations will live in the future vela store."}
             </p>
           </Reveal>
           <div className="product-facts">
@@ -179,8 +195,9 @@ export function ProductPage() {
             <p className="eyebrow">technical details</p>
             <h2>A closer look.</h2>
             <p>
-              Product capabilities from the 2026 vela lineup. Variable
-              specifications are presented as maximum supported figures.
+              {isFoundationProduct
+                ? "Framework, intelligence, software, silicon, and service capabilities within the current vela foundation."
+                : "Product capabilities from the 2026 vela lineup. Variable specifications are presented as maximum supported figures."}
             </p>
           </Reveal>
           <div className="product-spec-grid">
@@ -209,13 +226,19 @@ export function ProductPage() {
             <p className="eyebrow">{product.availability}</p>
             <h2>{product.displayName}</h2>
             <p>{product.tagline}</p>
-            <Link
-              className="embossed-button"
-              to={`/buy/${segment.id}/${product.id}`}
-            >
-              Buy
-              <span aria-hidden="true">→</span>
-            </Link>
+            {isFoundationProduct ? (
+              <Link className="embossed-button" to="/products/platform">
+                Explore software + foundation
+              </Link>
+            ) : (
+              <Link
+                className="embossed-button"
+                to={`/buy/${segment.id}/${product.id}`}
+              >
+                Buy
+                <span aria-hidden="true">→</span>
+              </Link>
+            )}
           </Reveal>
         </section>
 

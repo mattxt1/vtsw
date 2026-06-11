@@ -20,6 +20,8 @@ const featuredProducts = {
   tv: getProduct("display", "tv-ultra"),
   speaker: getProduct("audio", "home-speaker-pro"),
   software: getProduct("platform", "vos-26"),
+  lattice: getProduct("platform", "lattice-1"),
+  ethos: getProduct("platform", "ethos-ai"),
 };
 
 const categoryLinks: Array<{
@@ -71,6 +73,14 @@ const categoryLinks: Array<{
     to: "/products/audio",
     kind: "audio",
   },
+  {
+    name: "Software + foundation",
+    eyebrow: "lattice, ethos ai, vOS + pulse",
+    description:
+      "The frameworks, intelligence, software, and silicon behind vela.",
+    to: "/products/platform",
+    kind: "software",
+  },
 ];
 
 export function HomePage() {
@@ -95,6 +105,8 @@ export function HomePage() {
   const tv = featuredProducts.tv;
   const speaker = featuredProducts.speaker;
   const software = featuredProducts.software;
+  const lattice = featuredProducts.lattice;
+  const ethos = featuredProducts.ethos;
 
   if (
     !phone ||
@@ -104,7 +116,9 @@ export function HomePage() {
     !audio ||
     !tv ||
     !speaker ||
-    !software
+    !software ||
+    !lattice ||
+    !ethos
   ) {
     return null;
   }
@@ -154,7 +168,8 @@ export function HomePage() {
             <h2>Everything feels closer.</h2>
             <p>
               One account, shared apps and media, continuity display, studio
-              camera, and private intelligence across the vela ecosystem.
+              camera, and ethos ai intelligence across the vela ecosystem,
+              built on lattice foundations.
             </p>
             <div className="launch-actions">
               <Link
@@ -163,7 +178,7 @@ export function HomePage() {
               >
                 Explore vOS 26
               </Link>
-              <Link to="/products/platform">Software + vela pulse</Link>
+              <Link to="/products/platform">Software + foundation</Link>
             </div>
           </Reveal>
           <Reveal className="software-feature__visual" delay={0.08}>
@@ -177,6 +192,41 @@ export function HomePage() {
               ))}
             </ul>
           </Reveal>
+          <div className="software-feature__platforms">
+            <Reveal>
+              <Link to="/products/platform/lattice-1">
+                <p className="eyebrow">frameworks + infrastructure</p>
+                <h3>lattice</h3>
+                <p>
+                  The framework platform behind vela interfaces, APIs,
+                  deployment, internal tools, and security foundations.
+                </p>
+                <span>{lattice.tagline}</span>
+              </Link>
+            </Reveal>
+            <Reveal delay={0.06}>
+              <Link to="/products/platform/ethos-ai">
+                <p className="eyebrow">native intelligence</p>
+                <h3>ethos ai</h3>
+                <p>
+                  Personal, contextual intelligence designed with vOS and vela
+                  silicon for private, fast, useful experiences.
+                </p>
+                <span>{ethos.tagline}</span>
+              </Link>
+            </Reveal>
+            <Reveal delay={0.12}>
+              <Link to="/products/platform/vos-26">
+                <p className="eyebrow">operating system</p>
+                <h3>vOS 26</h3>
+                <p>
+                  The shared operating system connecting identity, apps,
+                  continuity, intelligence, and every vela screen.
+                </p>
+                <span>{software.tagline}</span>
+              </Link>
+            </Reveal>
+          </div>
         </section>
 
         <section id="products" className="latest-products section-shell">
@@ -324,8 +374,9 @@ export function HomePage() {
             <h2>Start on one. Continue on another.</h2>
             <p>
               Calls, files, cameras, displays, sound, and rooms move naturally
-              through vOS 26. Your devices feel less like separate products and
-              more like one considered system.
+              through vOS 26 and ethos ai, supported by lattice below the
+              surface. Your devices feel less like separate products and more
+              like one considered system.
             </p>
             <div className="ecosystem-band__devices" aria-hidden="true">
               <span>phone</span>

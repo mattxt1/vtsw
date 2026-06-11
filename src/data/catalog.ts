@@ -83,6 +83,10 @@ const years: Record<string, number> = {
   "m8 max": 2026,
   "m8 pro": 2026,
   m8: 2026,
+  "lattice 1 mini": 2026,
+  "lattice 1": 2026,
+  "lattice 1 pro": 2026,
+  "ethos ai": 2026,
   "vOS 26": 2026,
 };
 
@@ -174,19 +178,19 @@ const segmentFeatures: Record<string, ProductFeature[]> = {
   ],
   platform: [
     {
-      eyebrow: "architecture",
-      title: "Built as part of the whole.",
-      body: "vela platform products are developed alongside the hardware and experiences they enable.",
+      eyebrow: "lattice",
+      title: "One framework across the ecosystem.",
+      body: "lattice gives vela teams shared interface, service, deployment, API, and security foundations without forcing every product into the same shape.",
     },
     {
-      eyebrow: "integration",
-      title: "Fewer layers between idea and result.",
-      body: "Shared engineering across silicon, software, and devices creates a more coherent system.",
+      eyebrow: "ethos ai",
+      title: "Intelligence that belongs in the system.",
+      body: "ethos ai combines vOS context with vela silicon so useful intelligence can feel fast, private, personal, and native to each device.",
     },
     {
-      eyebrow: "longevity",
-      title: "A foundation made to evolve.",
-      body: "The platform is designed to support feature additions, security improvements, and long-term device updates.",
+      eyebrow: "vela foundation",
+      title: "Designed together below the surface.",
+      body: "Frameworks, operating systems, silicon, APIs, security, deployment, and long-term services evolve as one connected foundation.",
     },
   ],
 };
@@ -203,7 +207,7 @@ const segmentDescriptions: Record<string, string> = {
   audio:
     "Connected sound designed around clarity, atmosphere, and simple control across the vela ecosystem.",
   platform:
-    "The in-house technology foundation connecting vela hardware, software, service, and long-term support.",
+    "The frameworks, intelligence, operating systems, silicon, infrastructure, and services connecting every vela experience.",
 };
 
 const tierTaglines: Record<string, string> = {
@@ -241,7 +245,7 @@ function getTier(model: string, groupName: string) {
   return "standard";
 }
 
-function getPlatform(segmentId: string, groupName: string) {
+function getPlatform(segmentId: string, groupName: string, model: string) {
   if (segmentId === "display") {
     return groupName === "display" ? "vOS 26 basic firmware" : "vOS 26 for tv";
   }
@@ -251,7 +255,9 @@ function getPlatform(segmentId: string, groupName: string) {
   if (segmentId === "wearables" && groupName !== "pencil") {
     return "vOS 26 for wearables";
   }
-  if (segmentId === "platform") return "vela platform";
+  if (model.startsWith("lattice")) return "lattice framework";
+  if (model === "ethos ai") return "vela native intelligence";
+  if (segmentId === "platform") return "vela foundation";
   return groupName === "pencil" ? "vOS 26 basic firmware" : "vOS 26";
 }
 
@@ -285,6 +291,8 @@ function getSupport(segmentId: string, groupName: string, model: string) {
   if (segmentId === "platform" && model === "vOS 26") {
     return "Ongoing platform updates";
   }
+  if (model.startsWith("lattice")) return "Active framework releases";
+  if (model === "ethos ai") return "Continuous intelligence updates";
   return "Feature and security updates";
 }
 
@@ -308,11 +316,20 @@ function getAvailability(model: string) {
   if (model === "ring" || model === "XR") {
     return "Available · no successor planned";
   }
+  if (model.startsWith("lattice")) return "Available to vela developers";
+  if (model === "ethos ai") return "Integrated across supported vela products";
   return "Current lineup";
 }
 
 function displayName(model: string) {
-  if (model === "vOS 26" || model === "vela protect") return model;
+  if (
+    model === "vOS 26" ||
+    model === "vela protect" ||
+    model === "ethos ai" ||
+    model.startsWith("lattice")
+  ) {
+    return model;
+  }
   return `vela ${model}`;
 }
 
@@ -327,7 +344,7 @@ function createProduct(
     {
       title: "Experience",
       items: [
-        { label: "Platform", value: getPlatform(segment.id, groupName) },
+        { label: "Platform", value: getPlatform(segment.id, groupName, model) },
         { label: "Support", value: getSupport(segment.id, groupName, model) },
         { label: "Availability", value: getAvailability(model) },
       ],
@@ -344,7 +361,7 @@ function createProduct(
     tagline: profile?.tagline ?? tierTaglines[tier],
     description: profile?.description ?? segmentDescriptions[segment.id],
     year: years[model],
-    platform: getPlatform(segment.id, groupName),
+    platform: getPlatform(segment.id, groupName, model),
     support: getSupport(segment.id, groupName, model),
     availability: getAvailability(model),
     tier,
@@ -356,7 +373,10 @@ function createProduct(
     highlights:
       profile?.highlights ??
       [
-        { value: getPlatform(segment.id, groupName), label: "platform" },
+        {
+          value: getPlatform(segment.id, groupName, model),
+          label: "platform",
+        },
         { value: getSupport(segment.id, groupName, model), label: "support" },
       ],
     specifications: profile?.specifications ?? fallbackSpecifications,
