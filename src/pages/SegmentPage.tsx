@@ -12,6 +12,7 @@ import {
   slugifyProduct,
 } from "../data/catalog";
 import { getProductKey } from "../data/productKey";
+import { formatPrice, getStoreConfiguration } from "../data/store";
 import { vela } from "../data/vela";
 
 export function SegmentPage() {
@@ -120,39 +121,69 @@ export function SegmentPage() {
                 </Reveal>
                 <div className="model-grid">
                   {groupProducts.map((product, productIndex) => (
-                    <Reveal key={product.id} delay={(productIndex % 4) * 0.04}>
-                      <Link
-                        className="model-card-link"
-                        to={`/products/${segment.id}/${product.id}`}
-                      >
-                        <TactileCard className="model-card">
-                          <div className="model-card__media">
-                            <AbstractMedia
-                              media={product.media}
-                              variant={productIndex + groupIndex}
-                            />
-                          </div>
-                          <div className="model-card__copy">
-                            <p className="eyebrow">{product.tier}</p>
-                            <h4>{product.displayName}</h4>
-                            <p>{product.tagline}</p>
-                            <ul className="model-card__highlights">
-                              {product.highlights
-                                .slice(0, 2)
-                                .map((highlight) => (
-                                  <li
-                                    key={`${highlight.value}-${highlight.label}`}
-                                  >
-                                    <strong>{highlight.value}</strong>
-                                    <span>{highlight.label}</span>
-                                  </li>
-                                ))}
-                            </ul>
-                            <span>Discover →</span>
-                          </div>
-                        </TactileCard>
-                      </Link>
-                    </Reveal>
+                    (() => {
+                      const store = getStoreConfiguration(product);
+                      const priceLabel = product.availability
+                        .toLowerCase()
+                        .includes("organization")
+                        ? "Organization pricing from"
+                        : product.availability
+                              .toLowerCase()
+                              .includes("service")
+                          ? "Service from"
+                          : "From";
+
+                      return (
+                        <Reveal
+                          key={product.id}
+                          delay={(productIndex % 4) * 0.04}
+                        >
+                          <Link
+                            className="model-card-link"
+                            to={`/products/${segment.id}/${product.id}`}
+                          >
+                            <TactileCard className="model-card">
+                              <div className="model-card__media">
+                                <AbstractMedia
+                                  media={product.media}
+                                  variant={productIndex + groupIndex}
+                                />
+                              </div>
+                              <div className="model-card__copy">
+                                <p className="eyebrow">{product.tier}</p>
+                                <h4>{product.displayName}</h4>
+                                <p>{product.tagline}</p>
+                                <ul className="model-card__highlights">
+                                  {product.highlights
+                                    .slice(0, 2)
+                                    .map((highlight) => (
+                                      <li
+                                        key={`${highlight.value}-${highlight.label}`}
+                                      >
+                                        <strong>{highlight.value}</strong>
+                                        <span>{highlight.label}</span>
+                                      </li>
+                                    ))}
+                                </ul>
+                                {segment.id !== "platform" && (
+                                  <p className="model-card__price">
+                                    <span>
+                                      {priceLabel} {formatPrice(store.basePrice)}
+                                    </span>
+                                    {store.listPrice && (
+                                      <s>
+                                        {formatPrice(store.listPrice)}
+                                      </s>
+                                    )}
+                                  </p>
+                                )}
+                                <span>Discover →</span>
+                              </div>
+                            </TactileCard>
+                          </Link>
+                        </Reveal>
+                      );
+                    })()
                   ))}
                 </div>
               </section>

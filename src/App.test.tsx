@@ -1,4 +1,4 @@
-import { fireEvent, render, screen } from "@testing-library/react";
+import { fireEvent, render, screen, within } from "@testing-library/react";
 import { MemoryRouter } from "react-router-dom";
 import { describe, expect, it, vi } from "vitest";
 import { App } from "./App";
@@ -98,6 +98,8 @@ describe("vela experience", () => {
     expect(
       screen.getByRole("link", { name: /vela x26 ultra/i }),
     ).toBeInTheDocument();
+    expect(screen.getByText("From $1,399")).toBeInTheDocument();
+    expect(screen.getByText("From $949")).toBeInTheDocument();
   });
 
   it("renders an individual product discovery page", () => {
@@ -168,6 +170,18 @@ describe("vela experience", () => {
       await screen.findByRole("heading", { name: "Your bag." }),
     ).toBeInTheDocument();
     expect(screen.getByText("1TB")).toBeInTheDocument();
+    expect(
+      screen.getByRole("heading", { name: "Made for your x26 Ultra." }),
+    ).toBeInTheDocument();
+
+    const caseCard = screen
+      .getByRole("heading", { name: "vela x26 ultra silicone case" })
+      .closest("article");
+    expect(caseCard).not.toBeNull();
+    fireEvent.click(
+      within(caseCard as HTMLElement).getByRole("button", { name: /Add/i }),
+    );
+    expect(screen.getByLabelText("2 items")).toBeInTheDocument();
   });
 
   it("applies premium event pricing through configuration", () => {

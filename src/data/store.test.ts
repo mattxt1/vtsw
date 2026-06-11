@@ -1,6 +1,10 @@
 import { describe, expect, it } from "vitest";
+import { getAccessoryRecommendations } from "./accessoryRecommendations";
 import { getProduct } from "./catalog";
-import { getStoreConfiguration } from "./store";
+import {
+  getDefaultStoreSelections,
+  getStoreConfiguration,
+} from "./store";
 
 function configuration(segmentId: string, productId: string) {
   const product = getProduct(segmentId, productId);
@@ -78,5 +82,41 @@ describe("vela store configurations", () => {
       ]),
     );
     expect(store.protectOptions).toHaveLength(0);
+  });
+
+  it("tailors four purchasable accessories to a flagship phone", () => {
+    const phone = getProduct("mobile", "x26-ultra");
+    if (!phone) throw new Error("Missing x26 Ultra");
+
+    const recommendations = getAccessoryRecommendations(phone);
+
+    expect(recommendations.map((product) => product.id)).toEqual([
+      "x26-ultra-silicone-case",
+      "x26-ultra-shield-glass-ultra",
+      "magnetic-charger",
+      "camera-grip",
+    ]);
+    expect(recommendations).toHaveLength(4);
+  });
+
+  it("builds a correctly priced default accessory selection", () => {
+    const accessory = getProduct(
+      "accessories",
+      "tab-t26-ultra-keyboard-studio",
+    );
+    if (!accessory) throw new Error("Missing keyboard studio");
+
+    const store = getStoreConfiguration(accessory);
+    const selections = getDefaultStoreSelections(store);
+
+    expect(selections).toEqual(
+      expect.arrayContaining([
+        expect.objectContaining({
+          groupId: "variant",
+          optionLabel: "12.9-inch",
+          priceDelta: 0,
+        }),
+      ]),
+    );
   });
 });

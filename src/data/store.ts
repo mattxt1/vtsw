@@ -784,6 +784,23 @@ export function getStoreProductsForFamily(product: CatalogProduct) {
   );
 }
 
+export function getDefaultStoreSelections(
+  configuration: StoreProductConfiguration,
+) {
+  return configuration.optionGroups.flatMap((group) => {
+    const selected = group.mode === "single" ? group.options.slice(0, 1) : [];
+
+    return selected.map((option) => ({
+      groupId: group.id,
+      groupLabel: group.label.replace(/\.$/, ""),
+      optionId: option.id,
+      optionLabel: option.label,
+      priceDelta: option.priceDelta,
+      color: option.color,
+    }));
+  });
+}
+
 export function formatPrice(value: number) {
   return new Intl.NumberFormat("en-US", {
     style: "currency",

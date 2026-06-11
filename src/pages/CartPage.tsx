@@ -3,16 +3,66 @@ import { Link } from "react-router-dom";
 import { PageTransition } from "../components/PageTransition";
 import { ProductPlaceholder } from "../components/ProductPlaceholder";
 import { useCart } from "../context/CartContext";
+import { getAccessoryRecommendations } from "../data/accessoryRecommendations";
 import { catalogProducts } from "../data/catalog";
-import { formatPrice } from "../data/store";
+import { getProductKey } from "../data/productKey";
+import {
+  formatPrice,
+  getDefaultStoreSelections,
+  getStoreConfiguration,
+} from "../data/store";
 import { getProductVisualKind } from "../utils/productVisual";
 
 export function CartPage() {
-  const { items, subtotal, removeItem, updateQuantity } = useCart();
+  const { items, subtotal, addItem, removeItem, updateQuantity } = useCart();
 
   useEffect(() => {
     document.title = "Your bag - vela";
   }, []);
+
+  const deviceInFocus = [...items]
+    .reverse()
+    .map((item) =>
+      catalogProducts.find(
+        (product) => getProductKey(product) === item.productKey,
+      ),
+    )
+    .find(
+      (product) =>
+        product &&
+        product.segmentId !== "accessories" &&
+        product.segmentId !== "platform",
+    );
+  const cartProductKeys = new Set(items.map((item) => item.productKey));
+  const recommendations = deviceInFocus
+    ? getAccessoryRecommendations(deviceInFocus)
+        .filter((product) => !cartProductKeys.has(getProductKey(product)))
+        .slice(0, 4)
+    : [];
+
+  function addAccessory(productKey: string) {
+    const accessory = catalogProducts.find(
+      (product) => getProductKey(product) === productKey,
+    );
+    if (!accessory) return;
+
+    const configuration = getStoreConfiguration(accessory);
+    if (!configuration.purchasable) return;
+
+    const selections = getDefaultStoreSelections(configuration);
+    addItem({
+      productKey,
+      productName: accessory.displayName,
+      productRoute: `/buy/${accessory.segmentId}/${accessory.id}`,
+      selections,
+      unitPrice:
+        configuration.basePrice +
+        selections.reduce(
+          (total, selection) => total + selection.priceDelta,
+          0,
+        ),
+    });
+  }
 
   return (
     <PageTransition>
@@ -102,6 +152,83 @@ export function CartPage() {
                   </article>
                 );
               })}
+
+              {deviceInFocus && recommendations.length > 0 && (
+                <section
+                  className="cart-accessories"
+                  aria-labelledby="cart-accessories-heading"
+                >
+                  <div className="cart-accessories__heading">
+                    <div>
+                      <p className="eyebrow">complete your setup</p>
+                      <h2 id="cart-accessories-heading">
+                        Made for your {deviceInFocus.model}.
+                      </h2>
+                    </div>
+                    <Link to="/products/accessories">
+                      Explore all accessories →
+                    </Link>
+                  </div>
+                  <div className="cart-accessories__grid">
+                    {recommendations.map((accessory) => {
+                      const configuration = getStoreConfiguration(accessory);
+                      const needsConfiguration = configuration.optionGroups.some(
+                        (group) =>
+                          group.id === "variant" && group.options.length > 1,
+                      );
+
+                      return (
+                        <article
+                          className="cart-accessory-card"
+                          key={accessory.id}
+                        >
+                          <Link
+                            className="cart-accessory-card__visual"
+                            to={`/products/accessories/${accessory.id}`}
+                          >
+                            <ProductPlaceholder
+                              kind="accessory"
+                              label={accessory.displayName}
+                            />
+                          </Link>
+                          <div className="cart-accessory-card__copy">
+                            <p>{accessory.groupName}</p>
+                            <h3>{accessory.displayName}</h3>
+                            <span>{accessory.tagline}</span>
+                            <div>
+                              <strong>
+                                From {formatPrice(configuration.basePrice)}
+                              </strong>
+                              {configuration.purchasable &&
+                              !needsConfiguration ? (
+                                <button
+                                  type="button"
+                                  onClick={() =>
+                                    addAccessory(getProductKey(accessory))
+                                  }
+                                >
+                                  Add
+                                  <span aria-hidden="true">+</span>
+                                </button>
+                              ) : (
+                                <Link
+                                  to={
+                                    configuration.purchasable
+                                      ? `/buy/accessories/${accessory.id}`
+                                      : `/products/accessories/${accessory.id}`
+                                  }
+                                >
+                                  {configuration.purchasable ? "Choose" : "View"}
+                                </Link>
+                              )}
+                            </div>
+                          </div>
+                        </article>
+                      );
+                    })}
+                  </div>
+                </section>
+              )}
             </div>
 
             <aside className="cart-summary">

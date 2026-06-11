@@ -117,6 +117,14 @@ test("visitors can configure a product and carry it into the bag", async ({
   await expect(page).toHaveURL(/\/cart$/);
   await expect(page.getByRole("heading", { name: "Your bag." })).toBeVisible();
   await expect(page.getByText("1TB")).toBeVisible();
+  await expect(
+    page.getByRole("heading", { name: "Made for your x26 Ultra." }),
+  ).toBeVisible();
+  await expect(
+    page.getByRole("heading", {
+      name: "vela x26 ultra silicone case",
+    }),
+  ).toBeVisible();
 
   await page.getByRole("link", { name: /Check out/i }).click();
   await expect(page).toHaveURL(/\/checkout$/);
