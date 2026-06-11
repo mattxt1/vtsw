@@ -1,8 +1,8 @@
-@import url("https://fonts.googleapis.com/css2?family=DM+Mono:wght@300;400&family=Manrope:wght@400;500;600&family=Newsreader:opsz,wght@6..72,300;6..72,400&display=swap");
+@import url("https://fonts.googleapis.com/css2?family=Instrument+Sans:wght@400;500;600&family=Newsreader:opsz,wght@6..72,300;6..72,400&display=swap");
 
 :root {
   color-scheme: light;
-  font-family: "Manrope", "Helvetica Neue", Arial, sans-serif;
+  font-family: "Instrument Sans", "Helvetica Neue", Arial, sans-serif;
   color: #252a2d;
   background: #e7e8e5;
   font-synthesis: none;
@@ -17,11 +17,11 @@
   --shadow-dark: rgba(62, 73, 78, 0.2);
   --shadow-light: rgba(255, 255, 255, 0.86);
   --serif: "Newsreader", Georgia, serif;
-  --mono: "DM Mono", monospace;
+  --mono: "Instrument Sans", "Helvetica Neue", Arial, sans-serif;
   --ease-out: cubic-bezier(0.22, 1, 0.36, 1);
   --page-gutter: clamp(1.25rem, 4vw, 4rem);
   --section-space: clamp(6rem, 13vw, 12rem);
-  --text-label: 0.6875rem;
+  --text-label: 0.75rem;
   --text-small: 0.8125rem;
   --radius-card: clamp(1.25rem, 2vw, 2rem);
 }
@@ -189,8 +189,9 @@ p {
   padding: 0.4rem 0;
   color: #596368;
   font-family: var(--mono);
-  font-size: var(--text-label);
-  letter-spacing: 0.045em;
+  font-size: 0.78rem;
+  font-weight: 500;
+  letter-spacing: -0.012em;
   text-transform: lowercase;
   transition: color 200ms ease;
 }
@@ -1280,10 +1281,11 @@ p {
   margin-bottom: 1.3rem;
   color: var(--muted);
   font-family: var(--mono);
-  font-size: 0.66rem;
-  letter-spacing: 0.12em;
-  line-height: 1.4;
-  text-transform: uppercase;
+  font-size: 0.76rem;
+  font-weight: 500;
+  letter-spacing: -0.005em;
+  line-height: 1.45;
+  text-transform: none;
 }
 
 .home-hero {
@@ -1461,9 +1463,10 @@ p {
   border: 1px solid rgba(255, 255, 255, 0.52);
   border-radius: 999px;
   font-family: var(--mono);
-  font-size: 0.68rem;
-  letter-spacing: 0.07em;
-  text-transform: uppercase;
+  font-size: 0.75rem;
+  font-weight: 500;
+  letter-spacing: 0;
+  text-transform: none;
   background: rgba(231, 225, 214, 0.72);
   box-shadow:
     -5px -5px 12px rgba(255, 255, 255, 0.8),
@@ -3501,7 +3504,7 @@ p {
   box-shadow:
     inset 3px 3px 8px rgba(63, 77, 83, 0.07),
     inset -3px -3px 8px rgba(255, 255, 255, 0.5);
-  font: 400 0.9rem "Manrope", sans-serif;
+  font: 400 0.9rem "Instrument Sans", sans-serif;
 }
 
 .checkout-form__row {
@@ -3531,7 +3534,7 @@ p {
 
 .checkout-delivery-option strong {
   color: var(--ink);
-  font-family: "Manrope", sans-serif;
+  font-family: "Instrument Sans", sans-serif;
   font-size: 0.82rem;
 }
 
@@ -3654,7 +3657,7 @@ p {
   border: 1px solid rgba(63, 78, 84, 0.14);
   border-radius: 999px;
   color: var(--ink);
-  font: 500 0.75rem "Manrope", "Helvetica Neue", Arial, sans-serif;
+  font: 500 0.75rem "Instrument Sans", "Helvetica Neue", Arial, sans-serif;
   background:
     linear-gradient(45deg, transparent 50%, #657278 50%)
       calc(100% - 1.15rem) 50% / 5px 5px no-repeat,
@@ -4105,15 +4108,62 @@ p {
 
 .eyebrow {
   font-size: var(--text-label);
-  letter-spacing: 0.1em;
-  line-height: 1.55;
+  letter-spacing: -0.005em;
+  line-height: 1.5;
 }
 
 .embossed-button {
   min-height: 3.25rem;
   padding: 0.95rem 1.3rem;
   font-size: var(--text-label);
-  letter-spacing: 0.055em;
+  letter-spacing: 0;
+}
+
+.launch-hero__metrics span,
+.premium-event__product-copy > p,
+.software-feature__visual li span,
+.footer__row,
+.model-card__highlights span,
+.product-facts p,
+.product-spec-group dt,
+.store-local-nav span,
+.cart-accessory-card__copy > p,
+.compare-selection-card > label,
+.compare-archive-badge,
+.compare-selection-card__copy li span,
+.compare-archive-context strong,
+.compare-table thead th:first-child,
+.compare-table thead th span,
+.compare-table__row > th span,
+.compare-legend {
+  font-size: 0.72rem;
+  font-weight: 500;
+  letter-spacing: 0;
+  text-transform: none;
+}
+
+.product-placeholder__caption,
+.ecosystem-band__devices span,
+.category-tile > span,
+.product-card__topline,
+.product-card__discover,
+.product-group > p,
+.continuity__orbit span,
+.principle-grid__number,
+.segment-hero__actions > a:last-child,
+.segment-hero__count,
+.accessory-family-nav small,
+.model-card__copy > span,
+.product-local-nav,
+.product-metadata span,
+.product-adjacent span,
+.store-local-nav,
+.store-step__heading > span,
+.compare-selection-card__copy > a,
+.compare-filter,
+.compare-toggle {
+  font-size: 0.72rem;
+  letter-spacing: 0;
 }
 
 .tactile-card,
