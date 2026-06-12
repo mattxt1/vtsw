@@ -5220,6 +5220,590 @@ a:hover .product-render__sheen,
   font-size: 0.58rem;
 }
 
+.checkout-progress {
+  display: flex;
+  gap: 0;
+  max-width: 28rem;
+  margin: 2rem 0 0;
+  padding: 0;
+  list-style: none;
+}
+
+.checkout-progress li {
+  position: relative;
+  display: flex;
+  flex: 1;
+  align-items: center;
+  gap: 0.55rem;
+  color: var(--muted);
+  font-family: var(--mono);
+  font-size: 0.58rem;
+}
+
+.checkout-progress li + li::before {
+  position: absolute;
+  right: calc(100% - 0.35rem);
+  width: calc(100% - 1.7rem);
+  height: 1px;
+  background: rgba(67, 80, 86, 0.18);
+  content: "";
+}
+
+.checkout-progress span {
+  position: relative;
+  z-index: 1;
+  display: grid;
+  width: 1.75rem;
+  height: 1.75rem;
+  border: 1px solid rgba(67, 80, 86, 0.18);
+  border-radius: 50%;
+  background: var(--surface);
+  place-items: center;
+}
+
+.checkout-progress .is-complete,
+.checkout-progress .is-current {
+  color: var(--ink);
+}
+
+.checkout-progress .is-complete span,
+.checkout-progress .is-current span {
+  border-color: #4d626a;
+  color: #eef3f3;
+  background: #43565e;
+}
+
+.checkout-payment {
+  display: grid;
+  gap: 1.2rem;
+}
+
+.payment-methods {
+  display: grid;
+  gap: 0.85rem;
+  margin: 0;
+  padding: 0 0 2.8rem;
+  border: 0;
+}
+
+.payment-methods legend {
+  margin-bottom: 1.4rem;
+  font-family: var(--serif);
+  font-size: clamp(2rem, 4vw, 3.5rem);
+}
+
+.payment-method-card {
+  display: grid;
+  grid-template-columns: auto auto minmax(0, 1fr) auto;
+  align-items: center;
+  gap: 1rem;
+  min-height: 6.25rem;
+  padding: 1.1rem 1.25rem;
+  border: 1px solid rgba(63, 77, 83, 0.14);
+  border-radius: 1.2rem;
+  background: rgba(240, 242, 239, 0.72);
+  box-shadow:
+    8px 10px 24px rgba(63, 76, 82, 0.08),
+    inset 0 1px 0 rgba(255, 255, 255, 0.7);
+  cursor: pointer;
+  transition:
+    border-color 180ms ease,
+    transform 220ms var(--ease-out),
+    box-shadow 220ms var(--ease-out);
+}
+
+.payment-method-card:hover {
+  transform: translateY(-2px);
+}
+
+.payment-method-card.is-selected {
+  border-color: rgba(71, 73, 143, 0.52);
+  box-shadow:
+    0 18px 36px rgba(64, 53, 106, 0.12),
+    inset 0 0 0 1px rgba(110, 91, 206, 0.12);
+}
+
+.payment-method-card input {
+  width: 1rem;
+  height: 1rem;
+  accent-color: #765cdf;
+}
+
+.payment-method-card > img,
+.payment-method-card__icon {
+  width: 2.65rem;
+  height: 2.65rem;
+  border-radius: 0.72rem;
+}
+
+.payment-method-card > img {
+  object-fit: cover;
+}
+
+.payment-method-card__icon {
+  display: grid;
+  color: #536169;
+  background: rgba(216, 222, 220, 0.72);
+  font-size: 1.35rem;
+  place-items: center;
+}
+
+.payment-method-card > span:not(.payment-method-card__icon) {
+  display: grid;
+  gap: 0.3rem;
+}
+
+.payment-method-card strong {
+  color: var(--ink);
+  font-size: 0.9rem;
+  font-weight: 550;
+}
+
+.payment-method-card small,
+.payment-method-card b {
+  color: var(--muted);
+  font-size: 0.68rem;
+}
+
+.payment-method-card b {
+  font-family: var(--mono);
+  font-weight: 400;
+  white-space: nowrap;
+}
+
+.payment-method-card--thrive.is-selected {
+  background:
+    radial-gradient(circle at 90% 10%, rgba(159, 124, 255, 0.12), transparent 28%),
+    rgba(240, 238, 246, 0.84);
+}
+
+.thrivepay-module {
+  overflow: hidden;
+  border: 1px solid rgba(196, 178, 255, 0.26);
+  border-radius: clamp(1.5rem, 3vw, 2.2rem);
+  color: #f6f1ff;
+  background:
+    radial-gradient(circle at 90% 2%, rgba(255, 222, 89, 0.16), transparent 23rem),
+    radial-gradient(circle at 3% 35%, rgba(140, 82, 255, 0.38), transparent 29rem),
+    linear-gradient(145deg, #251f35, #15131d 58%, #20212b);
+  box-shadow:
+    0 32px 70px rgba(40, 32, 68, 0.24),
+    inset 0 1px 0 rgba(255, 255, 255, 0.1);
+}
+
+.thrivepay-module__brand {
+  display: flex;
+  min-height: 4.2rem;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0 1.6rem;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+  color: rgba(246, 241, 255, 0.7);
+  font-family: var(--mono);
+  font-size: 0.62rem;
+}
+
+.thrivepay-module__brand img {
+  width: 8rem;
+  height: 2.7rem;
+  object-fit: cover;
+}
+
+.thrivepay-module__intro {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) minmax(14rem, 0.55fr);
+  align-items: end;
+  gap: 2rem;
+  padding: clamp(2rem, 5vw, 3.5rem);
+}
+
+.thrivepay-module__intro p {
+  margin: 0;
+  color: rgba(239, 232, 249, 0.64);
+  font-size: 0.75rem;
+  line-height: 1.6;
+}
+
+.thrivepay-module__intro > div > p {
+  margin-bottom: 0.8rem;
+  font-family: var(--mono);
+  font-size: 0.58rem;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+}
+
+.thrivepay-module__intro h2 {
+  margin: 0;
+  color: #fff;
+  font-size: clamp(3.4rem, 7vw, 6rem);
+  letter-spacing: -0.055em;
+  line-height: 0.85;
+}
+
+.thrivepay-module__intro h2 span {
+  margin-left: 0.35rem;
+  color: rgba(242, 236, 250, 0.58);
+  font-family: "Instrument Sans", sans-serif;
+  font-size: 0.9rem;
+  font-weight: 400;
+  letter-spacing: 0;
+}
+
+.thrivepay-controls {
+  display: grid;
+  border-top: 1px solid rgba(255, 255, 255, 0.1);
+  border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.thrivepay-control {
+  padding: clamp(1.7rem, 4vw, 2.6rem);
+}
+
+.thrivepay-control + .thrivepay-control {
+  border-top: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.thrivepay-control__heading {
+  display: flex;
+  align-items: start;
+  justify-content: space-between;
+  gap: 1.5rem;
+  margin-bottom: 1.6rem;
+}
+
+.thrivepay-control__heading label,
+.thrivepay-control__label {
+  display: block;
+  margin: 0 0 0.3rem;
+  color: #fff;
+  font-size: 0.9rem;
+  font-weight: 550;
+}
+
+.thrivepay-control__heading p:not(.thrivepay-control__label) {
+  margin: 0;
+  color: rgba(239, 232, 249, 0.55);
+  font-size: 0.68rem;
+}
+
+.thrivepay-control__heading > strong {
+  color: #fff;
+  font-family: var(--serif);
+  font-size: 1.45rem;
+  font-weight: 400;
+  white-space: nowrap;
+}
+
+.thrivepay-range {
+  width: 100%;
+  height: 0.4rem;
+  border-radius: 999px;
+  background: linear-gradient(90deg, #8c52ff, #ffd95a);
+  cursor: pointer;
+  accent-color: #aa7cff;
+  appearance: none;
+}
+
+.thrivepay-range::-webkit-slider-thumb {
+  width: 1.45rem;
+  height: 1.45rem;
+  border: 3px solid #272032;
+  border-radius: 50%;
+  background: #fff;
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.4);
+  appearance: none;
+}
+
+.thrivepay-quick-values {
+  display: grid;
+  grid-template-columns: repeat(4, auto) minmax(9rem, 1fr);
+  align-items: end;
+  gap: 0.55rem;
+  margin-top: 1.4rem;
+}
+
+.thrivepay-quick-values button,
+.thrivepay-quick-values > label > span {
+  min-height: 2.5rem;
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  border-radius: 999px;
+  color: rgba(247, 242, 255, 0.82);
+  background: rgba(255, 255, 255, 0.06);
+}
+
+.thrivepay-quick-values button {
+  padding: 0 0.8rem;
+  cursor: pointer;
+  font: 500 0.66rem "Instrument Sans", sans-serif;
+}
+
+.thrivepay-quick-values > label {
+  display: grid;
+  gap: 0.35rem;
+  color: rgba(239, 232, 249, 0.56);
+  font-family: var(--mono);
+  font-size: 0.5rem;
+}
+
+.thrivepay-quick-values > label > span {
+  display: flex;
+  align-items: center;
+  padding: 0 0.8rem;
+}
+
+.thrivepay-quick-values input {
+  min-width: 0;
+  width: 100%;
+  border: 0;
+  color: #fff;
+  background: transparent;
+  font: 500 0.7rem "Instrument Sans", sans-serif;
+  outline: none;
+}
+
+.thrivepay-terms {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: 0.65rem;
+}
+
+.thrivepay-terms label {
+  position: relative;
+  display: grid;
+  min-height: 5rem;
+  align-content: center;
+  padding: 0.8rem;
+  border: 1px solid rgba(255, 255, 255, 0.11);
+  border-radius: 1rem;
+  background: rgba(255, 255, 255, 0.045);
+  cursor: pointer;
+  text-align: center;
+}
+
+.thrivepay-terms label.is-selected {
+  border-color: rgba(200, 171, 255, 0.72);
+  background:
+    linear-gradient(145deg, rgba(139, 83, 255, 0.32), rgba(255, 215, 85, 0.08)),
+    rgba(255, 255, 255, 0.06);
+  box-shadow: inset 0 0 0 1px rgba(255, 255, 255, 0.06);
+}
+
+.thrivepay-terms input {
+  position: absolute;
+  opacity: 0;
+}
+
+.thrivepay-terms strong {
+  color: #fff;
+  font-family: var(--serif);
+  font-size: 1.55rem;
+  font-weight: 400;
+}
+
+.thrivepay-terms span {
+  color: rgba(239, 232, 249, 0.54);
+  font-family: var(--mono);
+  font-size: 0.48rem;
+  text-transform: uppercase;
+}
+
+.thrivepay-plan-summary {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  padding: 0 clamp(1.7rem, 4vw, 2.6rem);
+}
+
+.thrivepay-plan-summary > div {
+  display: grid;
+  align-content: space-between;
+  min-height: 7.5rem;
+  padding: 1.5rem 1rem 1.5rem 0;
+}
+
+.thrivepay-plan-summary > div + div {
+  padding-left: 1rem;
+  border-left: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.thrivepay-plan-summary span {
+  color: rgba(239, 232, 249, 0.52);
+  font-size: 0.62rem;
+}
+
+.thrivepay-plan-summary strong {
+  color: #fff;
+  font-family: var(--serif);
+  font-size: clamp(1.15rem, 2vw, 1.55rem);
+  font-weight: 400;
+}
+
+.thrivepay-autopay {
+  display: flex;
+  align-items: center;
+  gap: 0.9rem;
+  margin: 0 clamp(1.7rem, 4vw, 2.6rem);
+  padding: 1.2rem 0;
+  border-top: 1px solid rgba(255, 255, 255, 0.1);
+  border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+  cursor: pointer;
+}
+
+.thrivepay-autopay input {
+  width: 1.05rem;
+  height: 1.05rem;
+  accent-color: #a875ff;
+}
+
+.thrivepay-autopay span {
+  display: grid;
+  gap: 0.2rem;
+}
+
+.thrivepay-autopay strong {
+  color: #fff;
+  font-size: 0.75rem;
+}
+
+.thrivepay-autopay small {
+  color: rgba(239, 232, 249, 0.56);
+  font-size: 0.64rem;
+}
+
+.thrivepay-disclosure {
+  margin: 0 clamp(1.7rem, 4vw, 2.6rem);
+  padding: 1.2rem 0;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.thrivepay-disclosure summary {
+  color: rgba(249, 245, 255, 0.8);
+  cursor: pointer;
+  font-size: 0.68rem;
+}
+
+.thrivepay-disclosure p {
+  max-width: 48rem;
+  margin: 0.9rem 0 0;
+  color: rgba(239, 232, 249, 0.55);
+  font-size: 0.62rem;
+  line-height: 1.65;
+}
+
+.thrivepay-primary-button {
+  display: grid;
+  grid-template-columns: auto minmax(0, 1fr) auto;
+  width: calc(100% - clamp(3.4rem, 8vw, 5.2rem));
+  min-height: 4rem;
+  align-items: center;
+  gap: 1rem;
+  margin: clamp(1.7rem, 4vw, 2.6rem);
+  padding: 0.75rem 1.2rem;
+  border: 0;
+  border-radius: 999px;
+  color: #211a2d;
+  background: linear-gradient(105deg, #a875ff, #ffd95a);
+  box-shadow:
+    0 16px 30px rgba(5, 3, 10, 0.25),
+    inset 0 1px 0 rgba(255, 255, 255, 0.55);
+  cursor: pointer;
+  font: 600 0.72rem "Instrument Sans", sans-serif;
+  text-align: left;
+}
+
+.thrivepay-primary-button img {
+  width: 2rem;
+  height: 2rem;
+  border-radius: 0.55rem;
+  object-fit: cover;
+}
+
+.card-payment-preview {
+  display: grid;
+  grid-template-columns: auto minmax(0, 1fr);
+  gap: 1.5rem;
+  padding: clamp(1.5rem, 4vw, 2.5rem);
+  border: 1px solid rgba(255, 255, 255, 0.65);
+  border-radius: 1.4rem;
+  background: rgba(237, 239, 236, 0.82);
+  box-shadow:
+    12px 14px 30px rgba(66, 80, 86, 0.1),
+    inset 0 1px 0 rgba(255, 255, 255, 0.72);
+}
+
+.card-payment-preview__icon {
+  display: grid;
+  width: 3.5rem;
+  height: 3.5rem;
+  border-radius: 1rem;
+  color: #eef2f2;
+  background: #465961;
+  place-items: center;
+}
+
+.card-payment-preview h2 {
+  margin-bottom: 0.6rem;
+  font-size: clamp(2rem, 4vw, 3.4rem);
+}
+
+.card-payment-preview p:last-child {
+  max-width: 34rem;
+  margin: 0;
+  color: var(--muted);
+  font-size: 0.75rem;
+}
+
+.card-payment-preview .embossed-button {
+  grid-column: 1 / -1;
+  justify-content: space-between;
+}
+
+.checkout-back-button {
+  justify-self: start;
+  padding: 0.7rem 0;
+  border: 0;
+  color: var(--muted);
+  background: transparent;
+  cursor: pointer;
+  font: 500 0.62rem var(--mono);
+}
+
+.checkout-summary__thrive {
+  display: grid;
+  grid-template-columns: 3.2rem minmax(0, 1fr);
+  gap: 0.8rem;
+  margin: 0 0 1.2rem;
+  padding: 1rem;
+  border: 1px solid rgba(112, 85, 188, 0.16);
+  border-radius: 1rem;
+  background:
+    radial-gradient(circle at 100% 0%, rgba(154, 102, 255, 0.1), transparent 60%),
+    rgba(239, 237, 244, 0.72);
+}
+
+.checkout-summary__thrive > img {
+  width: 3.2rem;
+  height: 3.2rem;
+  border-radius: 0.8rem;
+  object-fit: cover;
+}
+
+.checkout-summary__thrive > div {
+  display: grid;
+  gap: 0.18rem;
+}
+
+.checkout-summary__thrive span,
+.checkout-summary__thrive small {
+  color: var(--muted);
+  font-size: 0.58rem;
+}
+
+.checkout-summary__thrive strong {
+  font-family: var(--serif);
+  font-size: 1.2rem;
+  font-weight: 400;
+}
+
 .compare-page {
   min-height: 100vh;
   background:
@@ -6743,6 +7327,43 @@ a:hover .product-render__sheen,
   .checkout-form__row,
   .checkout-form__row:has(label:nth-child(3)) {
     grid-template-columns: 1fr;
+  }
+
+  .payment-method-card {
+    grid-template-columns: auto auto minmax(0, 1fr);
+  }
+
+  .payment-method-card b {
+    grid-column: 3;
+  }
+
+  .thrivepay-module__intro {
+    grid-template-columns: 1fr;
+  }
+
+  .thrivepay-quick-values {
+    grid-template-columns: repeat(4, 1fr);
+  }
+
+  .thrivepay-quick-values > label {
+    grid-column: 1 / -1;
+  }
+
+  .thrivepay-terms {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+
+  .thrivepay-plan-summary {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+
+  .thrivepay-plan-summary > div:nth-child(3) {
+    border-left: 0;
+    border-top: 1px solid rgba(255, 255, 255, 0.1);
+  }
+
+  .thrivepay-plan-summary > div:nth-child(4) {
+    border-top: 1px solid rgba(255, 255, 255, 0.1);
   }
 
   .cart-page,

@@ -281,8 +281,25 @@ test("visitors can configure a product and carry it into the bag", async ({
   await page.getByLabel("ZIP code").fill("10001");
   await page.getByRole("button", { name: /Continue to payment/i }).click();
   await expect(
-    page.getByText("This is the end of the prototype checkout."),
+    page.getByRole("heading", { name: "How would you like to pay?" }),
   ).toBeVisible();
+  await expect(
+    page.getByRole("radio", { name: /thrivepay monthly/ }),
+  ).toBeChecked();
+  await page.getByLabel("Custom down payment").fill("199");
+  await page.getByRole("radio", { name: /12 months/i }).check();
+  await expect(
+    page.getByRole("heading", { name: /\$133.33/ }),
+  ).toBeVisible();
+  await page
+    .getByRole("button", { name: /Continue with thrivepay/ })
+    .click();
+  await expect(
+    page.getByText("Your thrivepay plan is ready to review."),
+  ).toBeVisible();
+  await expect(page.getByRole("status")).toContainText(
+    "No identity check, credit inquiry, payment, financing agreement, or order was submitted.",
+  );
 });
 
 test("visitors can build and refine a shareable comparison", async ({ page }) => {
