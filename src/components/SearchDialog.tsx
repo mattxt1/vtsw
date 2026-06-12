@@ -1,3 +1,4 @@
+import { AnimatePresence, motion } from "motion/react";
 import { FormEvent, useEffect, useRef, useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { searchSite } from "../data/search";
@@ -46,11 +47,14 @@ export function SearchDialog({ isOpen, onClose }: SearchDialogProps) {
   }
 
   return (
-    <div
+    <motion.div
       className="search-dialog"
       role="dialog"
       aria-modal="true"
       aria-labelledby="search-dialog-title"
+      initial={{ opacity: 0 }}
+      animate={{ opacity: 1 }}
+      transition={{ duration: 0.22, ease: "easeOut" }}
       onKeyDown={(event) => {
         if (event.key === "Escape") {
           closeDialog();
@@ -74,15 +78,33 @@ export function SearchDialog({ isOpen, onClose }: SearchDialogProps) {
         }
       }}
     >
-      <button
+      <motion.button
         className="search-dialog__backdrop"
         type="button"
         onClick={closeDialog}
         aria-label="Close search"
         tabIndex={-1}
+        initial={{ opacity: 0 }}
+        animate={{ opacity: 1 }}
+        transition={{ duration: 0.3, ease: "easeOut" }}
       />
-      <section ref={surfaceRef} className="search-dialog__surface">
-        <div className="search-dialog__heading">
+      <motion.section
+        ref={surfaceRef}
+        className="search-dialog__surface"
+        initial={{ opacity: 0, y: -24, scale: 0.975, filter: "blur(10px)" }}
+        animate={{ opacity: 1, y: 0, scale: 1, filter: "blur(0px)" }}
+        transition={{
+          duration: 0.48,
+          delay: 0.04,
+          ease: [0.22, 1, 0.36, 1],
+        }}
+      >
+        <motion.div
+          className="search-dialog__heading"
+          initial={{ opacity: 0, y: -8 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.38, delay: 0.16, ease: "easeOut" }}
+        >
           <div>
             <p className="eyebrow">Search vela</p>
             <h2 id="search-dialog-title">What are you looking for?</h2>
@@ -91,9 +113,20 @@ export function SearchDialog({ isOpen, onClose }: SearchDialogProps) {
             Close
             <span aria-hidden="true">×</span>
           </button>
-        </div>
+        </motion.div>
 
-        <form className="search-form" role="search" onSubmit={handleSubmit}>
+        <motion.form
+          className="search-form"
+          role="search"
+          onSubmit={handleSubmit}
+          initial={{ opacity: 0, y: 10, scale: 0.99 }}
+          animate={{ opacity: 1, y: 0, scale: 1 }}
+          transition={{
+            duration: 0.42,
+            delay: 0.2,
+            ease: [0.22, 1, 0.36, 1],
+          }}
+        >
           <span aria-hidden="true">⌕</span>
           <input
             ref={inputRef}
@@ -109,52 +142,93 @@ export function SearchDialog({ isOpen, onClose }: SearchDialogProps) {
               Clear
             </button>
           )}
-        </form>
+        </motion.form>
 
-        <div className="search-dialog__content" aria-live="polite">
-          {!query.trim() ? (
-            <div className="search-quick-links">
-              <p>Popular now</p>
-              <div>
-                <Link to="/products/mobile/x26-ultra" onClick={closeDialog}>
-                  x26 Ultra
-                </Link>
-                <Link
-                  to="/products/computing/notebook-ultra"
-                  onClick={closeDialog}
+        <motion.div
+          className="search-dialog__content"
+          aria-live="polite"
+          initial={{ opacity: 0 }}
+          animate={{ opacity: 1 }}
+          transition={{ duration: 0.3, delay: 0.28 }}
+        >
+          <AnimatePresence mode="popLayout" initial={false}>
+            {!query.trim() ? (
+              <motion.div
+                className="search-quick-links"
+                key="quick-links"
+                initial={{ opacity: 0, y: 10 }}
+                animate={{ opacity: 1, y: 0 }}
+                exit={{ opacity: 0, y: -6 }}
+                transition={{ duration: 0.24, ease: "easeOut" }}
+              >
+                <p>Popular now</p>
+                <div>
+                  <Link to="/products/mobile/x26-ultra" onClick={closeDialog}>
+                    x26 Ultra
+                  </Link>
+                  <Link
+                    to="/products/computing/notebook-ultra"
+                    onClick={closeDialog}
+                  >
+                    notebook ultra
+                  </Link>
+                  <Link to="/products/platform/vos-27" onClick={closeDialog}>
+                    vOS 27
+                  </Link>
+                  <Link to="/products/accessories" onClick={closeDialog}>
+                    accessories
+                  </Link>
+                </div>
+              </motion.div>
+            ) : results.length > 0 ? (
+              <motion.div
+                className="search-dialog__results"
+                key="results"
+                initial={{ opacity: 0 }}
+                animate={{ opacity: 1 }}
+                exit={{ opacity: 0 }}
+                transition={{ duration: 0.18 }}
+              >
+                <motion.div
+                  className="search-dialog__summary"
+                  initial={{ opacity: 0, y: 6 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  transition={{ duration: 0.24 }}
                 >
-                  notebook ultra
-                </Link>
-                <Link to="/products/platform/vos-27" onClick={closeDialog}>
-                  vOS 27
-                </Link>
-                <Link to="/products/accessories" onClick={closeDialog}>
-                  accessories
-                </Link>
-              </div>
-            </div>
-          ) : results.length > 0 ? (
-            <>
-              <div className="search-dialog__summary">
-                <p>{results.length} top results</p>
-                <Link
-                  to={`/search?q=${encodeURIComponent(query.trim())}`}
-                  onClick={closeDialog}
-                >
-                  View all results
-                </Link>
-              </div>
-              <SearchResultList results={results} onNavigate={closeDialog} />
-            </>
-          ) : (
-            <div className="search-empty">
-              <p className="eyebrow">No close matches</p>
-              <h3>Try a product family or feature.</h3>
-              <p>For example: x26, notebook, OLED, ethos ai, or charging.</p>
-            </div>
-          )}
-        </div>
-      </section>
-    </div>
+                  <p>{results.length} top results</p>
+                  <Link
+                    to={`/search?q=${encodeURIComponent(query.trim())}`}
+                    onClick={closeDialog}
+                  >
+                    View all results
+                  </Link>
+                </motion.div>
+                <SearchResultList
+                  results={results}
+                  onNavigate={closeDialog}
+                  animated
+                />
+              </motion.div>
+            ) : (
+              <motion.div
+                className="search-empty"
+                key="empty"
+                initial={{ opacity: 0, y: 14, scale: 0.99 }}
+                animate={{ opacity: 1, y: 0, scale: 1 }}
+                exit={{ opacity: 0, y: -8 }}
+                transition={{
+                  duration: 0.3,
+                  ease: [0.22, 1, 0.36, 1],
+                }}
+              >
+                <p className="eyebrow">No close matches</p>
+                <h3>Try a product family or feature.</h3>
+                <p>For example: x26, notebook, OLED, ethos ai, or charging.</p>
+              </motion.div>
+            )}
+          </AnimatePresence>
+        </motion.div>
+      </motion.section>
+    </motion.div>
   );
 }

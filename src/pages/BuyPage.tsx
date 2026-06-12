@@ -1,7 +1,7 @@
 import { useEffect, useMemo, useState } from "react";
 import { Link, Navigate, useNavigate, useParams } from "react-router-dom";
 import { PageTransition } from "../components/PageTransition";
-import { ProductPlaceholder } from "../components/ProductPlaceholder";
+import { ProductRender } from "../components/ProductRender";
 import { useCart } from "../context/CartContext";
 import { getProduct } from "../data/catalog";
 import {
@@ -10,7 +10,6 @@ import {
   getStoreProductsForFamily,
 } from "../data/store";
 import type { CartSelection, StoreOptionGroup } from "../types/store";
-import { getProductVisualKind } from "../utils/productVisual";
 
 type SelectionState = Record<string, string[]>;
 
@@ -142,14 +141,31 @@ export function BuyPage() {
           <aside className="buy-visual" aria-label="Your configuration">
             <div className="buy-visual__sticky">
               <p className="eyebrow">your {product.model}</p>
-              <ProductPlaceholder
-                kind={getProductVisualKind(product)}
-                label={product.displayName}
-                tone={product.tier === "ultra" ? "dark" : "light"}
+              <ProductRender
+                product={product}
+                finishColor={selectedFinish?.color}
+                finishName={selectedFinish?.optionLabel}
+                priority
               />
               <div className="buy-visual__caption">
                 <strong>{selectedFinish?.optionLabel ?? product.tagline}</strong>
                 <span>Designed around {product.platform}</span>
+              </div>
+              <div className="buy-visual__price" aria-live="polite">
+                <div>
+                  <p>
+                    {configuration.promotionLabel
+                      ? `${configuration.promotionLabel} subtotal`
+                      : "configured subtotal"}
+                  </p>
+                  <strong>{formatPrice(subtotal)}</strong>
+                </div>
+                {listSubtotal && (
+                  <span>
+                    <s>{formatPrice(listSubtotal)}</s>
+                    Save {formatPrice(listSubtotal - subtotal)}
+                  </span>
+                )}
               </div>
             </div>
           </aside>

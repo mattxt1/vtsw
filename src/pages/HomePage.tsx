@@ -1,17 +1,16 @@
 import { useEffect } from "react";
 import { Link } from "react-router-dom";
-import {
-  ProductPlaceholder,
-  type ProductPlaceholderKind,
-} from "../components/ProductPlaceholder";
 import { Footer } from "../components/Footer";
 import { PageTransition } from "../components/PageTransition";
+import { ProductPlaceholder } from "../components/ProductPlaceholder";
+import { ProductRender } from "../components/ProductRender";
 import { Reveal } from "../components/Reveal";
 import { getProduct } from "../data/catalog";
 import { premiumEventPromotions } from "../data/promotions";
 import { formatPrice, getStoreConfiguration } from "../data/store";
 import { vela } from "../data/vela";
 import { usePointerSurface } from "../hooks/usePointerSurface";
+import type { ProductRenderKind } from "../utils/productVisual";
 
 const featuredProducts = {
   phone: getProduct("mobile", "x26-ultra"),
@@ -38,7 +37,7 @@ const categoryLinks: Array<{
   eyebrow: string;
   description: string;
   to: string;
-  kind: ProductPlaceholderKind;
+  kind: ProductRenderKind | "software";
 }> = [
   {
     name: "Phones",
@@ -73,14 +72,14 @@ const categoryLinks: Array<{
     eyebrow: "home entertainment",
     description: "Large vela canvases built around the ecosystem.",
     to: "/products/display",
-    kind: "tv",
+    kind: "display",
   },
   {
     name: "Speakers",
     eyebrow: "home + theater",
     description: "Room-aware sound for music, television, and home.",
     to: "/products/audio",
-    kind: "audio",
+    kind: "speaker",
   },
   {
     name: "Accessories",
@@ -167,7 +166,12 @@ export function HomePage() {
             </div>
           </div>
           <div className="launch-hero__visual">
-            <ProductPlaceholder kind="phone" label="vela x26 Ultra" tone="blue" />
+            <ProductRender
+              product={phone}
+              finishColor={phone.finishes[0]?.color}
+              finishName={phone.finishes[0]?.name}
+              priority
+            />
           </div>
           <div className="launch-hero__metrics" aria-label="x26 Ultra highlights">
             {phone.highlights.slice(0, 4).map((highlight) => (
@@ -199,13 +203,6 @@ export function HomePage() {
             <div className="premium-event__grid">
               {premiumEventProducts.map(({ product, promotion }, index) => {
                 const configuration = getStoreConfiguration(product);
-                const kind =
-                  product.segmentId === "mobile"
-                    ? "phone"
-                    : product.model.startsWith("tab ")
-                      ? "tablet"
-                      : "watch";
-
                 return (
                   <Link
                     className="premium-event__product"
@@ -213,10 +210,11 @@ export function HomePage() {
                     key={product.id}
                   >
                     <div className="premium-event__visual">
-                      <ProductPlaceholder
-                        kind={kind}
-                        label={product.displayName}
-                        tone={index === 0 ? "dark" : "light"}
+                      <ProductRender
+                        product={product}
+                        finishColor={product.finishes[index]?.color}
+                        finishName={product.finishes[index]?.name}
+                        variant={index}
                       />
                     </div>
                     <div className="premium-event__product-copy">
@@ -341,10 +339,10 @@ export function HomePage() {
               </div>
             </Reveal>
             <Reveal className="launch-product__visual" delay={0.08}>
-              <ProductPlaceholder
-                kind="notebook"
-                label="vela notebook ultra"
-                tone="dark"
+              <ProductRender
+                product={notebook}
+                finishColor={notebook.finishes[0]?.color}
+                finishName={notebook.finishes[0]?.name}
               />
             </Reveal>
           </article>
@@ -360,10 +358,10 @@ export function HomePage() {
                 </Link>
               </Reveal>
               <Reveal className="launch-product__visual" delay={0.08}>
-                <ProductPlaceholder
-                  kind="tablet"
-                  label="vela tab t26 Ultra"
-                  tone="blue"
+                <ProductRender
+                  product={tablet}
+                  finishColor={tablet.finishes[1]?.color}
+                  finishName={tablet.finishes[1]?.name}
                 />
               </Reveal>
             </article>
@@ -378,10 +376,10 @@ export function HomePage() {
                 </Link>
               </Reveal>
               <Reveal className="launch-product__visual" delay={0.08}>
-                <ProductPlaceholder
-                  kind="watch"
-                  label="vela watch ultra"
-                  tone="light"
+                <ProductRender
+                  product={watch}
+                  finishColor={watch.finishes[0]?.color}
+                  finishName={watch.finishes[0]?.name}
                 />
               </Reveal>
             </article>
@@ -406,7 +404,11 @@ export function HomePage() {
               </div>
             </Reveal>
             <Reveal className="launch-product__visual" delay={0.08}>
-              <ProductPlaceholder kind="tv" label="vela tv ultra" tone="dark" />
+              <ProductRender
+                product={tv}
+                finishColor={tv.finishes[0]?.color}
+                finishName={tv.finishes[0]?.name}
+              />
             </Reveal>
           </article>
 
@@ -421,10 +423,10 @@ export function HomePage() {
                 </Link>
               </Reveal>
               <Reveal className="launch-product__visual" delay={0.08}>
-                <ProductPlaceholder
-                  kind="audio"
-                  label="vela probuds ultra"
-                  tone="light"
+                <ProductRender
+                  product={audio}
+                  finishColor={audio.finishes[0]?.color}
+                  finishName={audio.finishes[0]?.name}
                 />
               </Reveal>
             </article>
@@ -439,10 +441,10 @@ export function HomePage() {
                 </Link>
               </Reveal>
               <Reveal className="launch-product__visual" delay={0.08}>
-                <ProductPlaceholder
-                  kind="audio"
-                  label="vela home speaker pro"
-                  tone="blue"
+                <ProductRender
+                  product={speaker}
+                  finishColor={speaker.finishes[1]?.color}
+                  finishName={speaker.finishes[1]?.name}
                 />
               </Reveal>
             </article>
@@ -484,10 +486,18 @@ export function HomePage() {
               <Reveal key={category.name} delay={(index % 3) * 0.04}>
                 <Link className="category-tile" to={category.to}>
                   <div className="category-tile__visual">
-                    <ProductPlaceholder
-                      kind={category.kind}
-                      label={category.name}
-                    />
+                    {category.kind === "software" ? (
+                      <ProductPlaceholder
+                        kind="software"
+                        label={category.name}
+                      />
+                    ) : (
+                      <ProductRender
+                        kind={category.kind}
+                        label={category.name}
+                        variant={index}
+                      />
+                    )}
                   </div>
                   <p className="eyebrow">{category.eyebrow}</p>
                   <h3>{category.name}</h3>

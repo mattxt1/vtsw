@@ -1,6 +1,7 @@
 import { Fragment, useEffect, useMemo, useState } from "react";
 import { Link, useSearchParams } from "react-router-dom";
 import { AbstractMedia } from "../components/AbstractMedia";
+import { ProductRender } from "../components/ProductRender";
 import { Footer } from "../components/Footer";
 import { PageTransition } from "../components/PageTransition";
 import { Reveal } from "../components/Reveal";
@@ -160,7 +161,19 @@ export function ComparePage() {
                 {product ? (
                   <>
                     <div className="compare-selection-card__media">
-                      <AbstractMedia media={product.media} variant={slotIndex} />
+                      {product.segmentId === "platform" ? (
+                        <AbstractMedia
+                          media={product.media}
+                          variant={slotIndex}
+                        />
+                      ) : (
+                        <ProductRender
+                          product={product}
+                          finishColor={product.finishes[0]?.color}
+                          finishName={product.finishes[0]?.name}
+                          variant={slotIndex}
+                        />
+                      )}
                     </div>
                     <div className="compare-selection-card__copy">
                       <div className="compare-selection-card__identity">

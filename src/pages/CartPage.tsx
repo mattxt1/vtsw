@@ -1,7 +1,7 @@
 import { useEffect } from "react";
 import { Link } from "react-router-dom";
 import { PageTransition } from "../components/PageTransition";
-import { ProductPlaceholder } from "../components/ProductPlaceholder";
+import { ProductRender } from "../components/ProductRender";
 import { useCart } from "../context/CartContext";
 import { getAccessoryRecommendations } from "../data/accessoryRecommendations";
 import { catalogProducts } from "../data/catalog";
@@ -11,7 +11,6 @@ import {
   getDefaultStoreSelections,
   getStoreConfiguration,
 } from "../data/store";
-import { getProductVisualKind } from "../utils/productVisual";
 
 export function CartPage() {
   const { items, subtotal, addItem, removeItem, updateQuantity } = useCart();
@@ -93,13 +92,17 @@ export function CartPage() {
                   (candidate) =>
                     `${candidate.segmentId}:${candidate.id}` === item.productKey,
                 );
+                const finish = item.selections.find(
+                  (selection) => selection.groupId === "finish",
+                );
                 return (
                   <article className="cart-item" key={item.id}>
                     <div className="cart-item__media">
                       {product && (
-                        <ProductPlaceholder
-                          kind={getProductVisualKind(product)}
-                          label={product.displayName}
+                        <ProductRender
+                          product={product}
+                          finishColor={finish?.color}
+                          finishName={finish?.optionLabel}
                         />
                       )}
                     </div>
@@ -186,10 +189,7 @@ export function CartPage() {
                             className="cart-accessory-card__visual"
                             to={`/products/accessories/${accessory.id}`}
                           >
-                            <ProductPlaceholder
-                              kind="accessory"
-                              label={accessory.displayName}
-                            />
+                            <ProductRender product={accessory} />
                           </Link>
                           <div className="cart-accessory-card__copy">
                             <p>{accessory.groupName}</p>

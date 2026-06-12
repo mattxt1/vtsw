@@ -3,6 +3,7 @@ import { Link, Navigate, useParams } from "react-router-dom";
 import { AbstractMedia } from "../components/AbstractMedia";
 import { Footer } from "../components/Footer";
 import { PageTransition } from "../components/PageTransition";
+import { ProductRender } from "../components/ProductRender";
 import { Reveal } from "../components/Reveal";
 import { TactileCard } from "../components/TactileCard";
 import {
@@ -144,10 +145,19 @@ export function SegmentPage() {
                           >
                             <TactileCard className="model-card">
                               <div className="model-card__media">
-                                <AbstractMedia
-                                  media={product.media}
-                                  variant={productIndex + groupIndex}
-                                />
+                                {segment.id === "platform" ? (
+                                  <AbstractMedia
+                                    media={product.media}
+                                    variant={productIndex + groupIndex}
+                                  />
+                                ) : (
+                                  <ProductRender
+                                    product={product}
+                                    finishColor={product.finishes[0]?.color}
+                                    finishName={product.finishes[0]?.name}
+                                    variant={productIndex + groupIndex}
+                                  />
+                                )}
                               </div>
                               <div className="model-card__copy">
                                 <p className="eyebrow">{product.tier}</p>

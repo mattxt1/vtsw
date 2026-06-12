@@ -4,6 +4,7 @@ import { AbstractMedia } from "../components/AbstractMedia";
 import { CinematicChapter } from "../components/CinematicChapter";
 import { Footer } from "../components/Footer";
 import { PageTransition } from "../components/PageTransition";
+import { ProductRender } from "../components/ProductRender";
 import { Reveal } from "../components/Reveal";
 import {
   getProduct,
@@ -109,7 +110,16 @@ export function ProductPage() {
             </div>
           </div>
           <div className="product-hero__media">
-            <AbstractMedia media={product.media} variant={productIndex} />
+            {isFoundationProduct ? (
+              <AbstractMedia media={product.media} variant={productIndex} />
+            ) : (
+              <ProductRender
+                product={product}
+                finishColor={product.finishes[0]?.color}
+                finishName={product.finishes[0]?.name}
+                priority
+              />
+            )}
             <div className="product-hero__stamp" aria-hidden="true">
               {product.model}
             </div>
