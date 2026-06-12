@@ -12,7 +12,7 @@ export function AppShell({ children }: { children: ReactNode }) {
     function handleShortcut(event: KeyboardEvent) {
       if ((event.metaKey || event.ctrlKey) && event.key.toLowerCase() === "k") {
         event.preventDefault();
-        setIsSearchOpen(true);
+        setIsSearchOpen((isOpen) => !isOpen);
       }
     }
 

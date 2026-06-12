@@ -104,7 +104,7 @@ describe("vela experience", () => {
     expect(screen.queryByRole("dialog")).not.toBeInTheDocument();
   });
 
-  it("opens global search with the platform keyboard shortcut", () => {
+  it("toggles global search with the platform keyboard shortcut", () => {
     render(
       <MemoryRouter initialEntries={["/"]}>
         <App />
@@ -117,6 +117,10 @@ describe("vela experience", () => {
     expect(
       screen.getByRole("searchbox", { name: "Search vela" }),
     ).toBeInTheDocument();
+
+    fireEvent.keyDown(window, { key: "k", ctrlKey: true });
+
+    expect(screen.queryByRole("dialog")).not.toBeInTheDocument();
   });
 
   it("renders a full search results page with useful filters", () => {

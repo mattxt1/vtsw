@@ -28,6 +28,31 @@ test("the mobile layout does not overflow horizontally", async ({ page }) => {
   expect(dimensions.content).toBeLessThanOrEqual(dimensions.viewport);
 });
 
+test("core page families remain contained on narrow mobile screens", async ({
+  page,
+}) => {
+  await page.setViewportSize({ width: 320, height: 740 });
+  const routes = [
+    "/products/mobile",
+    "/products/mobile/x26-ultra",
+    "/buy/mobile/x26-ultra",
+    "/compare",
+    "/search?q=charging",
+    "/cart",
+    "/products/platform",
+    "/products/platform/vos-27",
+  ];
+
+  for (const route of routes) {
+    await page.goto(route);
+    const dimensions = await page.evaluate(() => ({
+      viewport: document.documentElement.clientWidth,
+      content: document.documentElement.scrollWidth,
+    }));
+    expect(dimensions.content, route).toBeLessThanOrEqual(dimensions.viewport);
+  }
+});
+
 test("reduced motion retains products and software content", async ({ page }) => {
   await page.emulateMedia({ reducedMotion: "reduce" });
   await page.goto("/");
@@ -79,6 +104,14 @@ test("site search finds products, software, and pages", async ({ page }) => {
       .locator(".search-page__results")
       .locator('a[href="/products/platform/ethos-ai"]'),
   ).toBeVisible();
+});
+
+test("the search shortcut toggles the dialog", async ({ page }) => {
+  await page.goto("/");
+  await page.keyboard.press("ControlOrMeta+K");
+  await expect(page.getByRole("dialog")).toBeVisible();
+  await page.keyboard.press("ControlOrMeta+K");
+  await expect(page.getByRole("dialog")).toBeHidden();
 });
 
 test("lattice and ethos ai are presented inside the vela foundation", async ({
