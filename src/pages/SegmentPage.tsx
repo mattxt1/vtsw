@@ -1,7 +1,8 @@
 import { useEffect } from "react";
 import { Link, Navigate, useParams } from "react-router-dom";
-import { AbstractMedia } from "../components/AbstractMedia";
+import { FoundationVisual } from "../components/FoundationVisual";
 import { Footer } from "../components/Footer";
+import { LineupVisual } from "../components/LineupVisual";
 import { PageTransition } from "../components/PageTransition";
 import { ProductRender } from "../components/ProductRender";
 import { Reveal } from "../components/Reveal";
@@ -62,7 +63,14 @@ export function SegmentPage() {
             </div>
           </div>
           <div className="segment-hero__media">
-            <AbstractMedia media={segment.media} variant={segmentIndex} />
+            {segment.id === "platform" ? (
+              <FoundationVisual />
+            ) : (
+              <LineupVisual
+                products={products}
+                label={`${segment.name} lineup`}
+              />
+            )}
             <span className="segment-hero__count">
               {String(products.length).padStart(2, "0")} products
             </span>
@@ -146,9 +154,9 @@ export function SegmentPage() {
                             <TactileCard className="model-card">
                               <div className="model-card__media">
                                 {segment.id === "platform" ? (
-                                  <AbstractMedia
-                                    media={product.media}
-                                    variant={productIndex + groupIndex}
+                                  <FoundationVisual
+                                    focus={product.displayName}
+                                    compact
                                   />
                                 ) : (
                                   <ProductRender

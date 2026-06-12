@@ -1,6 +1,6 @@
 import { Fragment, useEffect, useMemo, useState } from "react";
 import { Link, useSearchParams } from "react-router-dom";
-import { AbstractMedia } from "../components/AbstractMedia";
+import { FoundationVisual } from "../components/FoundationVisual";
 import { ProductRender } from "../components/ProductRender";
 import { Footer } from "../components/Footer";
 import { PageTransition } from "../components/PageTransition";
@@ -162,10 +162,7 @@ export function ComparePage() {
                   <>
                     <div className="compare-selection-card__media">
                       {product.segmentId === "platform" ? (
-                        <AbstractMedia
-                          media={product.media}
-                          variant={slotIndex}
-                        />
+                        <FoundationVisual focus={product.displayName} compact />
                       ) : (
                         <ProductRender
                           product={product}

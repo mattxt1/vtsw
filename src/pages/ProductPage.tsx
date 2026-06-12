@@ -1,7 +1,7 @@
 import { useEffect } from "react";
 import { Link, Navigate, useParams } from "react-router-dom";
-import { AbstractMedia } from "../components/AbstractMedia";
 import { CinematicChapter } from "../components/CinematicChapter";
+import { FoundationVisual } from "../components/FoundationVisual";
 import { Footer } from "../components/Footer";
 import { PageTransition } from "../components/PageTransition";
 import { ProductRender } from "../components/ProductRender";
@@ -111,7 +111,7 @@ export function ProductPage() {
           </div>
           <div className="product-hero__media">
             {isFoundationProduct ? (
-              <AbstractMedia media={product.media} variant={productIndex} />
+              <FoundationVisual focus={product.displayName} />
             ) : (
               <ProductRender
                 product={product}
