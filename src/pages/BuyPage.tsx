@@ -141,16 +141,6 @@ export function BuyPage() {
           <aside className="buy-visual" aria-label="Your configuration">
             <div className="buy-visual__sticky">
               <p className="eyebrow">your {product.model}</p>
-              <ProductRender
-                product={product}
-                finishColor={selectedFinish?.color}
-                finishName={selectedFinish?.optionLabel}
-                priority
-              />
-              <div className="buy-visual__caption">
-                <strong>{selectedFinish?.optionLabel ?? product.tagline}</strong>
-                <span>Designed around {product.platform}</span>
-              </div>
               <div className="buy-visual__price" aria-live="polite">
                 <div>
                   <p>
@@ -166,6 +156,16 @@ export function BuyPage() {
                     Save {formatPrice(listSubtotal - subtotal)}
                   </span>
                 )}
+              </div>
+              <ProductRender
+                product={product}
+                finishColor={selectedFinish?.color}
+                finishName={selectedFinish?.optionLabel}
+                priority
+              />
+              <div className="buy-visual__caption">
+                <strong>{selectedFinish?.optionLabel ?? product.tagline}</strong>
+                <span>Designed around {product.platform}</span>
               </div>
             </div>
           </aside>
