@@ -15,6 +15,7 @@ describe("vela content", () => {
         "audio",
         "accessories",
         "platform",
+        "atlas",
       ]),
     );
   });
@@ -52,7 +53,32 @@ describe("vela content", () => {
         "vOS 27",
         "vOS 26",
         "vela protect",
+        "atlas core",
+        "atlas ultra",
+        "atlas fleet",
+        "atlas response",
+        "atlas pilot max",
+        "atlas network",
+        "atlas guardian",
       ]),
+    );
+  });
+
+  it("includes the complete atlas preview with the intended naming", () => {
+    const atlas = vela.products.find((product) => product.id === "atlas");
+    const models = atlas?.groups.flatMap((group) => group.models) ?? [];
+
+    expect(models).toHaveLength(23);
+    expect(getProduct("atlas", "atlas-core")).toMatchObject({
+      displayName: "vela atlas core",
+      year: 2027,
+      availability: "Coming April 21, 2027",
+    });
+    expect(getProduct("atlas", "atlas-pilot-max")?.displayName).toBe(
+      "atlas pilot max",
+    );
+    expect(getProduct("atlas", "atlas-guardian")?.platform).toBe(
+      "vOS 27 mobility",
     );
   });
 

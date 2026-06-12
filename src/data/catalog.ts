@@ -5,6 +5,7 @@ import type {
   ProductSpecGroup,
 } from "../types/content";
 import { accessoryByModel, accessoryProfiles } from "./accessories";
+import { atlasProfiles } from "./atlas";
 import { productProfiles } from "./productProfiles";
 import { vela } from "./vela";
 
@@ -90,6 +91,29 @@ const years: Record<string, number> = {
   "ethos ai": 2026,
   "vOS 27": 2027,
   "vOS 26": 2026,
+  "atlas core": 2027,
+  atlas: 2027,
+  "atlas pro": 2027,
+  "atlas ultra": 2027,
+  "atlas fleet": 2027,
+  "atlas response": 2027,
+  "atlas connect": 2027,
+  "atlas assist": 2027,
+  "atlas pilot": 2027,
+  "atlas pilot pro": 2027,
+  "atlas pilot max": 2027,
+  "atlas pilot ultra": 2027,
+  "atlas scout": 2027,
+  "atlas concierge": 2027,
+  "atlas fleet command": 2027,
+  "atlas response network": 2027,
+  "atlas network": 2027,
+  "atlas link": 2027,
+  "atlas satellite": 2027,
+  "atlas app": 2027,
+  "atlas guardian": 2027,
+  "atlas memory drive": 2027,
+  "atlas trip view": 2027,
 };
 
 const segmentFeatures: Record<string, ProductFeature[]> = {
@@ -212,6 +236,23 @@ const segmentFeatures: Record<string, ProductFeature[]> = {
       body: "Power, connectivity, travel, and workspace accessories are designed to move naturally across the wider vela ecosystem.",
     },
   ],
+  atlas: [
+    {
+      eyebrow: "atlas guardian",
+      title: "Calm awareness around the whole vehicle.",
+      body: "Cameras, radar, lidar, localization, and driver monitoring are fused into one safety model, with core guardian protections available without a paid autonomy plan.",
+    },
+    {
+      eyebrow: "vOS 27 mobility",
+      title: "The vehicle joins the vela ecosystem.",
+      body: "Status, trips, sensors, maps, service, and supported controls move naturally across phone, watch, tablet, notebook, vehicle display, and fleet web.",
+    },
+    {
+      eyebrow: "atlas network",
+      title: "Road intelligence that can travel beyond one vehicle.",
+      body: "Encrypted maps, live hazards, atlas link, satellite safety fallback, and fleet telemetry keep atlas connected while preserving local-first safety behavior.",
+    },
+  ],
 };
 
 const segmentDescriptions: Record<string, string> = {
@@ -229,6 +270,8 @@ const segmentDescriptions: Record<string, string> = {
     "The frameworks, intelligence, operating systems, silicon, infrastructure, and services connecting every vela experience.",
   accessories:
     "A considered extension of the vela ecosystem, designed for precise compatibility, quiet utility, and a coherent material experience.",
+  atlas:
+    "A calm, connected vehicle-intelligence platform built around sensor fusion, supervised autonomy, vOS 27 mobility, and vela pulse automotive silicon.",
 };
 
 const tierTaglines: Record<string, string> = {
@@ -267,6 +310,12 @@ function getTier(model: string, groupName: string) {
 }
 
 function getPlatform(segmentId: string, groupName: string, model: string) {
+  if (segmentId === "atlas") {
+    if (groupName === "vOS 27 mobility") return "vOS 27 mobility";
+    if (groupName === "atlas network") return "vela atlas network";
+    if (groupName === "pilot + services") return "vela atlas service";
+    return "vOS 27 mobility · vela pulse a9";
+  }
   if (segmentId === "accessories") {
     return groupName === "power + charging" ||
       groupName === "cables + connectivity" ||
@@ -291,6 +340,19 @@ function getPlatform(segmentId: string, groupName: string, model: string) {
 
 function getSupport(segmentId: string, groupName: string, model: string) {
   const value = model.toLowerCase();
+  if (segmentId === "atlas") {
+    if (model === "atlas core" || model === "atlas") {
+      return "8 years hardware · 10 years safety firmware";
+    }
+    if (model === "atlas pro") {
+      return "10 years hardware · 12 years safety firmware";
+    }
+    if (model === "atlas ultra" || model === "atlas response") {
+      return "12 years hardware and safety firmware";
+    }
+    if (model === "atlas fleet") return "8 years hardware · fleet contract software";
+    return "Continuous atlas service updates";
+  }
   if (model === "Trifold Ultra") return "12 years guaranteed";
   if (
     value.includes("education") ||
@@ -328,8 +390,17 @@ function getSupport(segmentId: string, groupName: string, model: string) {
   return "Feature and security updates";
 }
 
-function getAvailability(model: string) {
+function getAvailability(model: string, segmentId?: string) {
   const value = model.toLowerCase();
+  if (segmentId === "atlas") {
+    if (model === "atlas ultra") return "Coming late 2027 · invite-only early access";
+    if (model === "atlas fleet") return "Coming July 2027 · enterprise contracts";
+    if (model === "atlas response") return "Coming August 2027 · approved agencies only";
+    if (model === "atlas core") return "Coming April 21, 2027";
+    if (model === "atlas") return "Coming May 12, 2027";
+    if (model === "atlas pro") return "Coming June 9, 2027";
+    return "Coming with the 2027 atlas platform";
+  }
   const accessory = accessoryByModel.get(model);
   if (accessory?.organizationOnly) return "Available to organizations";
   if (accessory?.serviceOnly) return "Installed by vela service";
@@ -358,7 +429,14 @@ function getAvailability(model: string) {
   return "Current lineup";
 }
 
-function displayName(model: string) {
+function displayName(model: string, segmentId?: string, groupName?: string) {
+  if (
+    segmentId === "atlas" &&
+    (groupName === "consumer systems" || groupName === "enterprise systems")
+  ) {
+    return `vela ${model}`;
+  }
+  if (segmentId === "atlas") return model;
   if (
     model === "vOS 26" ||
     model === "vOS 27" ||
@@ -377,14 +455,15 @@ function createProduct(
   model: string,
 ): CatalogProduct {
   const tier = getTier(model, groupName);
-  const profile = productProfiles[model] ?? accessoryProfiles[model];
+  const profile =
+    productProfiles[model] ?? accessoryProfiles[model] ?? atlasProfiles[model];
   const fallbackSpecifications: ProductSpecGroup[] = [
     {
       title: "Experience",
       items: [
         { label: "Platform", value: getPlatform(segment.id, groupName, model) },
         { label: "Support", value: getSupport(segment.id, groupName, model) },
-        { label: "Availability", value: getAvailability(model) },
+        { label: "Availability", value: getAvailability(model, segment.id) },
       ],
     },
   ];
@@ -394,18 +473,18 @@ function createProduct(
     segmentId: segment.id,
     groupName,
     model,
-    displayName: displayName(model),
+    displayName: displayName(model, segment.id, groupName),
     eyebrow: `${groupName} · ${tier}`,
     tagline: profile?.tagline ?? tierTaglines[tier],
     description: profile?.description ?? segmentDescriptions[segment.id],
     year: years[model] ?? (segment.id === "accessories" ? 2026 : undefined),
     platform: getPlatform(segment.id, groupName, model),
     support: getSupport(segment.id, groupName, model),
-    availability: getAvailability(model),
+    availability: getAvailability(model, segment.id),
     tier,
     media: {
       kind: "sequence",
-      alt: `${displayName(model)} rotating in a soft mineral space`,
+      alt: `${displayName(model, segment.id, groupName)} presented in a calm technical space`,
     },
     features: segmentFeatures[segment.id],
     highlights:

@@ -65,6 +65,17 @@ describe("vela store configurations", () => {
     expect(store.purchaseNote).toMatch(/organization sales/i);
   });
 
+  it("keeps the 2027 atlas preview outside checkout", () => {
+    const store = configuration("atlas", "atlas-pro");
+
+    expect(store).toMatchObject({
+      basePrice: 12999,
+      purchasable: false,
+    });
+    expect(store.purchaseNote).toMatch(/2027 preview/i);
+    expect(store.optionGroups).toHaveLength(0);
+  });
+
   it("uses documented accessory pricing and variants", () => {
     const store = configuration(
       "accessories",

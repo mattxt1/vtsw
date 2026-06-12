@@ -41,6 +41,8 @@ test("core page families remain contained on narrow mobile screens", async ({
     "/cart",
     "/products/platform",
     "/products/platform/vos-27",
+    "/products/atlas",
+    "/products/atlas/atlas-pro",
   ];
 
   for (const route of routes) {
@@ -112,6 +114,49 @@ test("the search shortcut toggles the dialog", async ({ page }) => {
   await expect(page.getByRole("dialog")).toBeVisible();
   await page.keyboard.press("ControlOrMeta+K");
   await expect(page.getByRole("dialog")).toBeHidden();
+});
+
+test("atlas is searchable and complete without joining the primary toolbar", async ({
+  page,
+}) => {
+  await page.goto("/");
+  const primaryNavigation = page.getByRole("navigation", {
+    name: "Primary navigation",
+  });
+  await expect(
+    primaryNavigation.getByRole("link", { name: /atlas/i }),
+  ).toHaveCount(0);
+
+  await page.getByRole("button", { name: /search/i }).click();
+  const dialog = page.getByRole("dialog");
+  await dialog
+    .getByRole("searchbox", { name: "Search vela" })
+    .fill("vela atlas pro");
+  await dialog.locator('a[href="/products/atlas/atlas-pro"]').click();
+
+  await expect(page).toHaveURL(/\/products\/atlas\/atlas-pro$/);
+  await expect(
+    page.getByRole("heading", { name: "vela atlas pro", level: 1 }),
+  ).toBeVisible();
+  await expect(
+    page.locator(".product-metadata").getByText("Coming June 9, 2027"),
+  ).toBeVisible();
+  await expect(page.getByRole("link", { name: /^Buy$/i })).toHaveCount(0);
+
+  await page.goto(
+    "/compare?products=atlas:atlas-core,atlas:atlas-pro,atlas:atlas-ultra",
+  );
+  await expect(
+    page.getByRole("heading", { name: "vela atlas core" }),
+  ).toBeVisible();
+  await expect(
+    page.getByRole("rowheader", { name: "Autonomy engine" }),
+  ).toBeVisible();
+
+  await page.goto("/buy/atlas/atlas-pro");
+  await expect(
+    page.getByRole("heading", { name: "This device is out of range." }),
+  ).toBeVisible();
 });
 
 test("lattice and ethos ai are presented inside the vela foundation", async ({

@@ -1,5 +1,6 @@
 import { Fragment, useEffect, useMemo, useState } from "react";
 import { Link, useSearchParams } from "react-router-dom";
+import { AtlasVisual } from "../components/AtlasVisual";
 import { FoundationVisual } from "../components/FoundationVisual";
 import { ProductRender } from "../components/ProductRender";
 import { Footer } from "../components/Footer";
@@ -161,7 +162,9 @@ export function ComparePage() {
                 {product ? (
                   <>
                     <div className="compare-selection-card__media">
-                      {product.segmentId === "platform" ? (
+                      {product.segmentId === "atlas" ? (
+                        <AtlasVisual focus={product.displayName} compact />
+                      ) : product.segmentId === "platform" ? (
                         <FoundationVisual focus={product.displayName} compact />
                       ) : (
                         <ProductRender

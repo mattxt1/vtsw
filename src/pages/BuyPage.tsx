@@ -85,6 +85,10 @@ export function BuyPage() {
     return <Navigate to="/not-found" replace />;
   }
 
+  if (product.segmentId === "atlas") {
+    return <Navigate to="/not-found" replace />;
+  }
+
   const family = getStoreProductsForFamily(product);
   const subtotal =
     configuration.basePrice +

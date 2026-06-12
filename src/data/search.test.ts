@@ -29,4 +29,20 @@ describe("site search", () => {
   it("returns no results when all query terms are not represented", () => {
     expect(searchSite("x26 classroom quantumbanana")).toHaveLength(0);
   });
+
+  it("indexes atlas hardware, services, and mobility software", () => {
+    expect(searchSite("vela atlas pro")[0]?.url).toBe(
+      "/products/atlas/atlas-pro",
+    );
+    expect(
+      searchSite("atlas pilot max").some(
+        (result) => result.url === "/products/atlas/atlas-pilot-max",
+      ),
+    ).toBe(true);
+    expect(
+      searchSite("guardian collision").some(
+        (result) => result.url === "/products/atlas/atlas-guardian",
+      ),
+    ).toBe(true);
+  });
 });

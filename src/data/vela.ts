@@ -1,5 +1,6 @@
 import type { VelaContent } from "../types/content";
 import { accessoryGroups } from "./accessories";
+import { atlasCategory } from "./atlas";
 
 export const vela: VelaContent = {
   name: "vela",
@@ -290,5 +291,6 @@ export const vela: VelaContent = {
       note:
         "lattice is a mostly independent infrastructure team within vela. It replaces the former veritas core framework identity and builds the foundation behind vela software.",
     },
+    atlasCategory,
   ],
 };

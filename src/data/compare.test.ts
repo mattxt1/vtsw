@@ -90,4 +90,22 @@ describe("vela comparison data", () => {
       new Set([2023, 2024, 2025]),
     );
   });
+
+  it("compares atlas hardware tiers through the shared comparison system", () => {
+    const products = parseComparisonProducts(
+      "atlas:atlas-core,atlas:atlas-pro,atlas:atlas-ultra",
+    );
+    const rows = buildComparisonSections(products).flatMap(
+      (section) => section.rows,
+    );
+
+    expect(products.map((product) => product.displayName)).toEqual([
+      "vela atlas core",
+      "vela atlas pro",
+      "vela atlas ultra",
+    ]);
+    expect(rows.find((row) => row.label === "Autonomy engine")?.status).toBe(
+      "different",
+    );
+  });
 });

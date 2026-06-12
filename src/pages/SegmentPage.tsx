@@ -1,5 +1,6 @@
 import { useEffect } from "react";
 import { Link, Navigate, useParams } from "react-router-dom";
+import { AtlasVisual } from "../components/AtlasVisual";
 import { FoundationVisual } from "../components/FoundationVisual";
 import { Footer } from "../components/Footer";
 import { LineupVisual } from "../components/LineupVisual";
@@ -29,6 +30,7 @@ export function SegmentPage() {
 
   const products = getProductsForSegment(segment.id);
   const isAccessories = segment.id === "accessories";
+  const isAtlas = segment.id === "atlas";
   const segmentIndex = segments.findIndex((item) => item.id === segment.id);
   const nextSegment = segments[(segmentIndex + 1) % segments.length];
   const themeStyle = {
@@ -63,7 +65,9 @@ export function SegmentPage() {
             </div>
           </div>
           <div className="segment-hero__media">
-            {segment.id === "platform" ? (
+            {isAtlas ? (
+              <AtlasVisual focus="vela atlas lineup" />
+            ) : segment.id === "platform" ? (
               <FoundationVisual />
             ) : (
               <LineupVisual
@@ -106,7 +110,7 @@ export function SegmentPage() {
 
         <section id="lineup" className="segment-lineup section-shell">
           <Reveal className="section-heading section-heading--split">
-            <p className="eyebrow">2026 lineup</p>
+            <p className="eyebrow">{isAtlas ? "2027 preview" : "2026 lineup"}</p>
             <h2>Find your place in the family.</h2>
             <p>{segment.note}</p>
           </Reveal>
@@ -153,7 +157,12 @@ export function SegmentPage() {
                           >
                             <TactileCard className="model-card">
                               <div className="model-card__media">
-                                {segment.id === "platform" ? (
+                                {isAtlas ? (
+                                  <AtlasVisual
+                                    focus={product.displayName}
+                                    compact
+                                  />
+                                ) : segment.id === "platform" ? (
                                   <FoundationVisual
                                     focus={product.displayName}
                                     compact
@@ -183,7 +192,7 @@ export function SegmentPage() {
                                       </li>
                                     ))}
                                 </ul>
-                                {segment.id !== "platform" && (
+                                {segment.id !== "platform" && !isAtlas && (
                                   <p className="model-card__price">
                                     <span>
                                       {priceLabel} {formatPrice(store.basePrice)}

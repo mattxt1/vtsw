@@ -1,5 +1,6 @@
 import { useEffect } from "react";
 import { Link, Navigate, useParams } from "react-router-dom";
+import { AtlasVisual } from "../components/AtlasVisual";
 import { CinematicChapter } from "../components/CinematicChapter";
 import { FoundationVisual } from "../components/FoundationVisual";
 import { Footer } from "../components/Footer";
@@ -33,6 +34,7 @@ export function ProductPage() {
   const next = siblings[(productIndex + 1) % siblings.length];
   const promotion = getProductPromotion(getProductKey(product));
   const isFoundationProduct = segment.id === "platform";
+  const isAtlasProduct = segment.id === "atlas";
   const chapter: Chapter = {
     id: `${product.id}-story`,
     eyebrow: `${product.groupName} / ${product.platform}`,
@@ -70,6 +72,10 @@ export function ProductPage() {
               >
                 Foundation
               </Link>
+            ) : isAtlasProduct ? (
+              <Link className="product-local-nav__buy" to="/products/atlas">
+                2027 preview
+              </Link>
             ) : (
               <Link
                 className="product-local-nav__buy"
@@ -97,6 +103,10 @@ export function ProductPage() {
                 <a className="embossed-button" href="#details">
                   Explore the foundation
                 </a>
+              ) : isAtlasProduct ? (
+                <a className="embossed-button" href="#details">
+                  Explore the preview
+                </a>
               ) : (
                 <Link
                   className="embossed-button"
@@ -110,7 +120,9 @@ export function ProductPage() {
             </div>
           </div>
           <div className="product-hero__media">
-            {isFoundationProduct ? (
+            {isAtlasProduct ? (
+              <AtlasVisual focus={product.displayName} />
+            ) : isFoundationProduct ? (
               <FoundationVisual focus={product.displayName} />
             ) : (
               <ProductRender
@@ -133,7 +145,9 @@ export function ProductPage() {
           </Reveal>
         </section>
 
-        <CinematicChapter chapter={chapter} accent={vela.theme.accent} />
+        {!isAtlasProduct && (
+          <CinematicChapter chapter={chapter} accent={vela.theme.accent} />
+        )}
 
         <section id="details" className="product-details section-shell">
           <Reveal className="section-heading section-heading--split">
@@ -142,6 +156,8 @@ export function ProductPage() {
             <p>
               {isFoundationProduct
                 ? "The role, capabilities, and ecosystem relationships that define this part of the vela foundation."
+                : isAtlasProduct
+                  ? "Preview capabilities from the proposed 2027 atlas platform. Final regional availability, mapped-road support, installation compatibility, and service terms can change before release."
                 : "Every headline figure is the maximum supported capability for this product family. Available configurations and exact pricing are shown in the vela store."}
             </p>
           </Reveal>
@@ -215,6 +231,8 @@ export function ProductPage() {
             <p>
               {isFoundationProduct
                 ? "Framework, intelligence, software, silicon, and service capabilities within the current vela foundation."
+                : isAtlasProduct
+                  ? "Proposed 2027 atlas capabilities. Supervised autonomy always depends on driver attention, vehicle integration, mapping coverage, law, and regional approval."
                 : "Product capabilities from the 2026 vela lineup. Variable specifications are presented as maximum supported figures."}
             </p>
           </Reveal>
@@ -247,6 +265,10 @@ export function ProductPage() {
             {isFoundationProduct ? (
               <Link className="embossed-button" to="/products/platform">
                 Explore software + foundation
+              </Link>
+            ) : isAtlasProduct ? (
+              <Link className="embossed-button" to="/products/atlas">
+                Explore the atlas lineup
               </Link>
             ) : (
               <Link

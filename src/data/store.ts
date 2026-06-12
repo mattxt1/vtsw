@@ -8,6 +8,7 @@ import {
   accessoryBasePrices,
   accessoryByModel,
 } from "./accessories";
+import { atlasBasePrices } from "./atlas";
 import { catalogProducts } from "./catalog";
 import { getProductKey } from "./productKey";
 import { getProductPromotion } from "./promotions";
@@ -623,6 +624,18 @@ function protectOptions(product: CatalogProduct): StoreOption[] {
 export function getStoreConfiguration(
   product: CatalogProduct,
 ): StoreProductConfiguration {
+  if (product.segmentId === "atlas") {
+    return {
+      productKey: getProductKey(product),
+      basePrice: atlasBasePrices[product.model] ?? 0,
+      purchasable: false,
+      purchaseNote:
+        "Atlas is a 2027 preview. Hardware installation and service enrollment are not yet available.",
+      optionGroups: [],
+      protectOptions: [],
+    };
+  }
+
   const accessory = accessoryByModel.get(product.model);
 
   if (accessory) {
