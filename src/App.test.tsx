@@ -25,6 +25,18 @@ describe("vela experience", () => {
         name: "More of the ecosystem, for less.",
       }),
     ).toBeInTheDocument();
+    expect(
+      screen.getByRole("heading", { name: "Know the road ahead." }),
+    ).toBeInTheDocument();
+    expect(
+      screen.getByRole("link", { name: /Explore vela atlas/i }),
+    ).toHaveAttribute("href", "/products/atlas");
+    expect(
+      screen.getByRole("link", { name: "Compare atlas systems" }),
+    ).toHaveAttribute(
+      "href",
+      "/compare?mode=atlas&products=atlas:atlas-core,atlas:atlas,atlas:atlas-pro",
+    );
     expect(screen.getByText("From $949")).toBeInTheDocument();
     expect(
       screen.getByRole("heading", {
@@ -279,6 +291,30 @@ describe("vela experience", () => {
     expect(
       screen.queryByRole("heading", { name: "Your bag." }),
     ).not.toBeInTheDocument();
+  });
+
+  it("presents atlas as systems, services, and a shared foundation", () => {
+    const { container } = render(
+      <MemoryRouter initialEntries={["/products/atlas"]}>
+        <App />
+      </MemoryRouter>,
+    );
+
+    expect(
+      screen.getByRole("heading", { name: "Choose the hardware first." }),
+    ).toBeInTheDocument();
+    expect(
+      screen.getByRole("heading", {
+        name: "Capability that grows with the system.",
+      }),
+    ).toBeInTheDocument();
+    expect(
+      screen.getByRole("heading", {
+        name: "One road layer. One mobility experience.",
+      }),
+    ).toBeInTheDocument();
+    expect(container.querySelectorAll(".atlas-system-card")).toHaveLength(4);
+    expect(container.querySelectorAll(".model-card")).toHaveLength(0);
   });
 
   it("applies premium event pricing through configuration", () => {

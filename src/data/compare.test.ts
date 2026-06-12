@@ -6,6 +6,11 @@ import {
   getComparisonSummary,
   parseComparisonProducts,
 } from "./compare";
+import {
+  atlasComparisonSections,
+  atlasFit,
+  isAtlasHardware,
+} from "./atlasCompare";
 
 describe("vela comparison data", () => {
   it("parses unique valid products and enforces the three-device limit", () => {
@@ -107,5 +112,28 @@ describe("vela comparison data", () => {
     expect(rows.find((row) => row.label === "Autonomy engine")?.status).toBe(
       "different",
     );
+  });
+
+  it("normalizes atlas comparison around installable systems and capability", () => {
+    const atlasHardware = comparisonProducts.filter(isAtlasHardware);
+    const sensing = atlasComparisonSections.find(
+      (section) => section.title === "Compute + sensing",
+    );
+    const lidar = sensing?.rows.find((row) => row.label === "LiDAR");
+
+    expect(atlasHardware.map((product) => product.model)).toEqual([
+      "atlas core",
+      "atlas",
+      "atlas pro",
+      "atlas ultra",
+      "atlas fleet",
+      "atlas response",
+    ]);
+    expect(atlasFit["atlas pro"]).toMatchObject({
+      role: "Advanced system",
+      service: "Up to pilot max, scout, concierge",
+    });
+    expect(lidar?.values["atlas core"]).toBe("Not included");
+    expect(lidar?.values["atlas ultra"]).toMatch(/3 scanners/i);
   });
 });

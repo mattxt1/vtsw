@@ -1,5 +1,6 @@
 import { useEffect } from "react";
 import { Link } from "react-router-dom";
+import { AtlasVisual } from "../components/AtlasVisual";
 import { Footer } from "../components/Footer";
 import { PageTransition } from "../components/PageTransition";
 import { ProductPlaceholder } from "../components/ProductPlaceholder";
@@ -23,6 +24,7 @@ const featuredProducts = {
   software: getProduct("platform", "vos-27"),
   lattice: getProduct("platform", "lattice-1"),
   ethos: getProduct("platform", "ethos-ai"),
+  atlas: getProduct("atlas", "atlas-pro"),
 };
 
 const premiumEventProducts = premiumEventPromotions.flatMap((promotion) => {
@@ -123,6 +125,7 @@ export function HomePage() {
   const software = featuredProducts.software;
   const lattice = featuredProducts.lattice;
   const ethos = featuredProducts.ethos;
+  const atlas = featuredProducts.atlas;
 
   if (
     !phone ||
@@ -134,7 +137,8 @@ export function HomePage() {
     !speaker ||
     !software ||
     !lattice ||
-    !ethos
+    !ethos ||
+    !atlas
   ) {
     return null;
   }
@@ -238,6 +242,50 @@ export function HomePage() {
               Savings apply to eligible new purchases while the premium event
               is available. Configuration upgrades are priced separately.
             </p>
+          </Reveal>
+        </section>
+
+        <section
+          className="home-atlas section-shell"
+          aria-labelledby="home-atlas-heading"
+        >
+          <Reveal className="home-atlas__card">
+            <div className="home-atlas__copy">
+              <div className="home-atlas__status">
+                <span />
+                coming 2027
+              </div>
+              <p className="eyebrow">vela atlas / mobility preview</p>
+              <h2 id="home-atlas-heading">Know the road ahead.</h2>
+              <p>
+                Certified vehicle intelligence combining cameras, radar,
+                LiDAR, maps, connected safety, and vOS 27 mobility in one
+                installable system.
+              </p>
+              <div className="home-atlas__metrics">
+                {atlas.highlights.slice(0, 3).map((highlight) => (
+                  <div key={`${highlight.value}-${highlight.label}`}>
+                    <strong>{highlight.value}</strong>
+                    <span>{highlight.label}</span>
+                  </div>
+                ))}
+              </div>
+              <div className="launch-actions">
+                <Link className="embossed-button" to="/products/atlas">
+                  Explore vela atlas
+                  <span aria-hidden="true">→</span>
+                </Link>
+                <Link to="/compare?mode=atlas&products=atlas:atlas-core,atlas:atlas,atlas:atlas-pro">
+                  Compare atlas systems
+                </Link>
+              </div>
+            </div>
+            <div className="home-atlas__visual">
+              <AtlasVisual focus="vela atlas pro" />
+              <span className="home-atlas__imprint" aria-hidden="true">
+                atlas
+              </span>
+            </div>
           </Reveal>
         </section>
 

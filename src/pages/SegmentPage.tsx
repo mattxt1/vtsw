@@ -1,6 +1,7 @@
 import { useEffect } from "react";
 import { Link, Navigate, useParams } from "react-router-dom";
 import { AtlasVisual } from "../components/AtlasVisual";
+import { AtlasSegmentExperience } from "../components/AtlasSegmentExperience";
 import { FoundationVisual } from "../components/FoundationVisual";
 import { Footer } from "../components/Footer";
 import { LineupVisual } from "../components/LineupVisual";
@@ -31,6 +32,13 @@ export function SegmentPage() {
   const products = getProductsForSegment(segment.id);
   const isAccessories = segment.id === "accessories";
   const isAtlas = segment.id === "atlas";
+  const atlasHardware = isAtlas
+    ? products.filter(
+        (product) =>
+          product.groupName === "consumer systems" ||
+          product.groupName === "enterprise systems",
+      )
+    : [];
   const segmentIndex = segments.findIndex((item) => item.id === segment.id);
   const nextSegment = segments[(segmentIndex + 1) % segments.length];
   const themeStyle = {
@@ -50,17 +58,22 @@ export function SegmentPage() {
             <h1>{segment.title}</h1>
             <p>{segment.description}</p>
             <div className="segment-hero__actions">
-              <a className="embossed-button" href="#lineup">
+              <a
+                className="embossed-button"
+                href={isAtlas ? "#atlas-systems" : "#lineup"}
+              >
                 View the lineup
                 <span aria-hidden="true">↓</span>
               </a>
               <Link
-                to={`/compare?products=${products
+                to={`/compare?${isAtlas ? "mode=atlas&" : ""}products=${(
+                  isAtlas ? atlasHardware : products
+                )
                   .slice(0, 3)
                   .map(getProductKey)
                   .join(",")}`}
               >
-                Compare models
+                Compare {isAtlas ? "systems" : "models"}
               </Link>
             </div>
           </div>
@@ -76,17 +89,24 @@ export function SegmentPage() {
               />
             )}
             <span className="segment-hero__count">
-              {String(products.length).padStart(2, "0")} products
+              {isAtlas
+                ? `${atlasHardware.length} systems · ${products.length - atlasHardware.length} platform capabilities`
+                : `${String(products.length).padStart(2, "0")} products`}
             </span>
           </div>
         </section>
 
-        <section className="segment-manifesto section-shell">
+        <section
+          className={`segment-manifesto section-shell${
+            isAtlas ? " segment-manifesto--atlas" : ""
+          }`}
+        >
           <Reveal>
-            <p className="eyebrow">one family</p>
+            <p className="eyebrow">{isAtlas ? "one mobility platform" : "one family"}</p>
             <p>
-              {segment.description} Every model shares the same calm material
-              language and a natural connection to the wider vela ecosystem.
+              {isAtlas
+                ? "Hardware sees the road. Services extend what it can do. The atlas network and vOS 27 mobility keep every journey connected. One platform, with each layer doing a distinct job."
+                : `${segment.description} Every model shares the same calm material language and a natural connection to the wider vela ecosystem.`}
             </p>
           </Reveal>
         </section>
@@ -108,9 +128,12 @@ export function SegmentPage() {
           </nav>
         )}
 
+        {isAtlas ? (
+          <AtlasSegmentExperience products={products} />
+        ) : (
         <section id="lineup" className="segment-lineup section-shell">
           <Reveal className="section-heading section-heading--split">
-            <p className="eyebrow">{isAtlas ? "2027 preview" : "2026 lineup"}</p>
+            <p className="eyebrow">2026 lineup</p>
             <h2>Find your place in the family.</h2>
             <p>{segment.note}</p>
           </Reveal>
@@ -157,12 +180,7 @@ export function SegmentPage() {
                           >
                             <TactileCard className="model-card">
                               <div className="model-card__media">
-                                {isAtlas ? (
-                                  <AtlasVisual
-                                    focus={product.displayName}
-                                    compact
-                                  />
-                                ) : segment.id === "platform" ? (
+                                {segment.id === "platform" ? (
                                   <FoundationVisual
                                     focus={product.displayName}
                                     compact
@@ -192,7 +210,7 @@ export function SegmentPage() {
                                       </li>
                                     ))}
                                 </ul>
-                                {segment.id !== "platform" && !isAtlas && (
+                                {segment.id !== "platform" && (
                                   <p className="model-card__price">
                                     <span>
                                       {priceLabel} {formatPrice(store.basePrice)}
@@ -217,6 +235,7 @@ export function SegmentPage() {
             );
           })}
         </section>
+        )}
 
         <section className="segment-next section-shell">
           <p className="eyebrow">continue exploring</p>

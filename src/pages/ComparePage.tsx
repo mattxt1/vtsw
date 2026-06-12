@@ -1,6 +1,7 @@
 import { Fragment, useEffect, useMemo, useState } from "react";
 import { Link, useSearchParams } from "react-router-dom";
 import { AtlasVisual } from "../components/AtlasVisual";
+import { AtlasCompareExperience } from "../components/AtlasCompareExperience";
 import { FoundationVisual } from "../components/FoundationVisual";
 import { ProductRender } from "../components/ProductRender";
 import { Footer } from "../components/Footer";
@@ -16,8 +17,14 @@ import {
 } from "../data/compare";
 import { segments } from "../data/catalog";
 import { vela } from "../data/vela";
+import { isAtlasHardware } from "../data/atlasCompare";
 
 const defaultProducts = ["mobile:x26-ultra", "mobile:x26-pro", "mobile:x26"];
+const defaultAtlasProducts = [
+  "atlas:atlas-core",
+  "atlas:atlas",
+  "atlas:atlas-pro",
+];
 const archiveYears = [2025, 2024, 2023] as const;
 
 const pickerGroups = segments.flatMap((segment) => {
@@ -52,7 +59,9 @@ export function ComparePage() {
       parseComparisonProducts(
         hasProductParameter
           ? searchParams.get("products")
-          : defaultProducts.join(","),
+          : searchParams.get("mode") === "atlas"
+            ? defaultAtlasProducts.join(",")
+            : defaultProducts.join(","),
       ),
     [hasProductParameter, searchParams],
   );
@@ -97,6 +106,33 @@ export function ComparePage() {
     }
 
     updateProducts([...new Set(next)]);
+  }
+
+  const atlasMode =
+    searchParams.get("mode") === "atlas" ||
+    (selectedProducts.length > 0 && selectedProducts.every(isAtlasHardware));
+
+  if (atlasMode) {
+    return (
+      <PageTransition>
+        <main
+          id="main-content"
+          className="compare-page compare-page--atlas"
+          style={themeStyle}
+        >
+          <AtlasCompareExperience
+            selectedProducts={selectedProducts.filter(isAtlasHardware)}
+            slots={slots.map((product) =>
+              product && isAtlasHardware(product) ? product : undefined,
+            )}
+            selectedKeys={selectedKeys}
+            differencesOnly={differencesOnly}
+            onDifferencesChange={setDifferencesOnly}
+            onSelectProduct={selectProduct}
+          />
+        </main>
+      </PageTransition>
+    );
   }
 
   return (

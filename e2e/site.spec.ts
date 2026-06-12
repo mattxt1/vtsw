@@ -5,6 +5,9 @@ test("visitors can move through the vela ecosystem", async ({ page }) => {
   await expect(
     page.getByRole("heading", { name: /power, made quiet/i }),
   ).toBeVisible();
+  await expect(
+    page.getByRole("heading", { name: "Know the road ahead." }),
+  ).toBeVisible();
 
   await page
     .getByRole("navigation", { name: "Primary navigation" })
@@ -147,8 +150,16 @@ test("atlas is searchable and complete without joining the primary toolbar", asy
     "/compare?products=atlas:atlas-core,atlas:atlas-pro,atlas:atlas-ultra",
   );
   await expect(
+    page.getByRole("heading", {
+      name: "Find your level of road intelligence.",
+    }),
+  ).toBeVisible();
+  await expect(
     page.getByRole("heading", { name: "vela atlas core" }),
   ).toBeVisible();
+  await expect(
+    page.getByRole("option", { name: "atlas pilot max" }),
+  ).toHaveCount(0);
   await expect(
     page.getByRole("rowheader", { name: "Autonomy engine" }),
   ).toBeVisible();
