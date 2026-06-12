@@ -35,6 +35,10 @@ export function ProductPage() {
   const promotion = getProductPromotion(getProductKey(product));
   const isFoundationProduct = segment.id === "platform";
   const isAtlasProduct = segment.id === "atlas";
+  const isAtlasHardware =
+    isAtlasProduct &&
+    (product.groupName === "consumer systems" ||
+      product.groupName === "enterprise systems");
   const chapter: Chapter = {
     id: `${product.id}-story`,
     eyebrow: `${product.groupName} / ${product.platform}`,
@@ -72,9 +76,16 @@ export function ProductPage() {
               >
                 Foundation
               </Link>
+            ) : isAtlasHardware ? (
+              <Link
+                className="product-local-nav__buy"
+                to={`/buy/atlas/${product.id}`}
+              >
+                Pre-order
+              </Link>
             ) : isAtlasProduct ? (
               <Link className="product-local-nav__buy" to="/products/atlas">
-                2027 preview
+                Atlas preview
               </Link>
             ) : (
               <Link
@@ -103,6 +114,14 @@ export function ProductPage() {
                 <a className="embossed-button" href="#details">
                   Explore the foundation
                 </a>
+              ) : isAtlasHardware ? (
+                <Link
+                  className="embossed-button"
+                  to={`/buy/atlas/${product.id}`}
+                >
+                  Pre-order
+                  <span aria-hidden="true">→</span>
+                </Link>
               ) : isAtlasProduct ? (
                 <a className="embossed-button" href="#details">
                   Explore the preview
@@ -265,6 +284,14 @@ export function ProductPage() {
             {isFoundationProduct ? (
               <Link className="embossed-button" to="/products/platform">
                 Explore software + foundation
+              </Link>
+            ) : isAtlasHardware ? (
+              <Link
+                className="embossed-button"
+                to={`/buy/atlas/${product.id}`}
+              >
+                Configure pre-order
+                <span aria-hidden="true">→</span>
               </Link>
             ) : isAtlasProduct ? (
               <Link className="embossed-button" to="/products/atlas">

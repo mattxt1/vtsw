@@ -141,7 +141,7 @@ test("atlas is searchable and complete without joining the primary toolbar", asy
   await expect(
     page.locator(".product-metadata").getByText("Coming June 9, 2027"),
   ).toBeVisible();
-  await expect(page.getByRole("link", { name: /^Buy$/i })).toHaveCount(0);
+  await expect(page.getByRole("link", { name: /^Pre-order$/i }).first()).toBeVisible();
 
   await page.goto(
     "/compare?products=atlas:atlas-core,atlas:atlas-pro,atlas:atlas-ultra",
@@ -155,8 +155,14 @@ test("atlas is searchable and complete without joining the primary toolbar", asy
 
   await page.goto("/buy/atlas/atlas-pro");
   await expect(
-    page.getByRole("heading", { name: "This device is out of range." }),
+    page.getByRole("heading", { name: "Build your atlas." }),
   ).toBeVisible();
+  await page.getByRole("radio", { name: /atlas pilot max/i }).check();
+  await expect(page.getByText(/\$299\/month in services/i)).toBeVisible();
+  await page.getByRole("button", { name: /^Pre-order/i }).click();
+  await expect(page.getByRole("status")).toContainText(
+    "Preorders will start soon.",
+  );
 });
 
 test("lattice and ethos ai are presented inside the vela foundation", async ({

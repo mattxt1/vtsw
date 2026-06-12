@@ -255,6 +255,32 @@ describe("vela experience", () => {
     expect(screen.getByLabelText("2 items")).toBeInTheDocument();
   });
 
+  it("configures atlas hardware and holds the preorder before checkout", () => {
+    render(
+      <MemoryRouter initialEntries={["/buy/atlas/atlas-pro"]}>
+        <App />
+      </MemoryRouter>,
+    );
+
+    expect(
+      screen.getByRole("heading", { name: "Build your atlas." }),
+    ).toBeInTheDocument();
+    expect(screen.getAllByText("$12,999").length).toBeGreaterThan(0);
+
+    fireEvent.click(
+      screen.getByRole("radio", { name: /atlas pilot max/i }),
+    );
+    expect(screen.getAllByText(/\$299\/month/i).length).toBeGreaterThan(0);
+
+    fireEvent.click(screen.getByRole("button", { name: /Pre-order/i }));
+    expect(
+      screen.getByRole("status"),
+    ).toHaveTextContent("Preorders will start soon.");
+    expect(
+      screen.queryByRole("heading", { name: "Your bag." }),
+    ).not.toBeInTheDocument();
+  });
+
   it("applies premium event pricing through configuration", () => {
     render(
       <MemoryRouter initialEntries={["/buy/mobile/x26-pro"]}>

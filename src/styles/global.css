@@ -2111,6 +2111,12 @@ a:hover .product-render__sheen,
   transform: translate(-50%, -51%);
 }
 
+.atlas-visual__finish {
+  opacity: 0.42;
+  mix-blend-mode: color;
+  pointer-events: none;
+}
+
 .atlas-visual__scan {
   fill: rgba(104, 203, 228, 0.11);
   stroke: rgba(122, 218, 241, 0.42);
@@ -4436,7 +4442,8 @@ a:hover .product-render__sheen,
 }
 
 .buy-visual .product-placeholder,
-.buy-visual .product-render {
+.buy-visual .product-render,
+.buy-visual .atlas-visual {
   height: clamp(20rem, calc(100svh - 23rem), 36rem);
   min-height: 20rem;
   border: 1px solid rgba(255, 255, 255, 0.66);
@@ -4755,6 +4762,46 @@ a:hover .product-render__sheen,
 
 .buy-summary__saving s {
   color: #8c7770;
+}
+
+.buy-summary .buy-summary__recurring {
+  margin: -0.1rem 0 0.75rem;
+  color: #486a72;
+  font-family: var(--mono);
+  font-size: 0.6875rem;
+}
+
+.atlas-preorder-action {
+  display: grid;
+  min-width: min(100%, 19rem);
+  gap: 0.8rem;
+  justify-items: stretch;
+}
+
+.atlas-preorder-notice {
+  padding: 1rem 1.1rem;
+  border: 1px solid rgba(92, 152, 168, 0.3);
+  border-radius: 1rem;
+  color: #dcebed;
+  background:
+    radial-gradient(circle at 85% 0%, rgba(111, 191, 211, 0.2), transparent 55%),
+    #26373d;
+  box-shadow:
+    0 18px 36px rgba(34, 52, 59, 0.18),
+    inset 0 1px 0 rgba(255, 255, 255, 0.1);
+}
+
+.atlas-preorder-notice strong {
+  font-family: var(--serif);
+  font-size: 1.15rem;
+  font-weight: 400;
+}
+
+.atlas-preorder-notice p {
+  margin: 0.35rem 0 0;
+  color: rgba(220, 235, 237, 0.72);
+  font-size: 0.68rem;
+  line-height: 1.55;
 }
 
 .store-primary-button {
@@ -6243,7 +6290,8 @@ a:hover .product-render__sheen,
   }
 
   .buy-visual .product-placeholder,
-  .buy-visual .product-render {
+  .buy-visual .product-render,
+  .buy-visual .atlas-visual {
     height: auto;
     min-height: min(60vh, 40rem);
   }
@@ -6579,7 +6627,8 @@ a:hover .product-render__sheen,
   }
 
   .buy-visual .product-placeholder,
-  .buy-visual .product-render {
+  .buy-visual .product-render,
+  .buy-visual .atlas-visual {
     height: auto;
     min-height: 20rem;
   }
@@ -6652,6 +6701,10 @@ a:hover .product-render__sheen,
 
   .buy-summary .embossed-button {
     justify-content: space-between;
+    width: 100%;
+  }
+
+  .atlas-preorder-action {
     width: 100%;
   }
 

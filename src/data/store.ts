@@ -105,6 +105,295 @@ const group = (
   mode: StoreOptionGroup["mode"] = "single",
 ): StoreOptionGroup => ({ id, label, options, description, mode });
 
+const atlasHardwareGroups = new Set([
+  "consumer systems",
+  "enterprise systems",
+]);
+
+const atlasMonthlyHardwarePrices: Record<string, number> = {
+  "atlas core": 149,
+  atlas: 249,
+  "atlas pro": 449,
+  "atlas ultra": 799,
+  "atlas fleet": 499,
+  "atlas response": 3999,
+};
+
+const atlasInstallDetails: Record<string, string> = {
+  "atlas core": "Certified installation is included and typically takes 3.5-5 hours.",
+  atlas: "Certified installation is included and typically takes 5-7 hours.",
+  "atlas pro": "Certified multi-sensor installation is included and typically takes 8-12 hours.",
+  "atlas ultra": "A bespoke atlas studio integration is included and typically takes 2-4 days.",
+  "atlas fleet": "Fleet-site planning and certified installation are included in the deployment consultation.",
+  "atlas response": "Agency vehicle integration, calibration, and response-network commissioning are included.",
+};
+
+function atlasServiceOptions(product: CatalogProduct): StoreOption[] {
+  const includedYears = product.model === "atlas core" ? 3 : 5;
+  const connect = {
+    id: "atlas-connect",
+    label: "atlas connect",
+    detail: `Included for ${includedYears} years, then $19/month.`,
+    priceDelta: 0,
+    priceLabel: `Included ${includedYears} years`,
+  };
+  const plans: Record<string, StoreOption[]> = {
+    "atlas core": [
+      connect,
+      {
+        id: "atlas-assist",
+        label: "atlas assist",
+        detail: "Connected assistance and enhanced driver support.",
+        priceDelta: 0,
+        recurringPrice: 49,
+      },
+      {
+        id: "atlas-pilot",
+        label: "atlas pilot",
+        detail: "Pilot capability on a limited set of supported roads.",
+        priceDelta: 0,
+        recurringPrice: 129,
+      },
+    ],
+    atlas: [
+      connect,
+      {
+        id: "atlas-assist",
+        label: "atlas assist",
+        detail: "Connected assistance and enhanced driver support.",
+        priceDelta: 0,
+        recurringPrice: 49,
+      },
+      {
+        id: "atlas-pilot",
+        label: "atlas pilot",
+        detail: "Supervised pilot capability on supported roads.",
+        priceDelta: 0,
+        recurringPrice: 129,
+      },
+      {
+        id: "atlas-pilot-pro",
+        label: "atlas pilot pro",
+        detail: "Expanded highway and interchange capability where approved.",
+        priceDelta: 0,
+        recurringPrice: 199,
+      },
+    ],
+    "atlas pro": [
+      connect,
+      {
+        id: "atlas-pilot",
+        label: "atlas pilot",
+        detail: "Supervised pilot capability on supported roads.",
+        priceDelta: 0,
+        recurringPrice: 129,
+      },
+      {
+        id: "atlas-pilot-pro",
+        label: "atlas pilot pro",
+        detail: "Expanded highway and interchange capability where approved.",
+        priceDelta: 0,
+        recurringPrice: 199,
+      },
+      {
+        id: "atlas-pilot-max",
+        label: "atlas pilot max",
+        detail: "The fullest atlas pro city, highway, and trail experience.",
+        priceDelta: 0,
+        recurringPrice: 299,
+      },
+    ],
+    "atlas ultra": [
+      connect,
+      {
+        id: "atlas-pilot-pro",
+        label: "atlas pilot pro",
+        detail: "Expanded highway and interchange capability where approved.",
+        priceDelta: 0,
+        recurringPrice: 199,
+      },
+      {
+        id: "atlas-pilot-max",
+        label: "atlas pilot max",
+        detail: "Advanced city, highway, and trail capability.",
+        priceDelta: 0,
+        recurringPrice: 299,
+      },
+      {
+        id: "atlas-pilot-ultra",
+        label: "atlas pilot ultra",
+        detail: "The complete atlas ultra service with premium mapping and support.",
+        priceDelta: 0,
+        recurringPrice: 499,
+      },
+    ],
+    "atlas fleet": [
+      {
+        id: "atlas-fleet-command",
+        label: "atlas fleet command",
+        detail: "Fleet operations, deployment visibility, and maintenance intelligence.",
+        priceDelta: 0,
+        recurringPrice: 399,
+      },
+    ],
+    "atlas response": [
+      {
+        id: "atlas-response-network",
+        label: "atlas response network",
+        detail: "Agency response coordination and secure operational connectivity.",
+        priceDelta: 0,
+        recurringPrice: 3999,
+      },
+    ],
+  };
+
+  return plans[product.model] ?? [];
+}
+
+function atlasConfiguration(
+  product: CatalogProduct,
+): StoreProductConfiguration {
+  if (!atlasHardwareGroups.has(product.groupName)) {
+    return {
+      productKey: getProductKey(product),
+      basePrice: atlasBasePrices[product.model] ?? 0,
+      purchasable: false,
+      purchaseNote:
+        "This atlas capability is enrolled with compatible atlas hardware and is not configured separately.",
+      optionGroups: [],
+      protectOptions: [],
+    };
+  }
+
+  const monthlyHardwarePrice = atlasMonthlyHardwarePrices[product.model];
+  const organizationProduct = product.groupName === "enterprise systems";
+  const optionGroups: StoreOptionGroup[] = [];
+
+  if (product.finishes.length > 0) {
+    optionGroups.push(
+      group(
+        "finish",
+        "Choose your hardware finish.",
+        product.finishes.map((finish) => ({
+          id: finish.name.toLowerCase().replace(/[^a-z0-9]+/g, "-"),
+          label: finish.name,
+          color: finish.color,
+          priceDelta: 0,
+        })),
+        "The visible sensor and compute hardware is finished to complement your vehicle.",
+      ),
+    );
+  }
+
+  optionGroups.push(
+    group(
+      "vehicle",
+      "Tell us about your vehicle.",
+      [
+        option("sedan", "Sedan or coupe", 0, "Two- or four-door passenger vehicle"),
+        option("suv", "SUV or crossover", 0, "Compact through full-size"),
+        option("pickup", "Pickup", 0, "Mid-size through heavy-duty"),
+        option("van", "Van or wagon", 0, "Passenger or commercial"),
+        option("other", "Another vehicle", 0, "Compatibility review required"),
+      ],
+      "A certified installer will confirm exact compatibility before an order is finalized.",
+    ),
+    group(
+      "vehicle-year",
+      "Choose its model year.",
+      [
+        option("2025-2027", "2025-2027"),
+        option("2022-2024", "2022-2024"),
+        option("2017-2021", "2017-2021"),
+        option("older", "2016 or earlier", 0, "Additional compatibility review may be needed"),
+      ],
+    ),
+    group(
+      "installation",
+      "Review your installation.",
+      [
+        {
+          id: "certified-installation",
+          label:
+            product.model === "atlas ultra"
+              ? "atlas studio integration"
+              : product.model === "atlas response"
+                ? "agency integration"
+                : "atlas certified installation",
+          detail: atlasInstallDetails[product.model],
+          priceDelta: 0,
+          priceLabel: "Included",
+        },
+      ],
+    ),
+    group(
+      "payment",
+      "Choose a hardware payment preference.",
+      [
+        {
+          id: "full",
+          label: "Pay in full",
+          detail: "Final payment is collected only when your order is ready to proceed.",
+          priceDelta: 0,
+          priceLabel: formatPrice(atlasBasePrices[product.model] ?? 0),
+        },
+        {
+          id: "monthly",
+          label: organizationProduct ? "Monthly deployment plan" : "36 monthly payments",
+          detail: organizationProduct
+            ? "Estimated monthly hardware or service deployment rate, subject to contract."
+            : "Estimated hardware financing, subject to eligibility and final terms.",
+          priceDelta: 0,
+          priceLabel: `From ${formatPrice(monthlyHardwarePrice)}/mo`,
+        },
+      ],
+      "This selection records your preference; financing and organization terms will be confirmed later.",
+    ),
+  );
+
+  const services = atlasServiceOptions(product);
+  if (services.length > 0) {
+    optionGroups.push(
+      group(
+        "service",
+        "Choose your atlas service.",
+        services,
+        "Service availability depends on vehicle compatibility, mapped-road coverage, law, and regional approval.",
+      ),
+    );
+  }
+
+  if (product.model === "atlas pro" || product.model === "atlas ultra") {
+    optionGroups.push(
+      group(
+        "additions",
+        "Add personal support.",
+        [
+          {
+            id: "atlas-concierge",
+            label: "atlas concierge",
+            detail: "Priority trip, installation, and ownership support.",
+            priceDelta: 0,
+            recurringPrice: 99,
+          },
+        ],
+        "Optional services can be changed before preorders open.",
+        "multiple",
+      ),
+    );
+  }
+
+  return {
+    productKey: getProductKey(product),
+    basePrice: atlasBasePrices[product.model] ?? 0,
+    purchasable: false,
+    purchaseNote:
+      "Preorders will start soon. Your configuration is only a preview and has not been reserved.",
+    optionGroups,
+    protectOptions: [],
+  };
+}
+
 function storageOptions(product: CatalogProduct): StoreOption[] | undefined {
   const model = product.model.toLowerCase();
 
@@ -625,15 +914,7 @@ export function getStoreConfiguration(
   product: CatalogProduct,
 ): StoreProductConfiguration {
   if (product.segmentId === "atlas") {
-    return {
-      productKey: getProductKey(product),
-      basePrice: atlasBasePrices[product.model] ?? 0,
-      purchasable: false,
-      purchaseNote:
-        "Atlas is a 2027 preview. Hardware installation and service enrollment are not yet available.",
-      optionGroups: [],
-      protectOptions: [],
-    };
+    return atlasConfiguration(product);
   }
 
   const accessory = accessoryByModel.get(product.model);
@@ -809,6 +1090,7 @@ export function getDefaultStoreSelections(
       optionId: option.id,
       optionLabel: option.label,
       priceDelta: option.priceDelta,
+      recurringPrice: option.recurringPrice,
       color: option.color,
     }));
   });

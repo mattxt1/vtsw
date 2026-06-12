@@ -1,5 +1,6 @@
 import { useEffect, useMemo, useState } from "react";
 import { Link, Navigate, useNavigate, useParams } from "react-router-dom";
+import { AtlasVisual } from "../components/AtlasVisual";
 import { PageTransition } from "../components/PageTransition";
 import { ProductRender } from "../components/ProductRender";
 import { useCart } from "../context/CartContext";
@@ -45,9 +46,15 @@ export function BuyPage() {
         )
       : {},
   );
+  const [preorderNotice, setPreorderNotice] = useState(false);
 
   useEffect(() => {
-    if (product) document.title = `Buy ${product.displayName} - vela`;
+    if (product) {
+      document.title =
+        product.segmentId === "atlas"
+          ? `Pre-order ${product.displayName} - vela`
+          : `Buy ${product.displayName} - vela`;
+    }
   }, [product]);
 
   const selectedOptions = useMemo(() => {
@@ -76,6 +83,7 @@ export function BuyPage() {
           optionId: option.id,
           optionLabel: option.label,
           priceDelta: option.priceDelta,
+          recurringPrice: option.recurringPrice,
           color: option.color,
         })),
     );
@@ -85,8 +93,13 @@ export function BuyPage() {
     return <Navigate to="/not-found" replace />;
   }
 
-  if (product.segmentId === "atlas") {
-    return <Navigate to="/not-found" replace />;
+  const isAtlasPreorder =
+    product.segmentId === "atlas" &&
+    (product.groupName === "consumer systems" ||
+      product.groupName === "enterprise systems");
+
+  if (product.segmentId === "atlas" && !isAtlasPreorder) {
+    return <Navigate to={`/products/atlas/${product.id}`} replace />;
   }
 
   const family = getStoreProductsForFamily(product);
@@ -97,6 +110,10 @@ export function BuyPage() {
     ? configuration.listPrice +
       selectedOptions.reduce((total, option) => total + option.priceDelta, 0)
     : undefined;
+  const recurringTotal = selectedOptions.reduce(
+    (total, option) => total + (option.recurringPrice ?? 0),
+    0,
+  );
   const selectedFinish = selectedOptions.find(
     (selection) => selection.groupId === "finish",
   );
@@ -137,8 +154,10 @@ export function BuyPage() {
           <Link to={`/products/${product.segmentId}/${product.id}`}>
             {product.displayName}
           </Link>
-          <span>Configure</span>
-          <Link to="/cart">Bag</Link>
+          <span>{isAtlasPreorder ? "Pre-order" : "Configure"}</span>
+          <Link to={isAtlasPreorder ? "/products/atlas" : "/cart"}>
+            {isAtlasPreorder ? "Atlas" : "Bag"}
+          </Link>
         </header>
 
         <div className="buy-layout section-shell">
@@ -148,7 +167,9 @@ export function BuyPage() {
               <div className="buy-visual__price" aria-live="polite">
                 <div>
                   <p>
-                    {configuration.promotionLabel
+                    {isAtlasPreorder
+                      ? "estimated installed price"
+                      : configuration.promotionLabel
                       ? `${configuration.promotionLabel} subtotal`
                       : "configured subtotal"}
                   </p>
@@ -160,16 +181,30 @@ export function BuyPage() {
                     Save {formatPrice(listSubtotal - subtotal)}
                   </span>
                 )}
+                {isAtlasPreorder && recurringTotal > 0 && (
+                  <span>{formatPrice(recurringTotal)}/month in services</span>
+                )}
               </div>
-              <ProductRender
-                product={product}
-                finishColor={selectedFinish?.color}
-                finishName={selectedFinish?.optionLabel}
-                priority
-              />
+              {isAtlasPreorder ? (
+                <AtlasVisual
+                  focus={product.displayName}
+                  finishColor={selectedFinish?.color}
+                />
+              ) : (
+                <ProductRender
+                  product={product}
+                  finishColor={selectedFinish?.color}
+                  finishName={selectedFinish?.optionLabel}
+                  priority
+                />
+              )}
               <div className="buy-visual__caption">
                 <strong>{selectedFinish?.optionLabel ?? product.tagline}</strong>
-                <span>Designed around {product.platform}</span>
+                <span>
+                  {isAtlasPreorder
+                    ? "Installation and compatibility are confirmed before ordering."
+                    : `Designed around ${product.platform}`}
+                </span>
               </div>
             </div>
           </aside>
@@ -177,12 +212,20 @@ export function BuyPage() {
           <div className="buy-configurator">
             <div className="buy-intro">
               <p className="eyebrow">
-                {configuration.promotionLabel
+                {isAtlasPreorder
+                  ? `2027 preview / pre-order ${product.displayName}`
+                  : configuration.promotionLabel
                   ? `${configuration.promotionLabel} / buy ${product.displayName}`
                   : `buy ${product.displayName}`}
               </p>
-              <h1>Make it yours.</h1>
-              {configuration.listPrice ? (
+              <h1>{isAtlasPreorder ? "Build your atlas." : "Make it yours."}</h1>
+              {isAtlasPreorder ? (
+                <p>
+                  From {formatPrice(configuration.basePrice)} installed.
+                  Configure a preview now; no reservation or payment will be
+                  taken.
+                </p>
+              ) : configuration.listPrice ? (
                 <p className="buy-intro__sale">
                   Now from <strong>{formatPrice(configuration.basePrice)}</strong>
                   <s>{formatPrice(configuration.listPrice)}</s>
@@ -290,9 +333,12 @@ export function BuyPage() {
                           {option.detail && <small>{option.detail}</small>}
                         </span>
                         <b>
-                          {option.priceDelta === 0
-                            ? "Included"
-                            : `+${formatPrice(option.priceDelta)}`}
+                          {option.priceLabel ??
+                            (option.recurringPrice
+                              ? `${formatPrice(option.recurringPrice)}/mo`
+                              : option.priceDelta === 0
+                                ? "Included"
+                                : `+${formatPrice(option.priceDelta)}`)}
                         </b>
                       </label>
                     );
@@ -363,11 +409,19 @@ export function BuyPage() {
             <section className="buy-summary" aria-label="Configuration subtotal">
               <div>
                 <p className="eyebrow">
-                  {configuration.promotionLabel
+                  {isAtlasPreorder
+                    ? "estimated installed price"
+                    : configuration.promotionLabel
                     ? `${configuration.promotionLabel} subtotal`
                     : "configured subtotal"}
                 </p>
                 <h2>{formatPrice(subtotal)}</h2>
+                {isAtlasPreorder && recurringTotal > 0 && (
+                  <p className="buy-summary__recurring">
+                    Plus {formatPrice(recurringTotal)}/month for selected
+                    services
+                  </p>
+                )}
                 {listSubtotal && (
                   <p className="buy-summary__saving">
                     <s>{formatPrice(listSubtotal)}</s>
@@ -375,9 +429,37 @@ export function BuyPage() {
                     {formatPrice(listSubtotal - subtotal)}
                   </p>
                 )}
-                <p>Taxes are calculated at checkout. Delivery is included.</p>
+                <p>
+                  {isAtlasPreorder
+                    ? "Final compatibility, regional availability, financing, taxes, and service terms will be confirmed before ordering."
+                    : "Taxes are calculated at checkout. Delivery is included."}
+                </p>
               </div>
-              {configuration.purchasable ? (
+              {isAtlasPreorder ? (
+                <div className="atlas-preorder-action">
+                  <button
+                    className="embossed-button store-primary-button"
+                    type="button"
+                    onClick={() => setPreorderNotice(true)}
+                  >
+                    Pre-order
+                    <span aria-hidden="true">→</span>
+                  </button>
+                  {preorderNotice && (
+                    <div
+                      className="atlas-preorder-notice"
+                      role="status"
+                      aria-live="polite"
+                    >
+                      <strong>Preorders will start soon.</strong>
+                      <p>
+                        Your configuration is ready to revisit when ordering
+                        opens. Nothing has been reserved or charged.
+                      </p>
+                    </div>
+                  )}
+                </div>
+              ) : configuration.purchasable ? (
                 <button
                   className="embossed-button store-primary-button"
                   type="button"

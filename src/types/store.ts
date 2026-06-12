@@ -3,6 +3,8 @@ export interface StoreOption {
   label: string;
   detail?: string;
   priceDelta: number;
+  priceLabel?: string;
+  recurringPrice?: number;
   color?: string;
 }
 
@@ -31,6 +33,7 @@ export interface CartSelection {
   optionId: string;
   optionLabel: string;
   priceDelta: number;
+  recurringPrice?: number;
   color?: string;
 }
 

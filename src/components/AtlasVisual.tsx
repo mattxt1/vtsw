@@ -1,13 +1,20 @@
 export function AtlasVisual({
   focus = "vela atlas",
   compact = false,
+  finishColor,
 }: {
   focus?: string;
   compact?: boolean;
+  finishColor?: string;
 }) {
   return (
     <div
       className={`atlas-visual${compact ? " atlas-visual--compact" : ""}`}
+      style={
+        {
+          "--atlas-finish": finishColor ?? "#8b9497",
+        } as React.CSSProperties
+      }
       role="img"
       aria-label={`${focus} vehicle intelligence preview`}
     >
@@ -45,6 +52,11 @@ export function AtlasVisual({
           fill="url(#atlas-body)"
           stroke="rgba(236,245,247,.68)"
           strokeWidth="2"
+        />
+        <path
+          className="atlas-visual__finish"
+          d="M204 116 C238 74 402 74 436 116 L478 190 L470 314 C466 350 432 374 394 382 L246 382 C208 374 174 350 170 314 L162 190 Z"
+          fill="var(--atlas-finish)"
         />
         <path
           d="M233 124 C260 100 380 100 407 124 L432 188 L208 188 Z"

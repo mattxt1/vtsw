@@ -65,15 +65,34 @@ describe("vela store configurations", () => {
     expect(store.purchaseNote).toMatch(/organization sales/i);
   });
 
-  it("keeps the 2027 atlas preview outside checkout", () => {
+  it("builds an atlas preorder preview without enabling checkout", () => {
     const store = configuration("atlas", "atlas-pro");
+    const service = store.optionGroups.find((group) => group.id === "service");
 
     expect(store).toMatchObject({
       basePrice: 12999,
       purchasable: false,
     });
-    expect(store.purchaseNote).toMatch(/2027 preview/i);
+    expect(store.purchaseNote).toMatch(/preorders will start soon/i);
+    expect(store.optionGroups.map((group) => group.id)).toEqual([
+      "finish",
+      "vehicle",
+      "vehicle-year",
+      "installation",
+      "payment",
+      "service",
+      "additions",
+    ]);
+    expect(
+      service?.options.find((option) => option.id === "atlas-pilot-max"),
+    ).toMatchObject({ recurringPrice: 299 });
+  });
+
+  it("keeps atlas software and services outside the hardware configurator", () => {
+    const store = configuration("atlas", "atlas-pilot-max");
+
     expect(store.optionGroups).toHaveLength(0);
+    expect(store.purchaseNote).toMatch(/compatible atlas hardware/i);
   });
 
   it("uses documented accessory pricing and variants", () => {
