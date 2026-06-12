@@ -407,7 +407,7 @@ test("accessories move from compatibility-led discovery into configuration", asy
   ).toBeVisible();
 });
 
-test("the premium event carries sale pricing from home into configuration", async ({
+test("sale pricing remains active without a homepage campaign card", async ({
   page,
 }) => {
   await page.goto("/");
@@ -416,7 +416,9 @@ test("the premium event carries sale pricing from home into configuration", asyn
     page.getByRole("heading", {
       name: "More of the ecosystem, for less.",
     }),
-  ).toBeVisible();
+  ).toHaveCount(0);
+
+  await page.goto("/products/mobile");
   await expect(page.getByText("From $949")).toBeVisible();
 
   await page.goto("/buy/mobile/x26-pro");

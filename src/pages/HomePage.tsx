@@ -7,8 +7,6 @@ import { ProductPlaceholder } from "../components/ProductPlaceholder";
 import { ProductRender } from "../components/ProductRender";
 import { Reveal } from "../components/Reveal";
 import { getProduct } from "../data/catalog";
-import { premiumEventPromotions } from "../data/promotions";
-import { formatPrice, getStoreConfiguration } from "../data/store";
 import { vela } from "../data/vela";
 import { usePointerSurface } from "../hooks/usePointerSurface";
 import type { ProductRenderKind } from "../utils/productVisual";
@@ -26,13 +24,6 @@ const featuredProducts = {
   ethos: getProduct("platform", "ethos-ai"),
   atlas: getProduct("atlas", "atlas-pro"),
 };
-
-const premiumEventProducts = premiumEventPromotions.flatMap((promotion) => {
-  const [segmentId, productId] = promotion.productKey.split(":");
-  const product = getProduct(segmentId, productId);
-
-  return product ? [{ product, promotion }] : [];
-});
 
 const categoryLinks: Array<{
   name: string;
@@ -185,64 +176,6 @@ export function HomePage() {
               </div>
             ))}
           </div>
-        </section>
-
-        <section
-          className="premium-event section-shell"
-          aria-labelledby="premium-event-heading"
-        >
-          <Reveal className="premium-event__card">
-            <div className="premium-event__heading">
-              <div>
-                <p className="eyebrow">limited time / vela premium event</p>
-                <h2 id="premium-event-heading">
-                  More of the ecosystem, for less.
-                </h2>
-              </div>
-              <p>
-                Special pricing on a premium phone, tablet, and watch. Built to
-                work beautifully on their own, and even better together.
-              </p>
-            </div>
-            <div className="premium-event__grid">
-              {premiumEventProducts.map(({ product, promotion }, index) => {
-                const configuration = getStoreConfiguration(product);
-                return (
-                  <Link
-                    className="premium-event__product"
-                    to={`/buy/${product.segmentId}/${product.id}`}
-                    key={product.id}
-                  >
-                    <div className="premium-event__visual">
-                      <ProductRender
-                        product={product}
-                        finishColor={product.finishes[index]?.color}
-                        finishName={product.finishes[index]?.name}
-                        variant={index}
-                      />
-                    </div>
-                    <div className="premium-event__product-copy">
-                      <p>{promotion.label}</p>
-                      <h3>{product.displayName}</h3>
-                      <span>{product.tagline}</span>
-                      <div>
-                        <strong>
-                          From {formatPrice(configuration.basePrice)}
-                        </strong>
-                        {configuration.listPrice && (
-                          <s>From {formatPrice(configuration.listPrice)}</s>
-                        )}
-                      </div>
-                    </div>
-                  </Link>
-                );
-              })}
-            </div>
-            <p className="premium-event__terms">
-              Savings apply to eligible new purchases while the premium event
-              is available. Configuration upgrades are priced separately.
-            </p>
-          </Reveal>
         </section>
 
         <section

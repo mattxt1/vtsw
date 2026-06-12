@@ -21,10 +21,10 @@ describe("vela experience", () => {
       }),
     ).toBeInTheDocument();
     expect(
-      screen.getByRole("heading", {
+      screen.queryByRole("heading", {
         name: "More of the ecosystem, for less.",
       }),
-    ).toBeInTheDocument();
+    ).not.toBeInTheDocument();
     expect(
       screen.getByRole("heading", { name: "Know the road ahead." }),
     ).toBeInTheDocument();
@@ -37,7 +37,6 @@ describe("vela experience", () => {
       "href",
       "/compare?mode=atlas&products=atlas:atlas-core,atlas:atlas,atlas:atlas-pro",
     );
-    expect(screen.getByText("From $949")).toBeInTheDocument();
     expect(
       screen.getByRole("heading", {
         name: "Built to work beautifully together.",
