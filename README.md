@@ -33,8 +33,10 @@ React Three Fiber layer for selected device moments.
 - Segment pages: `/products/:segment` showcases each product family.
 - Product pages: `/products/:segment/:product` provides cinematic discovery for
   every current model.
-- Buy placeholders: `/buy/:segment/:product` intentionally returns the branded
-  store 404 until commerce is implemented.
+- Sitemap: `/sitemap` provides a complete human-readable directory generated
+  from the catalog.
+- Buy configurators: `/buy/:segment/:product` supports model, finish, storage,
+  memory, additions, protection, and cart selection where applicable.
 - Continuity: a shared interaction model across devices.
 - Software: vOS 26, pulse integration, and long-term support.
 - Principles: calm interaction, support commitments, and vela protect.
@@ -61,4 +63,7 @@ and non-WebGL users receive complete static alternatives.
 ## Deployment
 
 `vercel.json` rewrites all routes to `index.html`. The production command is
-`npm run build` and the output directory is `dist`.
+`npm run build` and the output directory is `dist`. Builds also emit
+`sitemap.xml` and `robots.txt`; set `SITE_URL` in the deployment environment to
+the canonical production origin. Vercel's production URL is used automatically
+when that override is not present.

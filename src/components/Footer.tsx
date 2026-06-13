@@ -19,6 +19,7 @@ export function Footer() {
           <Link to="/products/platform/vos-27">vOS 27</Link>
           <Link to="/products/platform">software</Link>
           <Link to="/products/atlas">atlas preview</Link>
+          <Link to="/sitemap">sitemap</Link>
         </nav>
         <p>a veritas brand · 2026</p>
       </div>

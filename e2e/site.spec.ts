@@ -41,6 +41,7 @@ test("core page families remain contained on narrow mobile screens", async ({
     "/buy/mobile/x26-ultra",
     "/compare",
     "/search?q=charging",
+    "/sitemap",
     "/cart",
     "/products/platform",
     "/products/platform/vos-27",

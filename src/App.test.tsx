@@ -155,6 +155,36 @@ describe("vela experience", () => {
     ).toBeInTheDocument();
   });
 
+  it("maps the complete site and catalog from one directory", () => {
+    render(
+      <MemoryRouter initialEntries={["/sitemap"]}>
+        <App />
+      </MemoryRouter>,
+    );
+
+    expect(
+      screen.getByRole("heading", { name: "Everything vela. One map." }),
+    ).toBeInTheDocument();
+    expect(
+      screen.getByRole("navigation", { name: "Sitemap sections" }),
+    ).toBeInTheDocument();
+    expect(
+      screen.getByRole("link", { name: "vela x26 Ultra" }),
+    ).toHaveAttribute("href", "/products/mobile/x26-ultra");
+    expect(
+      screen.getByRole("link", { name: "Configure vela x26 Ultra" }),
+    ).toHaveAttribute("href", "/buy/mobile/x26-ultra");
+    expect(
+      screen.getByRole("link", { name: "lattice 1" }),
+    ).toHaveAttribute("href", "/products/platform/lattice-1");
+    expect(
+      screen.getByRole("link", { name: "vela atlas pro" }),
+    ).toHaveAttribute("href", "/products/atlas/atlas-pro");
+    expect(
+      screen.getByRole("link", { name: "Pre-order vela atlas pro" }),
+    ).toHaveAttribute("href", "/buy/atlas/atlas-pro");
+  });
+
   it("renders the not-found experience", () => {
     render(
       <MemoryRouter initialEntries={["/missing"]}>

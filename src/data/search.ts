@@ -40,6 +40,15 @@ const sitePages: Omit<SearchDocument, "searchableText">[] = [
       "Compare up to three current or previous-generation vela devices, specifications, and features.",
     url: "/compare",
   },
+  {
+    id: "sitemap",
+    type: "page",
+    title: "Sitemap",
+    eyebrow: "Site directory",
+    description:
+      "Browse every vela lineup, product, software experience, and store configuration.",
+    url: "/sitemap",
+  },
 ];
 
 function normalize(value: string) {
