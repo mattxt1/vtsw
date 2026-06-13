@@ -31,6 +31,55 @@ test("the mobile layout does not overflow horizontally", async ({ page }) => {
   expect(dimensions.content).toBeLessThanOrEqual(dimensions.viewport);
 });
 
+test("the mobile hero keeps its product image clear of the spec grid", async ({
+  page,
+}) => {
+  for (const viewport of [
+    { width: 390, height: 844 },
+    { width: 440, height: 956 },
+  ]) {
+    await page.setViewportSize(viewport);
+    await page.goto("/");
+    await expect(
+      page.getByRole("heading", { name: /power, made quiet/i }),
+    ).toBeVisible();
+
+    const layout = await page.evaluate(() => {
+      const visual = document.querySelector(".launch-hero__visual");
+      const metrics = document.querySelector(".launch-hero__metrics");
+      const skipLink = document.querySelector(".skip-link");
+
+      if (!visual || !metrics || !skipLink) {
+        throw new Error("Expected homepage hero elements");
+      }
+
+      const visualRect = visual.getBoundingClientRect();
+      const metricsRect = metrics.getBoundingClientRect();
+      const skipStyle = getComputedStyle(skipLink);
+
+      return {
+        visualBottom: visualRect.bottom,
+        metricsTop: metricsRect.top,
+        skipOpacity: skipStyle.opacity,
+        skipWidth: skipLink.getBoundingClientRect().width,
+      };
+    });
+
+    expect(layout.visualBottom, `${viewport.width}px hero`).toBeLessThanOrEqual(
+      layout.metricsTop + 1,
+    );
+    expect(layout.skipOpacity, `${viewport.width}px skip link`).toBe("0");
+    expect(layout.skipWidth, `${viewport.width}px skip link`).toBeLessThanOrEqual(
+      1,
+    );
+  }
+
+  const skipLink = page.getByRole("link", { name: "Skip to content" });
+  await skipLink.focus();
+  await expect(skipLink).toBeFocused();
+  await expect(skipLink).toBeVisible();
+});
+
 test("core page families remain contained on narrow mobile screens", async ({
   page,
 }) => {
