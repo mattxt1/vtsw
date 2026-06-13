@@ -134,7 +134,7 @@ describe("vela experience", () => {
     expect(screen.queryByRole("dialog")).not.toBeInTheDocument();
   });
 
-  it("renders a full search results page with useful filters", () => {
+  it("renders a full search results page with useful filters", async () => {
     render(
       <MemoryRouter initialEntries={["/search?q=charging"]}>
         <App />
@@ -142,7 +142,7 @@ describe("vela experience", () => {
     );
 
     expect(
-      screen.getByRole("heading", { name: /matches for “charging”/i }),
+      await screen.findByRole("heading", { name: /matches for “charging”/i }),
     ).toBeInTheDocument();
     expect(
       screen.getByRole("button", { name: /Accessories/i }),
@@ -155,7 +155,7 @@ describe("vela experience", () => {
     ).toBeInTheDocument();
   });
 
-  it("maps the complete site and catalog from one directory", () => {
+  it("maps the complete site and catalog from one directory", async () => {
     render(
       <MemoryRouter initialEntries={["/sitemap"]}>
         <App />
@@ -163,7 +163,7 @@ describe("vela experience", () => {
     );
 
     expect(
-      screen.getByRole("heading", { name: "Everything vela. One map." }),
+      await screen.findByRole("heading", { name: "Everything vela. One map." }),
     ).toBeInTheDocument();
     expect(
       screen.getByRole("navigation", { name: "Sitemap sections" }),
@@ -197,7 +197,7 @@ describe("vela experience", () => {
     ).toBeInTheDocument();
   });
 
-  it("renders a segment showcase directly", () => {
+  it("renders a segment showcase directly", async () => {
     render(
       <MemoryRouter initialEntries={["/products/mobile"]}>
         <App />
@@ -205,7 +205,9 @@ describe("vela experience", () => {
     );
 
     expect(
-      screen.getByRole("heading", { name: "A phone for every way forward." }),
+      await screen.findByRole("heading", {
+        name: "A phone for every way forward.",
+      }),
     ).toBeInTheDocument();
     expect(
       screen.getByRole("link", { name: /vela x26 ultra/i }),
@@ -214,7 +216,7 @@ describe("vela experience", () => {
     expect(screen.getByText("From $949")).toBeInTheDocument();
   });
 
-  it("renders an individual product discovery page", () => {
+  it("renders an individual product discovery page", async () => {
     render(
       <MemoryRouter initialEntries={["/products/mobile/x26-ultra"]}>
         <App />
@@ -222,7 +224,10 @@ describe("vela experience", () => {
     );
 
     expect(
-      screen.getByRole("heading", { name: "vela x26 Ultra", level: 1 }),
+      await screen.findByRole("heading", {
+        name: "vela x26 Ultra",
+        level: 1,
+      }),
     ).toBeInTheDocument();
     expect(
       screen.getByRole("navigation", { name: "Product navigation" }),
@@ -238,7 +243,7 @@ describe("vela experience", () => {
     expect(screen.getAllByRole("link", { name: "Buy" })).toHaveLength(3);
   });
 
-  it("renders accessory discovery without store pricing", () => {
+  it("renders accessory discovery without store pricing", async () => {
     render(
       <MemoryRouter
         initialEntries={["/products/accessories/x26-silicone-case"]}
@@ -248,7 +253,7 @@ describe("vela experience", () => {
     );
 
     expect(
-      screen.getByRole("heading", {
+      await screen.findByRole("heading", {
         name: "vela x26 silicone case",
         level: 1,
       }),
@@ -268,7 +273,7 @@ describe("vela experience", () => {
     );
 
     expect(
-      screen.getByRole("heading", {
+      await screen.findByRole("heading", {
         name: "Make it yours.",
       }),
     ).toBeInTheDocument();
@@ -296,7 +301,7 @@ describe("vela experience", () => {
     expect(screen.getByLabelText("2 items")).toBeInTheDocument();
   });
 
-  it("configures atlas hardware and holds the preorder before checkout", () => {
+  it("configures atlas hardware and holds the preorder before checkout", async () => {
     render(
       <MemoryRouter initialEntries={["/buy/atlas/atlas-pro"]}>
         <App />
@@ -304,7 +309,7 @@ describe("vela experience", () => {
     );
 
     expect(
-      screen.getByRole("heading", { name: "Build your atlas." }),
+      await screen.findByRole("heading", { name: "Build your atlas." }),
     ).toBeInTheDocument();
     expect(screen.getAllByText("$12,999").length).toBeGreaterThan(0);
 
@@ -322,7 +327,7 @@ describe("vela experience", () => {
     ).not.toBeInTheDocument();
   });
 
-  it("presents atlas as systems, services, and a shared foundation", () => {
+  it("presents atlas as systems, services, and a shared foundation", async () => {
     const { container } = render(
       <MemoryRouter initialEntries={["/products/atlas"]}>
         <App />
@@ -330,7 +335,9 @@ describe("vela experience", () => {
     );
 
     expect(
-      screen.getByRole("heading", { name: "Choose the hardware first." }),
+      await screen.findByRole("heading", {
+        name: "Choose the hardware first.",
+      }),
     ).toBeInTheDocument();
     expect(
       screen.getByRole("heading", {
@@ -346,14 +353,14 @@ describe("vela experience", () => {
     expect(container.querySelectorAll(".model-card")).toHaveLength(0);
   });
 
-  it("applies premium event pricing through configuration", () => {
+  it("applies premium event pricing through configuration", async () => {
     render(
       <MemoryRouter initialEntries={["/buy/mobile/x26-pro"]}>
         <App />
       </MemoryRouter>,
     );
 
-    expect(screen.getByText("Now from")).toBeInTheDocument();
+    expect(await screen.findByText("Now from")).toBeInTheDocument();
     expect(screen.getAllByText("$949").length).toBeGreaterThan(0);
     expect(screen.getAllByText("$1,099").length).toBeGreaterThan(0);
 
@@ -363,7 +370,7 @@ describe("vela experience", () => {
     expect(screen.getByText(/You save \$150/i)).toBeInTheDocument();
   });
 
-  it("renders lattice as a vela foundation framework without store actions", () => {
+  it("renders lattice as a vela foundation framework without store actions", async () => {
     render(
       <MemoryRouter initialEntries={["/products/platform/lattice-1"]}>
         <App />
@@ -371,7 +378,7 @@ describe("vela experience", () => {
     );
 
     expect(
-      screen.getByRole("heading", { name: "lattice 1", level: 1 }),
+      await screen.findByRole("heading", { name: "lattice 1", level: 1 }),
     ).toBeInTheDocument();
     expect(
       screen.getAllByText(
@@ -384,7 +391,7 @@ describe("vela experience", () => {
     ).toBeInTheDocument();
   });
 
-  it("renders ethos ai as the native vela intelligence layer", () => {
+  it("renders ethos ai as the native vela intelligence layer", async () => {
     render(
       <MemoryRouter initialEntries={["/products/platform/ethos-ai"]}>
         <App />
@@ -392,7 +399,7 @@ describe("vela experience", () => {
     );
 
     expect(
-      screen.getByRole("heading", { name: "ethos ai", level: 1 }),
+      await screen.findByRole("heading", { name: "ethos ai", level: 1 }),
     ).toBeInTheDocument();
     expect(
       screen.getAllByText(
@@ -401,7 +408,7 @@ describe("vela experience", () => {
     ).toBeGreaterThan(0);
   });
 
-  it("renders the distinct vOS 27 developer beta preview", () => {
+  it("renders the distinct vOS 27 developer beta preview", async () => {
     render(
       <MemoryRouter initialEntries={["/products/platform/vos-27"]}>
         <App />
@@ -409,7 +416,7 @@ describe("vela experience", () => {
     );
 
     expect(
-      screen.getByRole("heading", { name: "vOS 27", level: 1 }),
+      await screen.findByRole("heading", { name: "vOS 27", level: 1 }),
     ).toBeInTheDocument();
     expect(
       screen.getByRole("heading", { name: "Begins June 15, 2026." }),

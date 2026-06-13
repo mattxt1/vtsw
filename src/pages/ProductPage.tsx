@@ -17,6 +17,25 @@ import { getProductPromotion } from "../data/promotions";
 import { vela } from "../data/vela";
 import type { CinematicChapter as Chapter } from "../types/content";
 
+const declarationCopy: Record<string, string> = {
+  mobile:
+    "A personal device should disappear into the day, leaving speed, clarity, and connection within easy reach.",
+  computing:
+    "Serious work feels lighter when performance, input, display, and software are designed as one.",
+  wearables:
+    "The most personal technology earns its place by being useful without constantly asking for attention.",
+  display:
+    "A great screen brings the room together, then lets the picture take over.",
+  audio:
+    "Thoughtful sound fills the space without adding another complicated system to manage.",
+  accessories:
+    "The smallest details matter most when they fit precisely and work without a second thought.",
+  platform:
+    "The best foundation stays quiet, dependable, and ready for every experience built above it.",
+  atlas:
+    "Road intelligence should make complex journeys feel calmer, clearer, and more understandable.",
+};
+
 export function ProductPage() {
   const { segmentId, productId } = useParams();
   const product = getProduct(segmentId, productId);
@@ -39,14 +58,25 @@ export function ProductPage() {
     isAtlasProduct &&
     (product.groupName === "consumer systems" ||
       product.groupName === "enterprise systems");
+  const storyFeature = product.features[0];
+  const supportingFeatures = product.features.slice(1);
   const chapter: Chapter = {
     id: `${product.id}-story`,
-    eyebrow: `${product.groupName} / ${product.platform}`,
-    title: product.tagline,
-    body: product.description,
+    eyebrow: storyFeature?.eyebrow ?? `${product.groupName} / ${product.platform}`,
+    title: storyFeature?.title ?? `${product.displayName}, in context.`,
+    body:
+      storyFeature?.body ??
+      `Designed around ${product.platform} for a clear, connected vela experience.`,
     media: product.media,
     tone: "brand",
   };
+  const closingCopy = isFoundationProduct
+    ? `See how ${product.displayName} works with the wider vela software foundation.`
+    : isAtlasHardware
+      ? "Build a preview configuration and review installation, service, and regional considerations before ordering opens."
+      : isAtlasProduct
+        ? "Explore the complete atlas platform to see how this capability connects with its hardware, services, and network."
+        : "Choose your finish and available configuration in the vela store.";
   const themeStyle = {
     "--brand-accent": vela.theme.accent,
     "--brand-soft": vela.theme.accentSoft,
@@ -160,7 +190,7 @@ export function ProductPage() {
         <section className="product-declaration section-shell">
           <Reveal>
             <p className="eyebrow">{product.platform}</p>
-            <p>{product.tagline}</p>
+            <p>{declarationCopy[segment.id]}</p>
           </Reveal>
         </section>
 
@@ -199,17 +229,19 @@ export function ProductPage() {
           </Reveal>
         </section>
 
-        <section className="product-features section-shell">
-          {product.features.map((feature, index) => (
-            <Reveal key={feature.title} delay={index * 0.08}>
-              <p className="eyebrow">
-                {String(index + 1).padStart(2, "0")} / {feature.eyebrow}
-              </p>
-              <h3>{feature.title}</h3>
-              <p>{feature.body}</p>
-            </Reveal>
-          ))}
-        </section>
+        {supportingFeatures.length > 0 && (
+          <section className="product-features section-shell">
+            {supportingFeatures.map((feature, index) => (
+              <Reveal key={feature.title} delay={index * 0.08}>
+                <p className="eyebrow">
+                  {String(index + 2).padStart(2, "0")} / {feature.eyebrow}
+                </p>
+                <h3>{feature.title}</h3>
+                <p>{feature.body}</p>
+              </Reveal>
+            ))}
+          </section>
+        )}
 
         {product.finishes.length > 0 && (
           <section className="product-finishes section-shell">
@@ -280,7 +312,7 @@ export function ProductPage() {
           <Reveal>
             <p className="eyebrow">{product.availability}</p>
             <h2>{product.displayName}</h2>
-            <p>{product.tagline}</p>
+            <p>{closingCopy}</p>
             {isFoundationProduct ? (
               <Link className="embossed-button" to="/products/platform">
                 Explore software + foundation

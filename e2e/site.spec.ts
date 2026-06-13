@@ -59,6 +59,59 @@ test("core page families remain contained on narrow mobile screens", async ({
   }
 });
 
+test("core page families remain contained at tablet widths", async ({ page }) => {
+  await page.setViewportSize({ width: 768, height: 1024 });
+  const routes = [
+    "/",
+    "/products/mobile",
+    "/products/mobile/x26-ultra",
+    "/buy/mobile/x26-ultra",
+    "/compare",
+    "/sitemap",
+    "/products/atlas",
+  ];
+
+  for (const route of routes) {
+    await page.goto(route);
+    const dimensions = await page.evaluate(() => ({
+      viewport: document.documentElement.clientWidth,
+      content: document.documentElement.scrollWidth,
+    }));
+    expect(dimensions.content, route).toBeLessThanOrEqual(dimensions.viewport);
+  }
+});
+
+test("mobile configurator content clears the sticky navigation", async ({
+  page,
+}) => {
+  await page.setViewportSize({ width: 320, height: 740 });
+  await page.goto("/buy/mobile/x26-ultra");
+  await expect(
+    page.getByRole("heading", { name: "Make it yours." }),
+  ).toBeVisible();
+
+  const positions = await page.evaluate(() => {
+    const navigation = document.querySelector(".store-local-nav");
+    const price = document.querySelector(".buy-visual__price");
+
+    if (!navigation || !price) {
+      throw new Error("Expected configurator navigation and price panel");
+    }
+
+    return {
+      navigationBottom: navigation.getBoundingClientRect().bottom,
+      priceTop: price.getBoundingClientRect().top,
+    };
+  });
+
+  expect(positions.priceTop).toBeGreaterThanOrEqual(
+    positions.navigationBottom - 1,
+  );
+  await expect(
+    page.locator(".buy-visual__price").getByText("Configured subtotal"),
+  ).toBeVisible();
+});
+
 test("reduced motion retains products and software content", async ({ page }) => {
   await page.emulateMedia({ reducedMotion: "reduce" });
   await page.goto("/");

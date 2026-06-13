@@ -2161,14 +2161,12 @@ a:hover .product-render__sheen,
 
 .atlas-visual__readout strong {
   display: block;
-  overflow: hidden;
   font-family: var(--serif);
   font-size: clamp(1.5rem, 3vw, 3.2rem);
   font-weight: 300;
   letter-spacing: -0.045em;
-  line-height: 1;
-  text-overflow: ellipsis;
-  white-space: nowrap;
+  line-height: 0.95;
+  overflow-wrap: anywhere;
 }
 
 .atlas-visual__readout span {
@@ -3698,6 +3696,20 @@ a:hover .product-render__sheen,
   justify-self: center;
 }
 
+.route-loading {
+  display: grid;
+  min-height: 65svh;
+  align-content: center;
+  gap: 0.6rem;
+  padding-top: 8rem;
+  padding-bottom: 5rem;
+  color: var(--muted);
+}
+
+.route-loading p {
+  margin: 0;
+}
+
 .sitemap-page {
   min-height: 100vh;
   background:
@@ -3954,10 +3966,9 @@ a:hover .product-render__sheen,
 }
 
 .sitemap-product-link span {
-  overflow: hidden;
   font-size: 0.88rem;
-  text-overflow: ellipsis;
-  white-space: nowrap;
+  line-height: 1.35;
+  overflow-wrap: anywhere;
 }
 
 .sitemap-product-link small {
@@ -4964,7 +4975,7 @@ a:hover .product-render__sheen,
 
 .product-features {
   display: grid;
-  grid-template-columns: repeat(3, 1fr);
+  grid-template-columns: repeat(auto-fit, minmax(min(18rem, 100%), 1fr));
   gap: clamp(1rem, 3vw, 3rem);
 }
 
@@ -7636,7 +7647,7 @@ a:hover .product-render__sheen,
 .compare-table thead th span,
 .compare-table__row > th span,
 .compare-legend {
-  font-size: 0.625rem;
+  font-size: 0.6875rem;
   line-height: 1.45;
 }
 
@@ -7701,6 +7712,42 @@ a:hover .product-render__sheen,
   line-height: 1.65;
 }
 
+.atlas-system-card dt,
+.atlas-enterprise-card li span,
+.atlas-service-ladder > div > a > span,
+.atlas-service-ladder small,
+.atlas-specialist-services strong,
+.atlas-compare-card > label,
+.atlas-compare-card__copy > p,
+.atlas-compare-card__metrics small,
+.atlas-compare-card__price > span,
+.atlas-compare-card__price small,
+.atlas-compare-card__price a,
+.atlas-comparison-table thead th:first-child,
+.atlas-comparison-table tbody th,
+.thrivepay-quick-values > label,
+.thrivepay-terms span {
+  font-size: 0.6875rem;
+  letter-spacing: 0;
+  line-height: 1.4;
+  text-transform: none;
+}
+
+.atlas-system-card__actions > span,
+.atlas-system-card__actions a,
+.atlas-specialist-services span,
+.atlas-compare-hero > div:first-child > a {
+  font-size: var(--text-label);
+  line-height: 1.5;
+}
+
+.atlas-enterprise-card li span,
+.atlas-service-ladder > div > a > span,
+.atlas-service-ladder small,
+.atlas-specialist-services span {
+  color: rgba(226, 238, 241, 0.7);
+}
+
 .store-model-card,
 .store-option,
 .compare-selection-card > select {
@@ -7743,6 +7790,25 @@ a:hover .product-render__sheen,
 
   .site-nav::-webkit-scrollbar {
     display: none;
+  }
+
+  .footer__row {
+    grid-template-columns: 1fr;
+  }
+
+  .footer__row nav {
+    flex-wrap: wrap;
+    gap: 0.35rem 1rem;
+  }
+
+  .footer__row nav a {
+    display: inline-flex;
+    min-height: 2.75rem;
+    align-items: center;
+  }
+
+  .footer__row p {
+    text-align: left;
   }
 
   .site-nav .nav-link {
@@ -8318,7 +8384,7 @@ a:hover .product-render__sheen,
 
   .buy-layout {
     gap: 2.75rem;
-    padding-top: 2.5rem;
+    padding-top: calc(6.75rem + env(safe-area-inset-top));
   }
 
   .buy-visual .product-placeholder,
@@ -8438,6 +8504,14 @@ a:hover .product-render__sheen,
   .checkout-form__row,
   .checkout-form__row:has(label:nth-child(3)) {
     grid-template-columns: 1fr;
+  }
+
+  .checkout-form input:not([type="radio"]),
+  .thrivepay-quick-values input,
+  .cart-item__actions select,
+  .compare-selection-card > select,
+  .atlas-compare-card > select {
+    font-size: 1rem;
   }
 
   .payment-method-card {
